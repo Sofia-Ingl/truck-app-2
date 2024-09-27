@@ -6,8 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import ru.liga.truckapp2.dto.ParcelCreateDto;
-import ru.liga.truckapp2.dto.ParcelUpdateDto;
+import ru.liga.truckapp2.dto.ParcelDto;
 import ru.liga.truckapp2.exception.AppException;
 import ru.liga.truckapp2.mapper.ParcelMapper;
 import ru.liga.truckapp2.model.Parcel;
@@ -42,8 +41,8 @@ public class DefaultParcelRepository implements ParcelRepository {
         return getAllParcels();
     }
 
-    synchronized public Parcel save(ParcelCreateDto parcel) {
-        Parcel parcelToSave = parcelMapper.createDtoToParcel(parcel);
+    synchronized public Parcel save(ParcelDto parcel) {
+        Parcel parcelToSave = parcelMapper.dtoToParcel(parcel);
         List<Parcel> allParcels = getAllParcels();
         if (checkParcelAlreadyExists(parcelToSave.getName(), allParcels)) {
             throw new AppException("Parcel with name " + parcelToSave.getName() + " already exists");
@@ -63,7 +62,7 @@ public class DefaultParcelRepository implements ParcelRepository {
         return true;
     }
 
-    synchronized public Parcel updateByName(String name, ParcelUpdateDto newData) {
+    synchronized public Parcel updateByName(String name, ParcelDto newData) {
         List<Parcel> allParcels = getAllParcels();
         Parcel parcel = findByName(name)
                 .orElseThrow(() -> new AppException("Parcel with name " + name + " does not exist"));
@@ -72,7 +71,7 @@ public class DefaultParcelRepository implements ParcelRepository {
         return parcel;
     }
 
-    private void setNewFields(Parcel parcel, ParcelUpdateDto newData) {
+    private void setNewFields(Parcel parcel, ParcelDto newData) {
         if (newData.getName() != null) parcel.setName(newData.getName());
         if (newData.getShape() != null) parcel.setShape(newData.getShape());
         if (newData.getSymbol() != null) parcel.setSymbol(newData.getSymbol());

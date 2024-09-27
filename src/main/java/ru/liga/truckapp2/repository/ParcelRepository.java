@@ -1,7 +1,6 @@
 package ru.liga.truckapp2.repository;
 
-import ru.liga.truckapp2.dto.ParcelCreateDto;
-import ru.liga.truckapp2.dto.ParcelUpdateDto;
+import ru.liga.truckapp2.dto.ParcelDto;
 import ru.liga.truckapp2.model.Parcel;
 
 import java.util.List;
@@ -13,11 +12,11 @@ public interface ParcelRepository {
 
     List<Parcel> findAll();
 
-    Parcel save(ParcelCreateDto parcel);
+    Parcel save(ParcelDto parcel);
 
     boolean deleteByName(String name);
 
-    Parcel updateByName(String name, ParcelUpdateDto newData);
+    Parcel updateByName(String name, ParcelDto newData);
 
 
 }
