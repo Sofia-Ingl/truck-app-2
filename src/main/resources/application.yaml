@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: truck-app-2
+
+parcel:
+  storage: src/main/resources/storage/parcels.json
