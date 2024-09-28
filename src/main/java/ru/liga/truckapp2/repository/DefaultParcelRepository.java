@@ -16,6 +16,7 @@ import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,7 +39,7 @@ public class DefaultParcelRepository implements ParcelRepository {
     }
 
     synchronized public List<Parcel> findAll() {
-        return getAllParcels();
+        return Collections.unmodifiableList(getAllParcels());
     }
 
     synchronized public Parcel save(ParcelDto parcel) {
@@ -66,15 +67,29 @@ public class DefaultParcelRepository implements ParcelRepository {
         List<Parcel> allParcels = getAllParcels();
         Parcel parcel = findByName(name)
                 .orElseThrow(() -> new AppException("Parcel with name " + name + " does not exist"));
-        setNewFields(parcel, newData);
+        Parcel modified = getParcelWithNewFields(parcel, newData);
+
+        allParcels.removeIf(p -> p.getName().equals(name));
+        allParcels.add(modified);
+
         flushParcels(allParcels);
-        return parcel;
+        return modified;
     }
 
-    private void setNewFields(Parcel parcel, ParcelDto newData) {
-        if (newData.getName() != null) parcel.setName(newData.getName());
-        if (newData.getShape() != null) parcel.setShape(newData.getShape());
-        if (newData.getSymbol() != null) parcel.setSymbol(newData.getSymbol());
+    private Parcel getParcelWithNewFields(Parcel parcel, ParcelDto newData) {
+        String newName = (newData.getName() != null) ? newData.getName() : parcel.getName();
+        boolean[][] newShapeToCopy = (newData.getShape() != null) ? newData.getShape() : parcel.getShape();
+        boolean[][] newShape = new boolean[newShapeToCopy.length][newShapeToCopy[0].length];
+        for (int i = 0; i < newShapeToCopy.length; i++) {
+            newShape[i] = newShapeToCopy[i].clone();
+        }
+        char newSymbol = (newData.getSymbol() != null) ? newData.getSymbol() : parcel.getSymbol();
+        return new Parcel(
+                newName,
+                newShape,
+                newSymbol
+        );
+
     }
 
     private boolean checkParcelAlreadyExists(String name, List<Parcel> allParcels) {

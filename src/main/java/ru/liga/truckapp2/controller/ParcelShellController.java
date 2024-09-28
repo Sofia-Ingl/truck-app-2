@@ -5,8 +5,10 @@ import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
+import ru.liga.truckapp2.dto.ParcelDto;
 import ru.liga.truckapp2.model.Parcel;
 import ru.liga.truckapp2.service.ParcelService;
+import ru.liga.truckapp2.util.InputDtoCreator;
 import ru.liga.truckapp2.util.Stringifier;
 
 import java.util.List;
@@ -18,13 +20,13 @@ public class ParcelShellController {
 
     private final ParcelService parcelService;
     private final Stringifier stringifier;
+    private final InputDtoCreator inputDtoCreator;
 
     @ShellMethod(key = "all-parcels")
     public String getAllParcels() {
         List<Parcel> parcels = parcelService.getAll();
         return stringifier.stringifyParcelsList(parcels);
     }
-
 
     @ShellMethod(key = "get-parcel")
     public String getParcel(
@@ -41,7 +43,8 @@ public class ParcelShellController {
             @ShellOption(defaultValue = "") String shape,
             @ShellOption Character symbol
     ) {
-        Parcel parcel = parcelService.createParcel(name, shape, symbol);
+        ParcelDto createDto = inputDtoCreator.makeCreateDto(name, shape, symbol);
+        Parcel parcel = parcelService.createParcel(createDto);
         return "Parcel created: \n" + stringifier.stringifyParcel(parcel);
     }
 
@@ -53,7 +56,8 @@ public class ParcelShellController {
             @ShellOption(defaultValue = " ") Character newSymbol
     ) {
 
-        Parcel parcel = parcelService.updateParcel(name, newName, newShape, newSymbol);
+        ParcelDto updateDto = inputDtoCreator.makeUpdateDto(newName, newShape, newSymbol);
+        Parcel parcel = parcelService.updateParcel(name, updateDto);
         return "Parcel updated: \n" + stringifier.stringifyParcel(parcel);
     }
 

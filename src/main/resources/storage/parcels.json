@@ -126,5 +126,39 @@
       ]
     ],
     "symbol": "9"
+  },
+  {
+    "name": "t",
+    "shape": [
+      [
+        false,
+        true
+      ],
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        false
+      ]
+    ],
+    "symbol": "t"
+  },
+  {
+    "name": "s",
+    "shape": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        false,
+        true
+      ]
+    ],
+    "symbol": "s"
   }
 ]
