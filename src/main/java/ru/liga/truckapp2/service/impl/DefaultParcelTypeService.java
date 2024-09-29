@@ -7,6 +7,7 @@ import ru.liga.truckapp2.model.ParcelType;
 import ru.liga.truckapp2.repository.ParcelTypeRepository;
 import ru.liga.truckapp2.service.ParcelTypeService;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +23,11 @@ public class DefaultParcelTypeService implements ParcelTypeService {
 
     public Optional<ParcelType> getByName(String name) {
         return parcelTypeRepository.findByName(name.trim());
+    }
+
+    @Override
+    public Optional<ParcelType> getByShapeAndSymbol(boolean[][] shape, char symbol) {
+        return parcelTypeRepository.findByShapeAndSymbol(shape, symbol);
     }
 
     public ParcelType createParcel(ParcelTypeDto createDto) {

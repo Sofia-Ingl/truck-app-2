@@ -2,8 +2,6 @@ package ru.liga.truckapp2.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -26,10 +24,8 @@ public class ParcelTypeShellController {
     private final Stringifier stringifier;
     private final InputDtoCreator inputDtoCreator;
 
-
     @ShellMethod(key = "all-parcel-types")
     public String getAllParcels() {
-        log.info("getAllParcels");
         List<ParcelType> parcelTypes = parcelTypeService.getAll();
         return stringifier.stringifyParcelTypesList(parcelTypes);
     }

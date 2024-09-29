@@ -12,20 +12,14 @@ public interface ParcelTypeService {
 
     Optional<ParcelType> getByName(String name);
 
+    Optional<ParcelType> getByShapeAndSymbol(boolean[][] shape, char symbol);
+
     ParcelType createParcel(ParcelTypeDto createDto);
 
     ParcelType updateParcel(String name,
                             ParcelTypeDto updateDto);
 
-//    Parcel createParcel(String name,
-//                               String shape,
-//                               Character symbol);
-//
-//    Parcel updateParcel(String name,
-//                               String newName,
-//                               String newShape,
-//                               Character newSymbol);
-
     boolean deleteParcel(String name);
+
 
 }

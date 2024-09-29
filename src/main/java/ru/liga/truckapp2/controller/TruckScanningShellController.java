@@ -6,6 +6,8 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ru.liga.truckapp2.dto.CountedTruckDto;
+import ru.liga.truckapp2.dto.LoadedTruckDto;
+import ru.liga.truckapp2.service.TruckFileService;
 import ru.liga.truckapp2.service.TruckScanningService;
 import ru.liga.truckapp2.util.Stringifier;
 
@@ -16,6 +18,7 @@ import java.util.List;
 @ShellCommandGroup("Truck scanning commands")
 public class TruckScanningShellController {
 
+    private final TruckFileService truckFileService;
     private final TruckScanningService truckScanningService;
     private final Stringifier stringifier;
 
@@ -23,7 +26,8 @@ public class TruckScanningShellController {
     public String scanTrucks(
             @ShellOption String file
     ) {
-        List<CountedTruckDto> scannedTrucks = truckScanningService.countParcelsInTrucks(file);
+        List<LoadedTruckDto> loadedTrucks = truckFileService.readTrucks(file);
+        List<CountedTruckDto> scannedTrucks = truckScanningService.countParcelsInTrucks(loadedTrucks);
         return stringifier.stringifyCountedTrucks(scannedTrucks);
     }
 

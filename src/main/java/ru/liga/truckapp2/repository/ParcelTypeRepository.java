@@ -18,5 +18,5 @@ public interface ParcelTypeRepository {
 
     ParcelType updateByName(String name, ParcelTypeDto newData);
 
-
+    Optional<ParcelType> findByShapeAndSymbol(boolean[][] shape, char symbol);
 }

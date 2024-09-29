@@ -8,4 +8,6 @@ public interface TruckFileService {
 
     List<LoadedTruckDto> readTrucks(String fileName);
 
+    void writeTrucks(String fileName, List<LoadedTruckDto> trucks);
+
 }

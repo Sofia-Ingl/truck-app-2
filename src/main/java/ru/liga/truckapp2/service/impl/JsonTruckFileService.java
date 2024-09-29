@@ -52,4 +52,16 @@ public class JsonTruckFileService implements TruckFileService {
         }
     }
 
+    @Override
+    public void writeTrucks(String fileName, List<LoadedTruckDto> trucks) {
+
+        try {
+            String jsonTrucks = gson.toJson(trucks);
+            Files.writeString(Paths.get(fileName), jsonTrucks);
+        } catch (IOException e) {
+            throw new JsonIOException(e);
+        }
+
+    }
+
 }

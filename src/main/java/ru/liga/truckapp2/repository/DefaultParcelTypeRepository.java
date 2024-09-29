@@ -15,10 +15,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 @RequiredArgsConstructor
@@ -32,16 +29,19 @@ public class DefaultParcelTypeRepository implements ParcelTypeRepository {
 
     private List<ParcelType> parcelTypes;
 
+    @Override
     synchronized public Optional<ParcelType> findByName(String name) {
         return getAllParcelTypes().stream()
                 .filter(p -> p.getName().equals(name))
                 .findFirst();
     }
 
+    @Override
     synchronized public List<ParcelType> findAll() {
         return Collections.unmodifiableList(getAllParcelTypes());
     }
 
+    @Override
     synchronized public ParcelType save(ParcelTypeDto parcel) {
         ParcelType parcelTypeToSave = parcelTypeMapper.dtoToParcelType(parcel);
         List<ParcelType> allParcelTypes = getAllParcelTypes();
@@ -53,6 +53,7 @@ public class DefaultParcelTypeRepository implements ParcelTypeRepository {
         return parcelTypeToSave;
     }
 
+    @Override
     synchronized public boolean deleteByName(String name) {
         List<ParcelType> allParcelTypes = getAllParcelTypes();
         if (!checkParcelAlreadyExists(name, allParcelTypes)) {
@@ -63,6 +64,7 @@ public class DefaultParcelTypeRepository implements ParcelTypeRepository {
         return true;
     }
 
+    @Override
     synchronized public ParcelType updateByName(String name, ParcelTypeDto newData) {
         List<ParcelType> allParcelTypes = getAllParcelTypes();
         ParcelType parcelType = findByName(name)
@@ -74,6 +76,18 @@ public class DefaultParcelTypeRepository implements ParcelTypeRepository {
 
         flushParcelTypes(allParcelTypes);
         return modified;
+    }
+
+    @Override
+    synchronized public Optional<ParcelType> findByShapeAndSymbol(boolean[][] shape, char symbol) {
+        return getAllParcelTypes().stream()
+                .filter(parcelType ->
+                        parcelType.getSymbol() == symbol
+                )
+                .filter(parcelType ->
+                        Arrays.deepEquals(parcelType.getShape(), shape)
+                )
+                .findFirst();
     }
 
     private ParcelType getParcelWithNewFields(ParcelType parcelType, ParcelTypeDto newData) {

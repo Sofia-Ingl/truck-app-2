@@ -6,6 +6,7 @@ import ru.liga.truckapp2.dto.CountedTruckDto;
 import ru.liga.truckapp2.dto.LoadedTruckDto;
 import ru.liga.truckapp2.dto.ParcelDto;
 import ru.liga.truckapp2.dto.ParcelTypeDto;
+import ru.liga.truckapp2.model.Truck;
 import ru.liga.truckapp2.service.TruckFileService;
 import ru.liga.truckapp2.service.TruckScanningService;
 
@@ -17,10 +18,8 @@ import java.util.stream.Collectors;
 @Service
 public class DefaultTruckScanningService implements TruckScanningService {
 
-    private final TruckFileService truckFileService;
-
-    public List<CountedTruckDto> countParcelsInTrucks(String fileName) {
-        return truckFileService.readTrucks(fileName)
+    public List<CountedTruckDto> countParcelsInTrucks(List<LoadedTruckDto> loadedTrucks) {
+        return loadedTrucks
                 .stream()
                 .map(this::countParcelsInTruck)
                 .toList();
