@@ -2,7 +2,7 @@ package ru.liga.truckapp2.util;
 
 import org.springframework.stereotype.Component;
 import ru.liga.truckapp2.dto.CountedTruckDto;
-import ru.liga.truckapp2.model.Parcel;
+import ru.liga.truckapp2.model.ParcelType;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -10,40 +10,40 @@ import java.util.List;
 @Component
 public class Stringifier {
 
-    public String stringifyParcelsList(@NotNull List<Parcel> parcels) {
+    public String stringifyParcelTypesList(@NotNull List<ParcelType> parcelTypes) {
 
-        if (parcels.isEmpty()) {
-            return "Parcels list is empty";
+        if (parcelTypes.isEmpty()) {
+            return "Parcel types list is empty";
         }
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Parcels list:\n");
-        for (Parcel parcel : parcels) {
-            stringBuilder.append(stringifyParcel(parcel));
+        for (ParcelType parcelType : parcelTypes) {
+            stringBuilder.append(stringifyParcelType(parcelType));
         }
         return stringBuilder.toString();
 
     }
 
 
-    public String stringifyParcel(@NotNull Parcel parcel) {
+    public String stringifyParcelType(@NotNull ParcelType parcelType) {
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("{").append("\n");
-        stringBuilder.append("\t").append("Name: ").append(parcel.getName()).append("\n");
+        stringBuilder.append("\t").append("Name: ").append(parcelType.getName()).append("\n");
         stringBuilder.append("\t").append("Shape: ").append("\n");
-        for (int i = 0; i < parcel.getShape().length; i++) {
+        for (int i = 0; i < parcelType.getShape().length; i++) {
             stringBuilder.append("\t").append(" ");
-            for (int j = 0; j < parcel.getShape()[i].length; j++) {
-                if (parcel.getShape()[i][j]) {
-                    stringBuilder.append(parcel.getSymbol());
+            for (int j = 0; j < parcelType.getShape()[i].length; j++) {
+                if (parcelType.getShape()[i][j]) {
+                    stringBuilder.append(parcelType.getSymbol());
                 } else {
                     stringBuilder.append(" ");
                 }
             }
             stringBuilder.append("\n");
         }
-        stringBuilder.append("\t").append("Symbol: ").append(parcel.getSymbol()).append("\n");
+        stringBuilder.append("\t").append("Symbol: ").append(parcelType.getSymbol()).append("\n");
         stringBuilder.append("}").append("\n");
 
         return stringBuilder.toString();

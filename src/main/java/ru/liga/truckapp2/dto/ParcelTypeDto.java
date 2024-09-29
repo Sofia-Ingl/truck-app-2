@@ -9,17 +9,16 @@ import java.util.Arrays;
 @AllArgsConstructor
 @Getter
 @Builder
-public class ParcelDto {
-
+public class ParcelTypeDto {
     private String name;
     private boolean[][] shape;
     private Character symbol;
 
     @Override
     public String toString() {
-        return "ParcelDto{" +
+        return "ParcelTypeDto{" +
                 "name='" + name + '\'' +
-                ", shape=" + Arrays.toString(shape) +
+                ", shape=" + Arrays.deepToString(shape) +
                 ", symbol=" + symbol +
                 '}';
     }

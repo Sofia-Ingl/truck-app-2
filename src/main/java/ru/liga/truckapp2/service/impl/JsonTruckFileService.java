@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.liga.truckapp2.dto.LoadedTruckDto;
 import ru.liga.truckapp2.dto.ParcelDto;
+import ru.liga.truckapp2.dto.ParcelTypeDto;
 import ru.liga.truckapp2.exception.AppException;
-import ru.liga.truckapp2.model.Parcel;
 import ru.liga.truckapp2.service.ParcelValidationService;
 import ru.liga.truckapp2.service.TruckFileService;
 

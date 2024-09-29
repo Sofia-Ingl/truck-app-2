@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.liga.truckapp2.dto.CountedTruckDto;
 import ru.liga.truckapp2.dto.LoadedTruckDto;
 import ru.liga.truckapp2.dto.ParcelDto;
+import ru.liga.truckapp2.dto.ParcelTypeDto;
 import ru.liga.truckapp2.service.TruckFileService;
 import ru.liga.truckapp2.service.TruckScanningService;
 

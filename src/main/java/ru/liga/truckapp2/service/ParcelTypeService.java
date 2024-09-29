@@ -1,21 +1,21 @@
 package ru.liga.truckapp2.service;
 
-import ru.liga.truckapp2.dto.ParcelDto;
-import ru.liga.truckapp2.model.Parcel;
+import ru.liga.truckapp2.dto.ParcelTypeDto;
+import ru.liga.truckapp2.model.ParcelType;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ParcelService {
+public interface ParcelTypeService {
 
-    List<Parcel> getAll();
+    List<ParcelType> getAll();
 
-    Optional<Parcel> getByName(String name);
+    Optional<ParcelType> getByName(String name);
 
-    Parcel createParcel(ParcelDto createDto);
+    ParcelType createParcel(ParcelTypeDto createDto);
 
-    Parcel updateParcel(String name,
-                               ParcelDto updateDto);
+    ParcelType updateParcel(String name,
+                            ParcelTypeDto updateDto);
 
 //    Parcel createParcel(String name,
 //                               String shape,
