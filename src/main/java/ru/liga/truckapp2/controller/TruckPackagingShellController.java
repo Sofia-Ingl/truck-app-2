@@ -8,4 +8,7 @@ import org.springframework.shell.standard.ShellComponent;
 @ShellComponent
 @ShellCommandGroup("Truck packaging commands")
 public class TruckPackagingShellController {
+
+
+
 }
