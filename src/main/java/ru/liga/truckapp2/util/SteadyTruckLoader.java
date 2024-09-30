@@ -95,7 +95,13 @@ public class SteadyTruckLoader implements TruckLoader {
         }
 
 
-        return List.of();
+        return trucksAvailable.stream()
+                .filter(
+                        truck->!parcelsInEveryTruck.get(truck).isEmpty()
+                ).map(truck -> new LoadedTruckView(
+                        truck,
+                        parcelsInEveryTruck.get(truck)
+                )).toList();
     }
 
 
