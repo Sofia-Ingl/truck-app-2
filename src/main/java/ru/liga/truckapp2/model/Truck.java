@@ -1,7 +1,7 @@
 package ru.liga.truckapp2.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import ru.liga.truckapp2.model.inner.Coordinates;
 
 import java.util.Arrays;
 
@@ -33,6 +33,94 @@ public class Truck {
         this.width = width;
         this.height = height;
 
+    }
+
+
+    /**
+     * Функция, проверяющая, можно ли загрузить посылку на заданное место в грузовике
+     *
+     * @param x      позиция по горизонтали
+     * @param y      позиция по вертикали
+     * @param parcel посылка
+     * @return можно ли загрузить посылку
+     */
+    public boolean canLoadParcel(int x,
+                                 int y,
+                                 Parcel parcel) {
+
+        int parcelHeight = parcel.getType().getShape().length;
+        int parcelWidth = parcel.getType().getShape()[0].length;
+        if (parcelHeight > height - y
+                || parcelWidth > width - x) {
+            return false;
+        }
+
+        for (int i = 0; i < parcelHeight; i++) {
+            for (int j = 0; j < parcelWidth; j++) {
+
+                int yBackCoordinate = y + i;
+                int xBackCoordinate = x + j;
+
+                if (back[yBackCoordinate][xBackCoordinate] != ' '
+                        && parcel.getType().getShape()[i][j]) {
+                    return false;
+                }
+
+            }
+        }
+        return true;
+    }
+
+
+    /**
+     * Процедура, загружающая посылку на заданное место в грузовике без проверки
+     *
+     * @param x              позиция по горизонтали
+     * @param y              позиция по вертикали
+     * @param parcel посылка
+     */
+    public void loadParcelWithoutCheck(int x,
+                                       int y,
+                                       Parcel parcel) {
+
+        int parcelHeight = parcel.getType().getShape().length;
+        int parcelWidth = parcel.getType().getShape()[0].length;
+
+        for (int i = 0; i < parcelHeight; i++) {
+
+            for (int j = 0; j < parcelWidth; j++) {
+
+                int yBackCoordinate = y + i;
+                int xBackCoordinate = x + j;
+
+                boolean currentSymbolNotBlank = parcel.getType().getShape()[parcelHeight - 1 - i][j];
+
+                if (currentSymbolNotBlank) {
+                    back[yBackCoordinate][xBackCoordinate] = parcel.getType().getSymbol();
+                }
+
+            }
+        }
+
+    }
+
+
+    public Coordinates findPlaceForParcel(Parcel parcel) {
+
+        int parcelHeight = parcel.getType().getShape().length;
+        int parcelWidth = parcel.getType().getShape()[0].length;
+
+        for (int i = 0; i < height - parcelHeight; i++) {
+            for (int j = 0; j < width - parcelWidth; j++) {
+
+                // todo: check hangings
+                if (canLoadParcel(i, j, parcel)) {
+                    return new Coordinates(i, j);
+                }
+
+            }
+        }
+        return new Coordinates(-1, -1);
 
     }
 
