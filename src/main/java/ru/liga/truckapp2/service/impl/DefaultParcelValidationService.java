@@ -17,7 +17,7 @@ public class DefaultParcelValidationService implements ParcelValidationService {
 
     @Override
     public boolean validateParcel(ParcelDto parcel) {
-        ParcelType p = parcelMapper.dtoToParcelType(parcel).getType();
+        ParcelType p = parcelMapper.dtoToParcel(parcel).getType();
         return parcelTypeService.getAll().stream()
                 .anyMatch(p::equals);
 

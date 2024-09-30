@@ -19,7 +19,7 @@ public class ParcelType {
             boolean equalShapes = Arrays.deepEquals(other.getShape(), this.getShape());
             boolean equalSymbols = other.symbol == this.getSymbol();
             return equalNames && equalShapes && equalSymbols;
-        };
+        }
         return false;
     }
 }

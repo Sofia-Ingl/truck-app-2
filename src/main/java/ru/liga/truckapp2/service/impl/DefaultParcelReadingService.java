@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.liga.truckapp2.dto.ParcelDto;
 import ru.liga.truckapp2.exception.AppException;
+import ru.liga.truckapp2.model.Parcel;
+import ru.liga.truckapp2.model.ParcelType;
 import ru.liga.truckapp2.service.ParcelReadingService;
 import ru.liga.truckapp2.service.ParcelTypeService;
 
@@ -27,7 +29,7 @@ public class DefaultParcelReadingService implements ParcelReadingService {
     private final String PARCEL_NAME_DELIMITER = ",";
 
     @Override
-    public List<ParcelDto> readFromFile(Boolean byForm, String input) {
+    public List<Parcel> readFromFile(Boolean byForm, String input) {
         if (!byForm) {
             return readFromFileByName(input);
         }
@@ -35,7 +37,7 @@ public class DefaultParcelReadingService implements ParcelReadingService {
     }
 
     @Override
-    public List<ParcelDto> readFromStringByName(String input) {
+    public List<Parcel> readFromStringByName(String input) {
         List<String> names = Arrays.stream(input.split(PARCEL_NAME_DELIMITER))
                 .map(String::trim)
                 .toList();
@@ -46,11 +48,11 @@ public class DefaultParcelReadingService implements ParcelReadingService {
                                 () -> new AppException("Parcel type with name '" + name + "' not found")
                         )
                 )
-                .map(ParcelDto::of)
+                .map(Parcel::new)
                 .toList();
     }
 
-    private List<ParcelDto> readFromFileByName(String fileName) {
+    private List<Parcel> readFromFileByName(String fileName) {
         try {
             String namesString = String.join(
                     PARCEL_NAME_DELIMITER,
@@ -65,11 +67,11 @@ public class DefaultParcelReadingService implements ParcelReadingService {
         }
     }
 
-    private List<ParcelDto> readFromFileByForm(String fileName) {
+    private List<Parcel> readFromFileByForm(String fileName) {
 
         try (BufferedReader bufferedParcelReader = new BufferedReader(new FileReader(fileName))) {
 
-            List<ParcelDto> parcels = new ArrayList<>();
+            List<Parcel> parcels = new ArrayList<>();
             List<String> currentParcel = new ArrayList<>();
 
             String line;
@@ -80,7 +82,7 @@ public class DefaultParcelReadingService implements ParcelReadingService {
                 } else {
                     if (!currentParcel.isEmpty()) {
 
-                        ParcelDto parcel = extractParcel(currentParcel);
+                        Parcel parcel = extractParcel(currentParcel);
                         log.debug("Parcel extracted: {}", parcel);
                         parcels.add(parcel);
                         currentParcel.clear();
@@ -90,7 +92,7 @@ public class DefaultParcelReadingService implements ParcelReadingService {
 
             if (!currentParcel.isEmpty()) {
 
-                ParcelDto parcel = extractParcel(currentParcel);
+                Parcel parcel = extractParcel(currentParcel);
                 log.debug("Parcel extracted: {}", parcel);
                 parcels.add(parcel);
             }
@@ -106,20 +108,16 @@ public class DefaultParcelReadingService implements ParcelReadingService {
 
     }
 
-    private ParcelDto extractParcel(List<String> parcelLines) {
+    private Parcel extractParcel(List<String> parcelLines) {
         ParcelDto parcelExtractedWithoutName = extractParcelWithoutName(parcelLines);
-        String name = parcelTypeService.getByShapeAndSymbol(
+        ParcelType parcelType = parcelTypeService.getByShapeAndSymbol(
                 parcelExtractedWithoutName.getShape(),
                 parcelExtractedWithoutName.getSymbol()
         ).orElseThrow(() ->
                 new AppException("Parcel type with given shape not found: " +
                         Arrays.deepToString(parcelExtractedWithoutName.getShape()))
-        ).getName();
-        return new ParcelDto(
-                name,
-                parcelExtractedWithoutName.getShape(),
-                parcelExtractedWithoutName.getSymbol()
         );
+        return new Parcel(parcelType);
     }
 
     private ParcelDto extractParcelWithoutName(List<String> parcelLines) {

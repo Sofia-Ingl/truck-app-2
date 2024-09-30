@@ -5,5 +5,5 @@ import ru.liga.truckapp2.model.Parcel;
 
 public interface ParcelMapper {
 
-    Parcel dtoToParcelType(ParcelDto dto);
+    Parcel dtoToParcel(ParcelDto dto);
 }
