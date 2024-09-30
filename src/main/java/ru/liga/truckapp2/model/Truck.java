@@ -14,7 +14,7 @@ public class Truck {
     private final char[][] back;
 
     public final static Comparator<Truck> volumeComparator =
-            (t1, t2) -> t2.getWidth() * t2.getHeight() - t1.getWidth() * t1.getHeight();
+            Comparator.comparingInt(t -> t.getWidth() * t.getHeight());
 
     public Truck(Integer width, Integer height) {
         back = new char[height][width];

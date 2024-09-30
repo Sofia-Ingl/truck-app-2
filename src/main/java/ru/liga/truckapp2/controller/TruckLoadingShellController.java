@@ -6,7 +6,6 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ru.liga.truckapp2.dto.LoadedTruckDto;
-import ru.liga.truckapp2.dto.ParcelDto;
 import ru.liga.truckapp2.model.PackagingAlgorithmType;
 import ru.liga.truckapp2.model.Parcel;
 import ru.liga.truckapp2.model.Truck;
@@ -42,7 +41,6 @@ public class TruckLoadingShellController {
             @ShellOption String out
     ) {
 
-        /* todo: test */
         List<Truck> availableTrucks = truckService.createTrucks(width, height, quantity);
         List<Parcel> parcelsToLoad;
         if (parcelsFromFile) {
@@ -50,7 +48,6 @@ public class TruckLoadingShellController {
         } else {
             parcelsToLoad = parcelReadingService.readFromStringByName(parcelIn);
         }
-        /* todo: implement */
         List<LoadedTruckDto> loadedTrucks = truckLoadingService.loadTrucks(
                 parcelsToLoad,
                 availableTrucks,

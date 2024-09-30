@@ -20,7 +20,7 @@ public class Parcel {
                     .thenComparingInt(p -> p.getType().getShape()[0].length);
 
     public final static Comparator<Parcel> volumeComparator =
-            (p1, p2) -> p2.calculateVolume() - p1.calculateVolume();
+            Comparator.comparingInt(Parcel::calculateVolume);
 
     public int calculateVolume() {
         int volume = 0;

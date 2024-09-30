@@ -15,8 +15,8 @@ public class SteadyTruckLoader implements TruckLoader {
     @Override
     public List<LoadedTruckView> loadTrucks(List<Parcel> parcels, List<Truck> trucksAvailable) {
 
-        List<Parcel> parcelsSorted = new ArrayList<>(parcels);
-        parcelsSorted.sort(Collections.reverseOrder(Parcel.volumeComparator.thenComparing(Parcel.heightComparator)));
+        List<Parcel> parcelsSortedDesc = new ArrayList<>(parcels);
+        parcelsSortedDesc.sort(Collections.reverseOrder(Parcel.volumeComparator.thenComparing(Parcel.heightComparator)));
 
         List<Truck> trucksSorted = new ArrayList<>(trucksAvailable);
         trucksSorted.sort(
@@ -35,54 +35,53 @@ public class SteadyTruckLoader implements TruckLoader {
             parcelsInEveryTruck.put(truck, new ArrayList<>());
         }
 
-        while (!parcelsSorted.isEmpty()) {
+        while (!parcelsSortedDesc.isEmpty()) {
 
             int trucksLoadedSteadilyInIteration = 0;
-            int[] differencesWithMaxParcelSize = new int[trucksAvailable.size()];
+            int[] differencesWithMaxParcelSize = new int[trucksSorted.size()];
 
-            int maxParcelIdx = parcelsSorted.size() - 1;
-            Parcel iterationMaxParcel = parcelsSorted.get(maxParcelIdx);
+            Parcel iterationMaxParcel = parcelsSortedDesc.get(0);
             Arrays.fill(differencesWithMaxParcelSize, iterationMaxParcel.calculateVolume());
 
 
             if (isDirectPhase) {
 //                log.debug("Processing direct initial packaging phase on iteration");
                 trucksLoadedSteadilyInIteration += directPhase(
-                        trucksAvailable,
+                        trucksSorted,
                         parcelsInEveryTruck,
-                        parcelsSorted,
+                        parcelsSortedDesc,
                         differencesWithMaxParcelSize,
                         true
                 );
             } else {
 //                log.debug("Processing reversed initial packaging phase on iteration");
                 trucksLoadedSteadilyInIteration += reversedPhase(
-                        trucksAvailable,
+                        trucksSorted,
                         parcelsInEveryTruck,
-                        parcelsSorted,
+                        parcelsSortedDesc,
                         differencesWithMaxParcelSize,
                         true
                 );
             }
 
-            while (trucksLoadedSteadilyInIteration < trucksAvailable.size()
-                    && !parcelsSorted.isEmpty()) {
+            while (trucksLoadedSteadilyInIteration < trucksSorted.size()
+                    && !parcelsSortedDesc.isEmpty()) {
 
                 if (!isDirectPhase) {
 //                    log.debug("Processing reversed additional packaging phase on iteration");
                     trucksLoadedSteadilyInIteration += directPhase(
-                            trucksAvailable,
+                            trucksSorted,
                             parcelsInEveryTruck,
-                            parcelsSorted,
+                            parcelsSortedDesc,
                             differencesWithMaxParcelSize,
                             false
                     );
                 } else {
 //                    log.debug("Processing direct additional packaging phase on iteration");
                     trucksLoadedSteadilyInIteration += reversedPhase(
-                            trucksAvailable,
+                            trucksSorted,
                             parcelsInEveryTruck,
-                            parcelsSorted,
+                            parcelsSortedDesc,
                             differencesWithMaxParcelSize,
                             false
                     );
@@ -216,7 +215,7 @@ public class SteadyTruckLoader implements TruckLoader {
 
         if (throwException) {
             throw new AppException("Cannot load suitableParcels steadily; truck current state:\n"
-                    + truck + "\n" + "volume trying to load: " + volumeUpperBound);
+                    + Arrays.deepToString(truck.getBack()) + "\n" + "volume trying to load: " + volumeUpperBound);
 
         }
 
