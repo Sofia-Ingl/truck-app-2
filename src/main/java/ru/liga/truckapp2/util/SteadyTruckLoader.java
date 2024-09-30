@@ -16,11 +16,11 @@ public class SteadyTruckLoader implements TruckLoader {
     public List<LoadedTruckView> loadTrucks(List<Parcel> parcels, List<Truck> trucksAvailable) {
 
         List<Parcel> parcelsSorted = new ArrayList<>(parcels);
-        parcelsSorted.sort(Parcel.volumeComparator.thenComparing(Parcel.heightComparator));
+        parcelsSorted.sort(Collections.reverseOrder(Parcel.volumeComparator.thenComparing(Parcel.heightComparator)));
 
         List<Truck> trucksSorted = new ArrayList<>(trucksAvailable);
         trucksSorted.sort(
-                Truck.volumeComparator.thenComparing(Truck::getHeight).thenComparing(Truck::getWidth)
+                Collections.reverseOrder(Truck.volumeComparator.thenComparing(Truck::getHeight).thenComparing(Truck::getWidth))
         );
         if (trucksSorted.size() < parcels.size() && trucksSorted.size() > 1) {
             // do this to have two largest trucks on both ends
@@ -184,7 +184,6 @@ public class SteadyTruckLoader implements TruckLoader {
                 suitableParcels.add(parcel);
             }
         }
-        Collections.reverse(suitableParcels);
 
         if (suitableParcels.isEmpty()) {
 //            log.debug("Cannot fill truck better on current iteration: no suitable parcels available " +

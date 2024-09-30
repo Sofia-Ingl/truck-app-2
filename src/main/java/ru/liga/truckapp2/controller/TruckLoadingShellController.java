@@ -73,7 +73,6 @@ public class TruckLoadingShellController {
             @ShellOption String out
     ) {
 
-        /* todo: test */
         List<Truck> availableTrucks = truckService.createTrucksCustomized(
                 truckShapesFromFile,
                 truckShapesIn
@@ -84,7 +83,6 @@ public class TruckLoadingShellController {
         } else {
             parcelsToLoad = parcelReadingService.readFromStringByName(parcelIn);
         }
-        /* todo: implement */
         List<LoadedTruckDto> loadedTrucks = truckLoadingService.loadTrucks(
                 parcelsToLoad,
                 availableTrucks,

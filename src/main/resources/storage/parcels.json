@@ -160,5 +160,23 @@
       ]
     ],
     "symbol": "s"
+  },
+  {
+    "name": "j",
+    "shape": [
+      [
+        false,
+        true
+      ],
+      [
+        false,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "symbol": "j"
   }
 ]

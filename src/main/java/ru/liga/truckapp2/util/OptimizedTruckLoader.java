@@ -8,6 +8,7 @@ import ru.liga.truckapp2.model.inner.Coordinates;
 import ru.liga.truckapp2.model.view.LoadedTruckView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Component("optimizedTruckLoader")
@@ -17,7 +18,7 @@ public class OptimizedTruckLoader implements TruckLoader {
     public List<LoadedTruckView> loadTrucks(List<Parcel> parcels, List<Truck> trucksAvailable) {
 
         List<Parcel> parcelsSorted = new ArrayList<>(parcels);
-        parcelsSorted.sort(Parcel.widthComparator);
+        parcelsSorted.sort(Collections.reverseOrder(Parcel.widthComparator));
 //        parcelsSorted.sort(Parcel.heightComparator);
 
         List<LoadedTruckView> loadedTrucks = new ArrayList<>();

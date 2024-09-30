@@ -66,7 +66,7 @@ public class Truck {
                 int xBackCoordinate = x + j;
 
                 if (back[yBackCoordinate][xBackCoordinate] != ' '
-                        && parcel.getType().getShape()[i][j]) {
+                        && parcel.getType().getShape()[parcelHeight - 1 - i][j]) {
                     return false;
                 }
 
@@ -114,12 +114,12 @@ public class Truck {
         int parcelHeight = parcel.getType().getShape().length;
         int parcelWidth = parcel.getType().getShape()[0].length;
 
-        for (int i = 0; i < height - parcelHeight; i++) {
-            for (int j = 0; j < width - parcelWidth; j++) {
+        for (int i = 0; i <= height - parcelHeight; i++) {
+            for (int j = 0; j <= width - parcelWidth; j++) {
 
                 // todo: check hangings
-                if (canLoadParcel(i, j, parcel)) {
-                    return new Coordinates(i, j);
+                if (canLoadParcel(j, i, parcel)) {
+                    return new Coordinates(j, i);
                 }
 
             }

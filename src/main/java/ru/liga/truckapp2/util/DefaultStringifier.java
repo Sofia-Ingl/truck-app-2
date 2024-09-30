@@ -104,14 +104,14 @@ public class DefaultStringifier implements Stringifier {
 
     private String stringifyTruckBack(@NotNull String[] back) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (String line : back) {
+        for (int i = back.length - 1; i >= 0; i--) {
             stringBuilder.append(" ")
                     .append("+")
-                    .append(line)
+                    .append(back[i])
                     .append("+")
                     .append("\n");
         }
-        stringBuilder.append("+".repeat(back[0].length() + 2)).append("\n");
+        stringBuilder.append(" ").append("+".repeat(back[0].length() + 2)).append("\n");
         return stringBuilder.toString();
     }
 }

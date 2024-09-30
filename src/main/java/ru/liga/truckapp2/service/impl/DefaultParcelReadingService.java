@@ -114,8 +114,10 @@ public class DefaultParcelReadingService implements ParcelReadingService {
                 parcelExtractedWithoutName.getShape(),
                 parcelExtractedWithoutName.getSymbol()
         ).orElseThrow(() ->
-                new AppException("Parcel type with given shape not found: " +
-                        Arrays.deepToString(parcelExtractedWithoutName.getShape()))
+                new AppException("Parcel type with given symbol '" + parcelExtractedWithoutName.getSymbol() +
+                        "' and shape " +
+                        Arrays.deepToString(parcelExtractedWithoutName.getShape())
+                        + " not found")
         );
         return new Parcel(parcelType);
     }
