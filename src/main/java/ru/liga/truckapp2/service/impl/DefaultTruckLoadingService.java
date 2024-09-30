@@ -1,6 +1,5 @@
 package ru.liga.truckapp2.service.impl;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.liga.truckapp2.dto.LoadedTruckDto;
 import ru.liga.truckapp2.exception.AppException;
@@ -15,6 +14,7 @@ import ru.liga.truckapp2.util.TruckLoader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class DefaultTruckLoadingService implements TruckLoadingService {
@@ -24,10 +24,12 @@ public class DefaultTruckLoadingService implements TruckLoadingService {
 
     public DefaultTruckLoadingService(List<TruckLoader> truckLoaders,
                                       LoadedTruckMapper loadedTruckMapper) {
-        this.truckLoaders = new HashMap<>();
-        for (TruckLoader truckLoader : truckLoaders) {
-            this.truckLoaders.put(truckLoader.getAlgorithmType(), truckLoader);
-        }
+
+        this.truckLoaders = truckLoaders.stream().collect(
+                Collectors.toMap(
+                        TruckLoader::getAlgorithmType,
+                        loader -> loader
+                ));
         this.loadedTruckMapper = loadedTruckMapper;
     }
 
