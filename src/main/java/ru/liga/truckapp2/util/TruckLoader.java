@@ -1,5 +1,6 @@
 package ru.liga.truckapp2.util;
 
+import ru.liga.truckapp2.model.PackagingAlgorithmType;
 import ru.liga.truckapp2.model.Parcel;
 import ru.liga.truckapp2.model.Truck;
 import ru.liga.truckapp2.model.view.LoadedTruckView;
@@ -10,5 +11,7 @@ public interface TruckLoader {
 
     List<LoadedTruckView> loadTrucks(List<Parcel> parcels,
                                      List<Truck> trucksAvailable);
+
+    PackagingAlgorithmType getAlgorithmType();
 
 }

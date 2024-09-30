@@ -2,6 +2,7 @@ package ru.liga.truckapp2.util;
 
 import org.springframework.stereotype.Component;
 import ru.liga.truckapp2.exception.AppException;
+import ru.liga.truckapp2.model.PackagingAlgorithmType;
 import ru.liga.truckapp2.model.Parcel;
 import ru.liga.truckapp2.model.Truck;
 import ru.liga.truckapp2.model.inner.Coordinates;
@@ -101,6 +102,11 @@ public class SteadyTruckLoader implements TruckLoader {
                         truck,
                         parcelsInEveryTruck.get(truck)
                 )).toList();
+    }
+
+    @Override
+    public PackagingAlgorithmType getAlgorithmType() {
+        return PackagingAlgorithmType.STEADY;
     }
 
 
