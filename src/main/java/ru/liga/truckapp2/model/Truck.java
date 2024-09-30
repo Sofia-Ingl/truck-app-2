@@ -4,6 +4,7 @@ import lombok.Getter;
 import ru.liga.truckapp2.model.inner.Coordinates;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 @Getter
 public class Truck {
@@ -11,6 +12,9 @@ public class Truck {
     private final int width;
     private final int height;
     private final char[][] back;
+
+    public final static Comparator<Truck> volumeComparator =
+            (t1, t2) -> t2.getWidth() * t2.getHeight() - t1.getWidth() * t1.getHeight();
 
     public Truck(Integer width, Integer height) {
         back = new char[height][width];
@@ -75,8 +79,8 @@ public class Truck {
     /**
      * Процедура, загружающая посылку на заданное место в грузовике без проверки
      *
-     * @param x              позиция по горизонтали
-     * @param y              позиция по вертикали
+     * @param x      позиция по горизонтали
+     * @param y      позиция по вертикали
      * @param parcel посылка
      */
     public void loadParcelWithoutCheck(int x,

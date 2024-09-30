@@ -22,4 +22,13 @@ public class ParcelType {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "ParcelType{" +
+                "name='" + name + '\'' +
+                ", shape=" + Arrays.deepToString(shape) +
+                ", symbol=" + symbol +
+                '}';
+    }
 }

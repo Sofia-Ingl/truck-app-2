@@ -19,4 +19,25 @@ public class Parcel {
             Comparator.comparingInt((Parcel p) -> p.getType().getShape().length)
                     .thenComparingInt(p -> p.getType().getShape()[0].length);
 
+    public final static Comparator<Parcel> volumeComparator =
+            (p1, p2) -> p2.calculateVolume() - p1.calculateVolume();
+
+    public int calculateVolume() {
+        int volume = 0;
+        for (int i = 0; i < this.getType().getShape().length; i++) {
+            for (int j = 0; j < this.getType().getShape()[i].length; j++) {
+                if (this.getType().getShape()[i][j]) {
+                    volume++;
+                }
+            }
+        }
+        return volume;
+    }
+
+    @Override
+    public String toString() {
+        return "Parcel{" +
+                "type=" + type.toString() +
+                '}';
+    }
 }
