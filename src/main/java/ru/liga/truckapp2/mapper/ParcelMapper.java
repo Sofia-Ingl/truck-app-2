@@ -10,4 +10,11 @@ public interface ParcelMapper {
      * @return посылка
      */
     Parcel dtoToParcel(ParcelDto dto);
+
+    /**
+     *
+     * @param parcel посылка
+     * @return dto
+     */
+    ParcelDto parcelToDto(Parcel parcel);
 }
