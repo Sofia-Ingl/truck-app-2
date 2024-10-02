@@ -29,15 +29,24 @@ public class DefaultParcelReadingService implements ParcelReadingService {
     private final String PARCEL_NAME_DELIMITER = ",";
 
     @Override
-    public List<Parcel> readFromFile(Boolean byForm, String input) {
+    public List<Parcel> readParcels(boolean fromFile, boolean byForm, String input) {
+        List<Parcel> parcels;
+        if (fromFile) {
+            parcels = readFromFile(byForm, input);
+        } else {
+            parcels = readFromStringByName(input);
+        }
+        return parcels;
+    }
+
+    private List<Parcel> readFromFile(Boolean byForm, String input) {
         if (!byForm) {
             return readFromFileByName(input);
         }
         return readFromFileByForm(input);
     }
 
-    @Override
-    public List<Parcel> readFromStringByName(String input) {
+    private List<Parcel> readFromStringByName(String input) {
         List<String> names = Arrays.stream(input.split(PARCEL_NAME_DELIMITER))
                 .map(String::trim)
                 .toList();

@@ -20,14 +20,9 @@ public class OptimizedTruckLoader implements TruckLoader {
 
         List<Parcel> parcelsSorted = new ArrayList<>(parcels);
         parcelsSorted.sort(Collections.reverseOrder(Parcel.widthComparator));
-//        parcelsSorted.sort(Parcel.heightComparator);
 
         List<LoadedTruckView> loadedTrucks = new ArrayList<>();
         for (Truck truck : trucksAvailable) {
-
-//            if (parcelsSorted.isEmpty()) {
-//                break;
-//            }
 
             List<Parcel> parcelsLoadedToCurrentTruck = new ArrayList<>();
 
@@ -68,11 +63,6 @@ public class OptimizedTruckLoader implements TruckLoader {
                                        List<Parcel> parcelsLoadedToCurrentTruck) {
 
         for (int i = nextParcelIdx; i < parcelsSorted.size(); i++) {
-
-            // ищем наибольшую подходящую посылку
-            // загружаем
-            // посылку добавляем в parcels loaded
-            // удаляем из parcels sorted
 
             Parcel currentParcel = parcelsSorted.get(i);
             Coordinates coordinates = truck.findPlaceForParcel(currentParcel);

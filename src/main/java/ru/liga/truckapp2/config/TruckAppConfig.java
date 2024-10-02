@@ -12,8 +12,6 @@ public class TruckAppConfig {
     public Gson gson() {
         return new GsonBuilder()
             .setPrettyPrinting()
-//            .registerTypeAdapter(Truck.class, new TruckSerializer())
-//            .registerTypeAdapter(Truck.class, new TruckDeserializer())
             .create();
     }
 

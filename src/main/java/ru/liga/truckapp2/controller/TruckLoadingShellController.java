@@ -10,8 +10,6 @@ import ru.liga.truckapp2.model.PackagingAlgorithmType;
 import ru.liga.truckapp2.model.Parcel;
 import ru.liga.truckapp2.model.Truck;
 import ru.liga.truckapp2.service.ParcelReadingService;
-import ru.liga.truckapp2.service.TruckFileService;
-import ru.liga.truckapp2.service.TruckLoadingService;
 import ru.liga.truckapp2.service.TruckService;
 import ru.liga.truckapp2.util.Stringifier;
 
@@ -24,8 +22,6 @@ public class TruckLoadingShellController {
 
     private final TruckService truckService;
     private final ParcelReadingService parcelReadingService;
-    private final TruckLoadingService truckLoadingService;
-    private final TruckFileService truckFileService;
 
     private final Stringifier stringifier;
 
@@ -42,18 +38,13 @@ public class TruckLoadingShellController {
     ) {
 
         List<Truck> availableTrucks = truckService.createTrucks(width, height, quantity);
-        List<Parcel> parcelsToLoad;
-        if (parcelsFromFile) {
-            parcelsToLoad = parcelReadingService.readFromFile(parcelsByForm, parcelIn);
-        } else {
-            parcelsToLoad = parcelReadingService.readFromStringByName(parcelIn);
-        }
-        List<LoadedTruckDto> loadedTrucks = truckLoadingService.loadTrucks(
-                parcelsToLoad,
+        List<Parcel> parcelsToLoad = parcelReadingService.readParcels(parcelsFromFile, parcelsByForm, parcelIn);
+        List<LoadedTruckDto> loadedTrucks = truckService.loadParcelsToTrucks(
                 availableTrucks,
-                algorithm
+                parcelsToLoad,
+                algorithm,
+                out
         );
-        truckFileService.writeTrucks(out, loadedTrucks);
         return stringifier.stringifyLoadedTrucks(loadedTrucks);
 
     }
@@ -74,18 +65,13 @@ public class TruckLoadingShellController {
                 truckShapesFromFile,
                 truckShapesIn
         );
-        List<Parcel> parcelsToLoad;
-        if (parcelsFromFile) {
-            parcelsToLoad = parcelReadingService.readFromFile(parcelsByForm, parcelIn);
-        } else {
-            parcelsToLoad = parcelReadingService.readFromStringByName(parcelIn);
-        }
-        List<LoadedTruckDto> loadedTrucks = truckLoadingService.loadTrucks(
-                parcelsToLoad,
+        List<Parcel> parcelsToLoad = parcelReadingService.readParcels(parcelsFromFile, parcelsByForm, parcelIn);
+        List<LoadedTruckDto> loadedTrucks = truckService.loadParcelsToTrucks(
                 availableTrucks,
-                algorithm
+                parcelsToLoad,
+                algorithm,
+                out
         );
-        truckFileService.writeTrucks(out, loadedTrucks);
         return stringifier.stringifyLoadedTrucks(loadedTrucks);
     }
 
