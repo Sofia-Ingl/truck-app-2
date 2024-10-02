@@ -8,4 +8,12 @@ import lombok.Getter;
 public class SizeDto {
     private Integer width;
     private Integer height;
+
+    @Override
+    public String toString() {
+        return "SizeDto{" +
+                "width=" + width +
+                ", height=" + height +
+                '}';
+    }
 }

@@ -41,7 +41,7 @@ public class Truck {
 
 
     /**
-     * Функция, проверяющая, можно ли загрузить посылку на заданное место в грузовике
+     * Проверка, можно ли загрузить посылку на заданное место в грузовике
      *
      * @param x      позиция по горизонтали
      * @param y      позиция по вертикали
@@ -77,7 +77,7 @@ public class Truck {
 
 
     /**
-     * Процедура, загружающая посылку на заданное место в грузовике без проверки
+     * Загрузка посылки на заданное место в грузовике без проверки
      *
      * @param x      позиция по горизонтали
      * @param y      позиция по вертикали
@@ -109,6 +109,12 @@ public class Truck {
     }
 
 
+    /**
+     * Нахождение места для посылки
+     *
+     * @param parcel посылка
+     * @return крайняя левая нижняя точка места, куда можно загрузить посылку
+     */
     public Coordinates findPlaceForParcel(Parcel parcel) {
 
         int parcelHeight = parcel.getType().getShape().length;
@@ -117,7 +123,6 @@ public class Truck {
         for (int i = 0; i <= height - parcelHeight; i++) {
             for (int j = 0; j <= width - parcelWidth; j++) {
 
-                // todo: check hangings
                 if (canLoadParcel(j, i, parcel)) {
                     return new Coordinates(j, i);
                 }
@@ -128,4 +133,12 @@ public class Truck {
 
     }
 
+    @Override
+    public String toString() {
+        return "Truck{" +
+                "width=" + width +
+                ", height=" + height +
+                ", back=" + Arrays.deepToString(back) +
+                '}';
+    }
 }

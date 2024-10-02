@@ -4,10 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.liga.truckapp2.dto.LoadedTruckDto;
 import ru.liga.truckapp2.dto.ParcelDto;
-import ru.liga.truckapp2.dto.ParcelTypeDto;
 import ru.liga.truckapp2.exception.AppException;
 import ru.liga.truckapp2.service.ParcelValidationService;
 import ru.liga.truckapp2.service.TruckFileService;
@@ -19,6 +19,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class JsonTruckFileService implements TruckFileService {
@@ -31,6 +32,7 @@ public class JsonTruckFileService implements TruckFileService {
 
         try {
 
+            log.debug("Reading trucks from file {}", fileName);
             String jsonLoadedTrucks = Files.readString(Paths.get(fileName));
             Type type = new TypeToken<List<LoadedTruckDto>>() {
             }.getType();
@@ -55,6 +57,7 @@ public class JsonTruckFileService implements TruckFileService {
     @Override
     public void writeTrucks(String fileName, List<LoadedTruckDto> trucks) {
 
+        log.debug("Writing trucks to file {}", fileName);
         try {
             String jsonTrucks = gson.toJson(trucks);
             Files.writeString(Paths.get(fileName), jsonTrucks);

@@ -1,5 +1,6 @@
 package ru.liga.truckapp2.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.liga.truckapp2.dto.LoadedTruckDto;
 import ru.liga.truckapp2.exception.AppException;
@@ -11,11 +12,11 @@ import ru.liga.truckapp2.model.view.LoadedTruckView;
 import ru.liga.truckapp2.service.TruckLoadingService;
 import ru.liga.truckapp2.util.TruckLoader;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class DefaultTruckLoadingService implements TruckLoadingService {
 
@@ -30,6 +31,7 @@ public class DefaultTruckLoadingService implements TruckLoadingService {
                         TruckLoader::getAlgorithmType,
                         loader -> loader
                 ));
+        log.info("Truck loaders of types {} present in system", this.truckLoaders.keySet());
         this.loadedTruckMapper = loadedTruckMapper;
     }
 

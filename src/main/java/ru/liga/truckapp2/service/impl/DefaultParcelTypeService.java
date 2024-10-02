@@ -30,16 +30,16 @@ public class DefaultParcelTypeService implements ParcelTypeService {
         return parcelTypeRepository.findByShapeAndSymbol(shape, symbol);
     }
 
-    public ParcelType createParcel(ParcelTypeDto createDto) {
+    public ParcelType create(ParcelTypeDto createDto) {
         return parcelTypeRepository.save(createDto);
     }
 
-    public ParcelType updateParcel(String name,
-                                   ParcelTypeDto updateDto) {
+    public ParcelType update(String name,
+                             ParcelTypeDto updateDto) {
         return parcelTypeRepository.updateByName(name, updateDto);
     }
 
-    public boolean deleteParcel(String name) {
+    public boolean delete(String name) {
         return parcelTypeRepository.deleteByName(name.trim());
     }
 

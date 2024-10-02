@@ -19,6 +19,11 @@ public class TruckScanningShellController {
     private final TruckService truckService;
     private final Stringifier stringifier;
 
+    /**
+     *
+     * @param file путь ко входному файлу
+     * @return грузовики с подсчитанными посылками
+     */
     @ShellMethod(key = "scan-trucks")
     public String scanTrucks(
             @ShellOption String file

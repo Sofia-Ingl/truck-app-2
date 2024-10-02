@@ -9,7 +9,6 @@ import ru.liga.truckapp2.model.ParcelType;
 public class DefaultParcelMapper implements ParcelMapper {
     @Override
     public Parcel dtoToParcel(ParcelDto dto) {
-        // todo: deep copy
         return new Parcel(
                 new ParcelType(dto.getName(), dto.getShape(), dto.getSymbol())
         );

@@ -9,6 +9,13 @@ import java.util.List;
 
 public interface TruckLoadingService {
 
+    /**
+     *
+     * @param parcels посылки для загрузки
+     * @param trucksAvailable доступные грузовики
+     * @param algorithm алгоритм
+     * @return список загруженных грузовиков
+     */
     List<LoadedTruckDto> loadTrucks(List<Parcel> parcels,
                                     List<Truck> trucksAvailable,
                                     PackagingAlgorithmType algorithm);

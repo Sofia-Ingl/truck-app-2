@@ -8,4 +8,12 @@ import lombok.Getter;
 public class Coordinates {
     private final int x;
     private final int y;
+
+    @Override
+    public String toString() {
+        return "Coordinates{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }

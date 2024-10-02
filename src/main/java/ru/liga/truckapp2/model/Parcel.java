@@ -22,6 +22,11 @@ public class Parcel {
     public final static Comparator<Parcel> volumeComparator =
             Comparator.comparingInt(Parcel::calculateVolume);
 
+    /**
+     * Вычисление объема посылки без учета пустых мест
+     *
+     * @return объем посылки
+     */
     public int calculateVolume() {
         int volume = 0;
         for (int i = 0; i < this.getType().getShape().length; i++) {

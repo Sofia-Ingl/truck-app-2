@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.liga.truckapp2.dto.ParcelTypeDto;
@@ -17,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class DefaultParcelTypeRepository implements ParcelTypeRepository {
@@ -43,6 +45,8 @@ public class DefaultParcelTypeRepository implements ParcelTypeRepository {
 
     @Override
     synchronized public ParcelType save(ParcelTypeDto parcel) {
+
+        log.debug("Saving parcel type {}", parcel);
         ParcelType parcelTypeToSave = parcelTypeMapper.dtoToParcelType(parcel);
         List<ParcelType> allParcelTypes = getAllParcelTypes();
         if (checkParcelAlreadyExists(parcelTypeToSave.getName(), allParcelTypes)) {
@@ -50,22 +54,27 @@ public class DefaultParcelTypeRepository implements ParcelTypeRepository {
         }
         allParcelTypes.add(parcelTypeToSave);
         flushParcelTypes(allParcelTypes);
+        log.debug("Parcel saved: {}", parcel);
         return parcelTypeToSave;
     }
 
     @Override
     synchronized public boolean deleteByName(String name) {
+        log.debug("Deleting parcel type with name {}", name);
         List<ParcelType> allParcelTypes = getAllParcelTypes();
         if (!checkParcelAlreadyExists(name, allParcelTypes)) {
+            log.debug("Parcel type with name {} not found", name);
             return false;
         }
         allParcelTypes.removeIf(p -> p.getName().equals(name));
         flushParcelTypes(allParcelTypes);
+        log.debug("Parcel type with name {} deleted", name);
         return true;
     }
 
     @Override
     synchronized public ParcelType updateByName(String name, ParcelTypeDto newData) {
+        log.debug("Updating parcel type with name {} using data: {}", name, newData);
         List<ParcelType> allParcelTypes = getAllParcelTypes();
         ParcelType parcelType = findByName(name)
                 .orElseThrow(() -> new AppException("Parcel type with name " + name + " does not exist"));
@@ -75,6 +84,7 @@ public class DefaultParcelTypeRepository implements ParcelTypeRepository {
         allParcelTypes.add(modified);
 
         flushParcelTypes(allParcelTypes);
+        log.debug("Parcel type updated: {}", modified);
         return modified;
     }
 
@@ -92,10 +102,13 @@ public class DefaultParcelTypeRepository implements ParcelTypeRepository {
 
     private ParcelType getParcelWithNewFields(ParcelType parcelType, ParcelTypeDto newData) {
         String newName = (newData.getName() != null) ? newData.getName() : parcelType.getName();
-        boolean[][] newShapeToCopy = (newData.getShape() != null) ? newData.getShape() : parcelType.getShape();
-        boolean[][] newShape = new boolean[newShapeToCopy.length][newShapeToCopy[0].length];
-        for (int i = 0; i < newShapeToCopy.length; i++) {
-            newShape[i] = newShapeToCopy[i].clone();
+        boolean[][] newShape = (newData.getShape() != null) ? newData.getShape() : parcelType.getShape();
+        if (newData.getShape() != null) {
+            boolean[][] newShapeCopied = new boolean[newShape.length][newShape[0].length];
+            for (int i = 0; i < newShape.length; i++) {
+                newShapeCopied[i] = newShape[i].clone();
+            }
+            newShape = newShapeCopied;
         }
         char newSymbol = (newData.getSymbol() != null) ? newData.getSymbol() : parcelType.getSymbol();
         return new ParcelType(

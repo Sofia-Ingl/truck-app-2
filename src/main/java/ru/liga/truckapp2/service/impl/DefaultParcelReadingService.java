@@ -36,6 +36,7 @@ public class DefaultParcelReadingService implements ParcelReadingService {
         } else {
             parcels = readFromStringByName(input);
         }
+        log.debug("Parcels read: {}", parcels);
         return parcels;
     }
 
@@ -50,6 +51,7 @@ public class DefaultParcelReadingService implements ParcelReadingService {
         List<String> names = Arrays.stream(input.split(PARCEL_NAME_DELIMITER))
                 .map(String::trim)
                 .toList();
+        log.debug("Names of parcel types: {}", names);
         return names.stream()
                 .map(name -> parcelTypeService
                         .getByName(name)
@@ -69,6 +71,7 @@ public class DefaultParcelReadingService implements ParcelReadingService {
                             .filter(l -> !l.isEmpty())
                             .toList()
             );
+            log.debug("Names string read from file '{}': {}", fileName, namesString);
             return readFromStringByName(namesString);
         } catch (IOException e) {
             throw new AppException("IOException occurred while reading parcel names file '" +
@@ -105,7 +108,7 @@ public class DefaultParcelReadingService implements ParcelReadingService {
                 log.debug("Parcel extracted: {}", parcel);
                 parcels.add(parcel);
             }
-            log.debug("Parcels read: {}", parcels);
+            log.debug("Parcels read from file '{}' by form: {}", fileName, parcels);
             return parcels;
 
 
@@ -154,9 +157,14 @@ public class DefaultParcelReadingService implements ParcelReadingService {
                 shape[i][j] = parcelLine.charAt(j) != ' ';
                 if (shape[i][j] && symbol == ' ') {
                     symbol = parcelLine.charAt(j);
+                } else if (shape[i][j] && symbol != parcelLine.charAt(j)) {
+                    throw new AppException("Invalid parcel format: multiple symbols found. Expected '"
+                            + symbol + "' but found '" + parcelLine.charAt(j) + "'");
                 }
             }
         }
+
+        log.debug("Current parcel in file has shape {} and symbol '{}'", Arrays.deepToString(shape), symbol);
 
         return ParcelDto.builder()
                 .shape(shape)

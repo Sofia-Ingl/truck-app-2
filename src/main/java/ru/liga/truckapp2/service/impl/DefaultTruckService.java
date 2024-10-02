@@ -1,6 +1,7 @@
 package ru.liga.truckapp2.service.impl;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.liga.truckapp2.dto.CountedTruckDto;
 import ru.liga.truckapp2.dto.LoadedTruckDto;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 @AllArgsConstructor
 @Service
 public class DefaultTruckService implements TruckService {
@@ -57,6 +59,7 @@ public class DefaultTruckService implements TruckService {
                         input + "': " + e.getMessage());
             }
         }
+        log.info("Creating trucks with sizes: " + actualSizes);
         List<SizeDto> sizes = getSizesFromString(actualSizes);
         List<Truck> trucks = new ArrayList<>();
         for (SizeDto size : sizes) {
@@ -75,13 +78,17 @@ public class DefaultTruckService implements TruckService {
                 trucks,
                 algorithm
         );
+        log.info("Loaded {} trucks", loadedTrucks.size());
+        log.debug("Loaded trucks: {}", loadedTrucks);
         truckFileService.writeTrucks(outputFile, loadedTrucks);
+        log.info("Wrote trucks to file '{}'", outputFile);
         return loadedTrucks;
     }
 
     @Override
     public List<CountedTruckDto> countParcelsInTrucks(String file) {
         List<LoadedTruckDto> loadedTrucks = truckFileService.readTrucks(file);
+        log.info("Read {} trucks", loadedTrucks.size());
         return truckScanningService.countParcelsInTrucks(loadedTrucks);
     }
 

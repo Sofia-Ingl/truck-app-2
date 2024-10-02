@@ -1,5 +1,6 @@
 package ru.liga.truckapp2.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.liga.truckapp2.exception.AppException;
 import ru.liga.truckapp2.model.PackagingAlgorithmType;
@@ -10,14 +11,17 @@ import ru.liga.truckapp2.model.view.LoadedTruckView;
 
 import java.util.*;
 
+@Slf4j
 @Component("steadyTruckLoader")
 public class SteadyTruckLoader implements TruckLoader {
 
     @Override
     public List<LoadedTruckView> loadTrucks(List<Parcel> parcels, List<Truck> trucksAvailable) {
 
+        log.info("Loading trucks using steady bidirectional truck loader");
         List<Parcel> parcelsSortedDesc = new ArrayList<>(parcels);
         parcelsSortedDesc.sort(Collections.reverseOrder(Parcel.volumeComparator.thenComparing(Parcel.heightComparator)));
+        log.debug("Parcels sorted descending: {}", parcelsSortedDesc);
 
         List<Truck> trucksSorted = new ArrayList<>(trucksAvailable);
         trucksSorted.sort(
@@ -28,6 +32,7 @@ public class SteadyTruckLoader implements TruckLoader {
             Truck firstTruck = trucksSorted.remove(0);
             trucksSorted.add(firstTruck);
         }
+        log.debug("Trucks sorted & transformed list: {}", trucksSorted);
 
         boolean isDirectPhase = true;
 
@@ -46,7 +51,7 @@ public class SteadyTruckLoader implements TruckLoader {
 
 
             if (isDirectPhase) {
-//                log.debug("Processing direct initial packaging phase on iteration");
+                log.debug("Processing direct initial packaging phase on iteration");
                 trucksLoadedSteadilyInIteration += directPhase(
                         trucksSorted,
                         parcelsInEveryTruck,
@@ -55,7 +60,7 @@ public class SteadyTruckLoader implements TruckLoader {
                         true
                 );
             } else {
-//                log.debug("Processing reversed initial packaging phase on iteration");
+                log.debug("Processing reversed initial packaging phase on iteration");
                 trucksLoadedSteadilyInIteration += reversedPhase(
                         trucksSorted,
                         parcelsInEveryTruck,
@@ -69,7 +74,7 @@ public class SteadyTruckLoader implements TruckLoader {
                     && !parcelsSortedDesc.isEmpty()) {
 
                 if (!isDirectPhase) {
-//                    log.debug("Processing reversed additional packaging phase on iteration");
+                    log.debug("Processing reversed additional packaging phase on iteration");
                     trucksLoadedSteadilyInIteration += directPhase(
                             trucksSorted,
                             parcelsInEveryTruck,
@@ -78,7 +83,7 @@ public class SteadyTruckLoader implements TruckLoader {
                             false
                     );
                 } else {
-//                    log.debug("Processing direct additional packaging phase on iteration");
+                    log.debug("Processing direct additional packaging phase on iteration");
                     trucksLoadedSteadilyInIteration += reversedPhase(
                             trucksSorted,
                             parcelsInEveryTruck,
@@ -91,7 +96,7 @@ public class SteadyTruckLoader implements TruckLoader {
             }
 
             isDirectPhase = !isDirectPhase;
-//            log.debug("Phase direction changed. Now phase is {}", directPhase ? "direct" : "reversed");
+            log.debug("Phase direction changed. Now phase is {}", isDirectPhase ? "direct" : "reversed");
         }
 
 
@@ -176,12 +181,15 @@ public class SteadyTruckLoader implements TruckLoader {
                                             int[] differencesWithMaxParcelSize,
                                             boolean throwException) {
 
-//        log.debug("Working with truck: {}", Arrays.deepToString(truck.getBack()));
+        log.debug("Working with truck: {}", truck);
 
-        // truck was already filled steadily on previous iterations; continue with other trucks
-        if (differencesWithMaxParcelSize[truckIndex] == 0) return false;
+        if (differencesWithMaxParcelSize[truckIndex] == 0) {
+            log.debug("truck was already filled steadily on previous iterations; continue with other trucks");
+            return false;
+        }
 
         int volumeUpperBound = differencesWithMaxParcelSize[truckIndex];
+        log.debug("Trying to find suitable parcel of volume {} or less", volumeUpperBound);
 
         List<Parcel> suitableParcels = new ArrayList<>();
         for (Parcel parcel : parcelsSorted) {
@@ -191,8 +199,8 @@ public class SteadyTruckLoader implements TruckLoader {
         }
 
         if (suitableParcels.isEmpty()) {
-//            log.debug("Cannot fill truck better on current iteration: no suitable parcels available " +
-//                    "-> truck is loaded steadily on current iteration");
+            log.debug("Cannot fill truck better on current iteration: no suitable parcels available " +
+                    "-> truck is loaded steadily on current iteration");
             differencesWithMaxParcelSize[truckIndex] = 0;
             return true;
         }
@@ -208,10 +216,10 @@ public class SteadyTruckLoader implements TruckLoader {
             );
 
             if (success) {
+                log.debug("Found suitable parcel: {}", suitableParcel);
                 int loadedParcelVolume = suitableParcel.calculateVolume();
                 differencesWithMaxParcelSize[truckIndex] -= loadedParcelVolume;
                 parcelsSorted.remove(suitableParcel);
-
                 return differencesWithMaxParcelSize[truckIndex] == 0;
             }
 

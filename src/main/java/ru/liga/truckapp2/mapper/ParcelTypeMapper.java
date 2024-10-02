@@ -5,5 +5,9 @@ import ru.liga.truckapp2.model.ParcelType;
 
 public interface ParcelTypeMapper {
 
+    /**
+     * @param dto dto
+     * @return тип посылок
+     */
     ParcelType dtoToParcelType(ParcelTypeDto dto);
 }

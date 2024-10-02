@@ -178,5 +178,26 @@
       ]
     ],
     "symbol": "j"
+  },
+  {
+    "name": "k",
+    "shape": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        false,
+        false
+      ]
+    ],
+    "symbol": "k"
   }
 ]
