@@ -22,7 +22,7 @@ public class OptimizedTruckLoader implements TruckLoader {
 
         log.info("Loading trucks using optimized truck loader");
         List<Parcel> parcelsSorted = new ArrayList<>(parcels);
-        parcelsSorted.sort(Collections.reverseOrder(Parcel.widthComparator));
+        parcelsSorted.sort(Collections.reverseOrder(Parcel.widthComparator.thenComparing(Parcel.volumeComparator)));
         log.debug("Parcels sorted: {}", parcelsSorted);
 
         List<LoadedTruckView> loadedTrucks = new ArrayList<>();

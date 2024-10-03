@@ -3,8 +3,11 @@ package ru.liga.truckapp2.repository;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.reflect.TypeToken;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.liga.truckapp2.dto.ParcelTypeDto;
@@ -20,16 +23,26 @@ import java.util.*;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class DefaultParcelTypeRepository implements ParcelTypeRepository {
 
     @Value("${parcel.storage}")
     private String parcelsStorage;
+    private List<ParcelType> parcelTypes;
 
     private final Gson gson;
     private final ParcelTypeMapper parcelTypeMapper;
 
-    private List<ParcelType> parcelTypes;
+    public DefaultParcelTypeRepository(Gson gson, ParcelTypeMapper parcelTypeMapper, String parcelsStorage) {
+        this.gson = gson;
+        this.parcelTypeMapper = parcelTypeMapper;
+        this.parcelsStorage = parcelsStorage;
+    }
+
+    @Autowired
+    public DefaultParcelTypeRepository(Gson gson, ParcelTypeMapper parcelTypeMapper) {
+        this.gson = gson;
+        this.parcelTypeMapper = parcelTypeMapper;
+    }
 
     @Override
     synchronized public Optional<ParcelType> findByName(String name) {

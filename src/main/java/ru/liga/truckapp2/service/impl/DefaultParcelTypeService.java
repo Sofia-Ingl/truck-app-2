@@ -7,7 +7,6 @@ import ru.liga.truckapp2.model.ParcelType;
 import ru.liga.truckapp2.repository.ParcelTypeRepository;
 import ru.liga.truckapp2.service.ParcelTypeService;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
