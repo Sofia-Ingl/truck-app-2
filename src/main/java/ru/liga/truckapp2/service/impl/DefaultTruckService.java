@@ -10,10 +10,7 @@ import ru.liga.truckapp2.exception.AppException;
 import ru.liga.truckapp2.model.PackagingAlgorithmType;
 import ru.liga.truckapp2.model.Parcel;
 import ru.liga.truckapp2.model.Truck;
-import ru.liga.truckapp2.service.TruckFileService;
-import ru.liga.truckapp2.service.TruckLoadingService;
-import ru.liga.truckapp2.service.TruckScanningService;
-import ru.liga.truckapp2.service.TruckService;
+import ru.liga.truckapp2.service.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -33,9 +30,50 @@ public class DefaultTruckService implements TruckService {
     private final TruckLoadingService truckLoadingService;
     private final TruckFileService truckFileService;
     private final TruckScanningService truckScanningService;
+    private final ParcelReadingService parcelReadingService;
+
 
     @Override
-    public List<Truck> createTrucks(Integer width, Integer height, Integer quantity) {
+    public List<CountedTruckDto> countParcelsInTrucks(String file) {
+        List<LoadedTruckDto> loadedTrucks = truckFileService.readTrucks(file);
+        log.info("Read {} trucks", loadedTrucks.size());
+        return truckScanningService.countParcelsInTrucks(loadedTrucks);
+    }
+
+    @Override
+    public List<LoadedTruckDto> loadParcels(Integer width, Integer height, Integer quantity, Boolean parcelsFromFile, Boolean parcelsByForm, String parcelIn, PackagingAlgorithmType algorithm, String out) {
+
+        List<Truck> availableTrucks = createTrucks(width, height, quantity);
+        log.debug("Available trucks: {}", availableTrucks);
+        List<Parcel> parcelsToLoad = parcelReadingService.readParcels(parcelsFromFile, parcelsByForm, parcelIn);
+        log.debug("Parcels to load: {}", parcelsToLoad);
+        return loadParcelsToTrucks(
+                availableTrucks,
+                parcelsToLoad,
+                algorithm,
+                out
+        );
+    }
+
+    @Override
+    public List<LoadedTruckDto> loadParcelsWithTruckSizesCustomized(Boolean truckShapesFromFile, String truckShapesIn, Boolean parcelsFromFile, Boolean parcelsByForm, String parcelIn, PackagingAlgorithmType algorithm, String out) {
+
+        List<Truck> availableTrucks = createTrucksCustomized(
+                truckShapesFromFile,
+                truckShapesIn
+        );
+        log.debug("Available trucks: {}", availableTrucks);
+        List<Parcel> parcelsToLoad = parcelReadingService.readParcels(parcelsFromFile, parcelsByForm, parcelIn);
+        log.debug("Parcels to load: {}", parcelsToLoad);
+        return loadParcelsToTrucks(
+                availableTrucks,
+                parcelsToLoad,
+                algorithm,
+                out
+        );
+    }
+
+    private List<Truck> createTrucks(Integer width, Integer height, Integer quantity) {
         List<Truck> trucks = new ArrayList<>();
         for (int i = 0; i < quantity; i++) {
             trucks.add(new Truck(width, height));
@@ -43,8 +81,8 @@ public class DefaultTruckService implements TruckService {
         return trucks;
     }
 
-    @Override
-    public List<Truck> createTrucksCustomized(Boolean fromFile, String input) {
+
+    private List<Truck> createTrucksCustomized(Boolean fromFile, String input) {
         String actualSizes = input;
         if (fromFile) {
             try {
@@ -68,8 +106,8 @@ public class DefaultTruckService implements TruckService {
         return trucks;
     }
 
-    @Override
-    public List<LoadedTruckDto> loadParcelsToTrucks(List<Truck> trucks,
+
+    private List<LoadedTruckDto> loadParcelsToTrucks(List<Truck> trucks,
                                                     List<Parcel> parcels,
                                                     PackagingAlgorithmType algorithm,
                                                     String outputFile) {
@@ -85,12 +123,6 @@ public class DefaultTruckService implements TruckService {
         return loadedTrucks;
     }
 
-    @Override
-    public List<CountedTruckDto> countParcelsInTrucks(String file) {
-        List<LoadedTruckDto> loadedTrucks = truckFileService.readTrucks(file);
-        log.info("Read {} trucks", loadedTrucks.size());
-        return truckScanningService.countParcelsInTrucks(loadedTrucks);
-    }
 
     private List<SizeDto> getSizesFromString(String input) {
         return Arrays.stream(input.split(SIZE_OUTER_DELIMITER))

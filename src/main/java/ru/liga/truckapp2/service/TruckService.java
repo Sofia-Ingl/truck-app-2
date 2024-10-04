@@ -10,35 +10,6 @@ import java.util.List;
 
 public interface TruckService {
 
-    /**
-     *
-     * @param width ширина грузовика
-     * @param height высота грузовика
-     * @param quantity количество
-     * @return созданные грузовики
-     */
-    List<Truck> createTrucks(Integer width, Integer height, Integer quantity);
-
-    /**
-     *
-     * @param fromFile размеры берутся из файла или нет
-     * @param input вход (имя файла или строка с размерами)
-     * @return созданные грузовики
-     */
-    List<Truck> createTrucksCustomized(Boolean fromFile, String input);
-
-    /**
-     *
-     * @param trucks свободные грузовики
-     * @param parcels посылки для загрузки
-     * @param algorithm алгоритм погрузки
-     * @param outputFile файл для записи результата
-     * @return загруженные грузовики
-     */
-    List<LoadedTruckDto> loadParcelsToTrucks(List<Truck> trucks,
-                                             List<Parcel> parcels,
-                                             PackagingAlgorithmType algorithm,
-                                             String outputFile);
 
     /**
      *
@@ -46,4 +17,43 @@ public interface TruckService {
      * @return грузовики с подчитанными посылками
      */
     List<CountedTruckDto> countParcelsInTrucks(String file);
+
+    /**
+     * @param width           ширина грузовика
+     * @param height          высота грузовика
+     * @param quantity        количество грузовиков
+     * @param parcelsFromFile посылки берутся из файла или нет
+     * @param parcelsByForm   посылки считываются по форме или нет
+     * @param parcelIn        вход посылок (имя файла или строка с именами, трактуется в зависимости от арумента parcelsFromFile)
+     * @param algorithm       алгоритм погрузки
+     * @param out             файл для записи результата
+     * @return список загруженных грузовиков
+     */
+    List<LoadedTruckDto> loadParcels(Integer width,
+                                     Integer height,
+                                     Integer quantity,
+                                     Boolean parcelsFromFile,
+                                     Boolean parcelsByForm,
+                                     String parcelIn,
+                                     PackagingAlgorithmType algorithm,
+                                     String out);
+
+    /**
+
+     * @param truckShapesFromFile формы грузовиков лежат в файле или нет
+     * @param truckShapesIn строка с формами грузовиков или имя файла, где она лежит
+     * @param parcelsFromFile посылки берутся из файла или нет
+     * @param parcelsByForm посылки считываются по форме или нет
+     * @param parcelIn вход посылок (имя файла или строка с именами, трактуется в зависимости от арумента parcelsFromFile)
+     * @param algorithm алгоритм погрузки
+     * @param out файл для записи результата
+     * @return список загруженных грузовиков
+     */
+    List<LoadedTruckDto> loadParcelsWithTruckSizesCustomized(Boolean truckShapesFromFile,
+                                                             String truckShapesIn,
+                                                             Boolean parcelsFromFile,
+                                                             Boolean parcelsByForm,
+                                                             String parcelIn,
+                                                             PackagingAlgorithmType algorithm,
+                                                             String out);
 }

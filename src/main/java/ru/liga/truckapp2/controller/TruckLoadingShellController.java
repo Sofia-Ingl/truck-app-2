@@ -8,9 +8,6 @@ import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ru.liga.truckapp2.dto.LoadedTruckDto;
 import ru.liga.truckapp2.model.PackagingAlgorithmType;
-import ru.liga.truckapp2.model.Parcel;
-import ru.liga.truckapp2.model.Truck;
-import ru.liga.truckapp2.service.ParcelReadingService;
 import ru.liga.truckapp2.service.TruckService;
 import ru.liga.truckapp2.util.Stringifier;
 
@@ -23,20 +20,18 @@ import java.util.List;
 public class TruckLoadingShellController {
 
     private final TruckService truckService;
-    private final ParcelReadingService parcelReadingService;
 
     private final Stringifier stringifier;
 
     /**
-     *
-     * @param width ширина грузовика
-     * @param height высота грузовика
-     * @param quantity количество грузовиков
-     * @param algorithm алгоритм погрузки
+     * @param width           ширина грузовика
+     * @param height          высота грузовика
+     * @param quantity        количество грузовиков
+     * @param algorithm       алгоритм погрузки
      * @param parcelsFromFile посылки берутся из файла или нет
-     * @param parcelsByForm посылки считываются по форме или нет
-     * @param parcelIn вход посылок (имя файла или строка с именами, трактуется в зависимости от арумента parcelsFromFile)
-     * @param out файл для записи результата
+     * @param parcelsByForm   посылки считываются по форме или нет
+     * @param parcelIn        вход посылок (имя файла или строка с именами, трактуется в зависимости от арумента parcelsFromFile)
+     * @param out             файл для записи результата
      * @return список загруженных грузовиков
      */
     @ShellMethod(key = "load-trucks")
@@ -51,16 +46,19 @@ public class TruckLoadingShellController {
             @ShellOption String out
     ) {
 
-        List<Truck> availableTrucks = truckService.createTrucks(width, height, quantity);
-        log.debug("Available trucks: {}", availableTrucks);
-        List<Parcel> parcelsToLoad = parcelReadingService.readParcels(parcelsFromFile, parcelsByForm, parcelIn);
-        log.debug("Parcels to load: {}", parcelsToLoad);
-        List<LoadedTruckDto> loadedTrucks = truckService.loadParcelsToTrucks(
-                availableTrucks,
-                parcelsToLoad,
+        List<LoadedTruckDto> loadedTrucks = truckService.loadParcels(
+                width,
+                height,
+                quantity,
+                parcelsFromFile,
+                parcelsByForm,
+                parcelIn,
                 algorithm,
                 out
+
         );
+
+
         return stringifier.stringifyLoadedTrucks(loadedTrucks);
 
     }
@@ -69,13 +67,13 @@ public class TruckLoadingShellController {
     /**
      * Погрузка в грузовики кастомизированной формы
      *
-     * @param algorithm алгоритм погрузки
+     * @param algorithm           алгоритм погрузки
      * @param truckShapesFromFile формы грузовиков лежат в файле или нет
-     * @param parcelsFromFile посылки берутся из файла или нет
-     * @param parcelsByForm посылки считываются по форме или нет
-     * @param parcelIn вход посылок (имя файла или строка с именами, трактуется в зависимости от арумента parcelsFromFile)
-     * @param truckShapesIn строка с формами грузовиков или имя файла, где она лежит
-     * @param out файл для записи результата
+     * @param parcelsFromFile     посылки берутся из файла или нет
+     * @param parcelsByForm       посылки считываются по форме или нет
+     * @param parcelIn            вход посылок (имя файла или строка с именами, трактуется в зависимости от арумента parcelsFromFile)
+     * @param truckShapesIn       строка с формами грузовиков или имя файла, где она лежит
+     * @param out                 файл для записи результата
      * @return список загруженных грузовиков
      */
     @ShellMethod(key = "load-trucks-customized")
@@ -89,22 +87,18 @@ public class TruckLoadingShellController {
             @ShellOption String out
     ) {
 
-        List<Truck> availableTrucks = truckService.createTrucksCustomized(
+        List<LoadedTruckDto> loadedTrucks = truckService.loadParcelsWithTruckSizesCustomized(
                 truckShapesFromFile,
-                truckShapesIn
-        );
-        log.debug("Available trucks: {}", availableTrucks);
-        List<Parcel> parcelsToLoad = parcelReadingService.readParcels(parcelsFromFile, parcelsByForm, parcelIn);
-        log.debug("Parcels to load: {}", parcelsToLoad);
-        List<LoadedTruckDto> loadedTrucks = truckService.loadParcelsToTrucks(
-                availableTrucks,
-                parcelsToLoad,
+                truckShapesIn,
+                parcelsFromFile,
+                parcelsByForm,
+                parcelIn,
                 algorithm,
                 out
+
         );
         return stringifier.stringifyLoadedTrucks(loadedTrucks);
     }
-
 
 
 }

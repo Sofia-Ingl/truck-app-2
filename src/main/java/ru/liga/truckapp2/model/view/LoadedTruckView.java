@@ -13,4 +13,12 @@ public class LoadedTruckView {
 
     private Truck truck;
     private List<Parcel> parcels;
+
+    @Override
+    public String toString() {
+        return "LoadedTruckView{" +
+                "truck=" + truck +
+                ", parcels=" + parcels +
+                '}';
+    }
 }

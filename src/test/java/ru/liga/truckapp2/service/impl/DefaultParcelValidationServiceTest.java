@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class DefaultParcelValidationServiceTest {
 
@@ -31,9 +30,6 @@ class DefaultParcelValidationServiceTest {
                 new boolean[][]{{true,true}},
                 '2'
         );
-
-//        Mockito.when(parcelTypeServiceMock.getByName(type1.getName())).thenReturn(Optional.of(type1));
-//        Mockito.when(parcelTypeServiceMock.getByName(type2.getName())).thenReturn(Optional.of(type2));
 
         Mockito.when(parcelTypeServiceMock.getAll()).thenReturn(List.of(type1, type2));
 
