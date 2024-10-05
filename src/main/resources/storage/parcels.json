@@ -199,5 +199,23 @@
       ]
     ],
     "symbol": "k"
+  },
+  {
+    "name": "n",
+    "shape": [
+      [
+        true,
+        true
+      ],
+      [
+        false,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "symbol": "n"
   }
 ]

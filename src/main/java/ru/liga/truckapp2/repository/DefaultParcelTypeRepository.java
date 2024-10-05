@@ -19,7 +19,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 @Slf4j
-@Component
+//@Component
 public class DefaultParcelTypeRepository implements ParcelTypeRepository {
 
     @Value("${parcel.storage}")

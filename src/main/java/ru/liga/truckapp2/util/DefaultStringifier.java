@@ -5,13 +5,12 @@ import ru.liga.truckapp2.dto.CountedTruckDto;
 import ru.liga.truckapp2.dto.LoadedTruckDto;
 import ru.liga.truckapp2.model.ParcelType;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Component
 public class DefaultStringifier implements Stringifier {
 
-    public String stringifyParcelTypesList(@NotNull List<ParcelType> parcelTypes) {
+    public String stringifyParcelTypesList(List<ParcelType> parcelTypes) {
 
         if (parcelTypes.isEmpty()) {
             return "Parcel types list is empty";
@@ -27,7 +26,7 @@ public class DefaultStringifier implements Stringifier {
     }
 
 
-    public String stringifyParcelType(@NotNull ParcelType parcelType) {
+    public String stringifyParcelType(ParcelType parcelType) {
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("{").append("\n");
@@ -52,7 +51,7 @@ public class DefaultStringifier implements Stringifier {
     }
 
 
-    public String stringifyCountedTrucks(@NotNull List<CountedTruckDto> countedTrucks) {
+    public String stringifyCountedTrucks(List<CountedTruckDto> countedTrucks) {
         if (countedTrucks.isEmpty()) {
             return "Counted trucks list is empty";
         }
@@ -65,7 +64,7 @@ public class DefaultStringifier implements Stringifier {
         return stringBuilder.toString();
     }
 
-    public String stringifyCountedTruck(@NotNull CountedTruckDto countedTruck) {
+    public String stringifyCountedTruck(CountedTruckDto countedTruck) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("{").append("\n");
         stringBuilder.append("Truck:").append("\n");
@@ -82,7 +81,7 @@ public class DefaultStringifier implements Stringifier {
         return stringBuilder.toString();
     }
 
-    public String stringifyLoadedTrucks(@NotNull List<LoadedTruckDto> loadedTrucks) {
+    public String stringifyLoadedTrucks(List<LoadedTruckDto> loadedTrucks) {
         if (loadedTrucks.isEmpty()) {
             return "Loaded trucks list is empty";
         }
@@ -95,14 +94,14 @@ public class DefaultStringifier implements Stringifier {
         return stringBuilder.toString();
     }
 
-    public String stringifyLoadedTruck(@NotNull LoadedTruckDto loadedTruck) {
+    public String stringifyLoadedTruck(LoadedTruckDto loadedTruck) {
         return "{" + "\n" +
                 "Truck:" + "\n" +
                 stringifyTruckBack(loadedTruck.getBack()) +
                 "}" + "\n";
     }
 
-    private String stringifyTruckBack(@NotNull String[] back) {
+    private String stringifyTruckBack(String[] back) {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = back.length - 1; i >= 0; i--) {
             stringBuilder.append(" ")

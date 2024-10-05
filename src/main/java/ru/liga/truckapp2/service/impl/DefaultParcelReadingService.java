@@ -11,7 +11,6 @@ import ru.liga.truckapp2.service.ParcelReadingService;
 import ru.liga.truckapp2.service.ParcelTypeService;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.file.Files;

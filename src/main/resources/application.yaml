@@ -1,6 +1,17 @@
 spring:
   application:
     name: truck-app-2
+  datasource:
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:35432/truck-db
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
+    url: jdbc:postgresql://localhost:35432/truck-db
+    user: postgres
+    password: postgres
+    schemas: public
 
 parcel:
   storage: src/main/resources/storage/parcels.json
