@@ -1,4 +1,4 @@
-package ru.liga.truckapp2.controller;
+package ru.liga.truckapp2.controller.shell;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

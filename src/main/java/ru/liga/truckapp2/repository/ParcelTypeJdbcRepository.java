@@ -2,6 +2,7 @@ package ru.liga.truckapp2.repository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.liga.truckapp2.dto.ParcelTypeDto;
@@ -31,10 +32,7 @@ public class ParcelTypeJdbcRepository implements ParcelTypeRepository {
 
     @Override
     public Optional<ParcelType> findByName(String name) {
-//        return jdbcTemplate.query(SQL_FIND_BY_NAME, parcelTypeRowMapper, name).stream().findFirst();
-        ParcelType parcelType = jdbcTemplate.queryForObject(SQL_FIND_BY_NAME, parcelTypeRowMapper, name);
-        log.debug("Parcel type got by name '{}': {}", name, parcelType);
-        return Optional.ofNullable(parcelType);
+        return jdbcTemplate.query(SQL_FIND_BY_NAME, parcelTypeRowMapper, name).stream().findFirst();
     }
 
     @Override
@@ -44,17 +42,20 @@ public class ParcelTypeJdbcRepository implements ParcelTypeRepository {
 
     @Override
     public ParcelType save(ParcelTypeDto parcelType) {
-        int rowCount = jdbcTemplate.update(
-                SQL_INSERT,
-                parcelType.getName(),
-                shapeArrayMapper.shapeToString(parcelType.getShape()),
-                parcelType.getSymbol()
-        );
-        if (rowCount != 1) {
-            throw new AppException("Could not save parcel type " + parcelType);
+        try {
+            jdbcTemplate.update(
+                    SQL_INSERT,
+                    parcelType.getName(),
+                    shapeArrayMapper.shapeToString(parcelType.getShape()),
+                    parcelType.getSymbol()
+            );
+            return findByName(parcelType.getName())
+                    .orElseThrow(() -> new AppException("Invalid state when saving parcel type " + parcelType));
+        } catch (DataAccessException e) {
+            log.error("Could not save parcel type " + parcelType + ":\n" + e.getMessage());
+            throw new AppException("Could not save parcel type " + parcelType + ":\n" + e.getMessage());
         }
-        return findByName(parcelType.getName())
-                .orElseThrow(() -> new AppException("Invalid state when saving parcel type " + parcelType));
+
     }
 
     @Override
@@ -75,30 +76,47 @@ public class ParcelTypeJdbcRepository implements ParcelTypeRepository {
                 :
                 shapeArrayMapper.shapeToString(parcelType.getShape());
         char newSymbol = (newData.getSymbol() != null) ? newData.getSymbol() : parcelType.getSymbol();
-        int rowCount = jdbcTemplate.update(
-                SQL_UPDATE_BY_NAME,
-                newName,
-                newShape,
-                newSymbol,
-                name
-        );
-        if (rowCount != 1) {
-            throw new AppException("Could not update parcel type " + parcelType + " with name " + newName
-                    + " and shape " + newShape + " and symbol " + newSymbol);
+
+        log.debug("Trying to update parcel type " + parcelType + " with name " + newName + " and shape " + newShape + " and symbol " + newSymbol);
+
+        try {
+
+            jdbcTemplate.update(
+                    SQL_UPDATE_BY_NAME,
+                    newName,
+                    newShape,
+                    newSymbol,
+                    name
+            );
+            return findByName(newName)
+                    .orElseThrow(() -> new AppException("Invalid state when updating parcel type " + parcelType
+                            + " with name " + newName + " and shape " + newShape + " and symbol " + newSymbol));
+        } catch (DataAccessException e) {
+            log.error("Could not update parcel type " + parcelType + ":\n" + e.getMessage());
+            throw new AppException(
+                    "Could not update parcel type named '" + name
+                            + "' with name " + newName + " and shape '" + newShape + "' and symbol " + newSymbol
+                            + ":\n" + e.getMessage()
+            );
         }
-        return findByName(newName)
-                .orElseThrow(() -> new AppException("Invalid state when updating parcel type " + parcelType
-                        + " with name " + newName + " and shape " + newShape + " and symbol " + newSymbol));
+
     }
 
     @Override
     public Optional<ParcelType> findByShapeAndSymbol(boolean[][] shape, char symbol) {
-        return Optional.ofNullable(jdbcTemplate.queryForObject(
-                SQL_FIND_BY_SHAPE_AND_SYMBOL,
-                parcelTypeRowMapper,
-                shapeArrayMapper.shapeToString(shape),
-                symbol
-        ));
+//        return Optional.ofNullable(jdbcTemplate.queryForObject(
+//                SQL_FIND_BY_SHAPE_AND_SYMBOL,
+//                parcelTypeRowMapper,
+//                shapeArrayMapper.shapeToString(shape),
+//                symbol
+//        ));
+        return jdbcTemplate.query(
+                        SQL_FIND_BY_SHAPE_AND_SYMBOL,
+                        parcelTypeRowMapper,
+                        shapeArrayMapper.shapeToString(shape),
+                        symbol)
+                .stream()
+                .findFirst();
     }
 
 

@@ -1,4 +1,4 @@
-package ru.liga.truckapp2.controller;
+package ru.liga.truckapp2.controller.shell;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellCommandGroup;

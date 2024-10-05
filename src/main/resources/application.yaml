@@ -11,7 +11,6 @@ spring:
     url: jdbc:postgresql://localhost:35432/truck-db
     user: postgres
     password: postgres
-    schemas: public
+    create-schemas: true
 
-parcel:
-  storage: src/main/resources/storage/parcels.json
+
