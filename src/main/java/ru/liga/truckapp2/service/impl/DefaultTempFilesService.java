@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Base64;
 import java.util.Random;
 
 @Service
@@ -25,9 +24,7 @@ public class DefaultTempFilesService implements TempFilesService {
     private String tempDir;
 
     @Override
-    public String createTempFileFromContent(String base64Content) {
-        String content = new String(decode(base64Content));
-        log.info("Decoded content: {}", content);
+    public String createTempFileFromContent(String content) {
         String fileName = tempDir + File.separator + random.nextLong() + "." + fileExtension;
         try {
             Path path = Path.of(fileName);
@@ -54,8 +51,4 @@ public class DefaultTempFilesService implements TempFilesService {
 
     }
 
-
-    private byte[] decode(String base64Content) {
-        return Base64.getDecoder().decode(base64Content);
-    }
 }
