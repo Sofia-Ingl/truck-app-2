@@ -11,6 +11,8 @@ spring:
     url: jdbc:postgresql://localhost:35432/truck-db
     user: postgres
     password: postgres
-    create-schemas: true
+    schemas: truck
+
+#    create-schemas: true
 
 

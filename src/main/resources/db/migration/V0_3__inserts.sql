@@ -1,4 +1,4 @@
-insert into parcel_types(name, shape, symbol)
+insert into truck.parcel_types(name, shape, symbol)
 values ('1', '+', '1'),
        ('2', '++', '2'),
        ('3', '+++', '3'),
