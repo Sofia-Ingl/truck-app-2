@@ -44,9 +44,10 @@ public class DefaultParcelTypeService implements ParcelTypeService {
         try {
             return parcelTypeJpaRepository.save(parcelType);
         } catch (Exception e) {
+            log.error(e.getMessage());
             throw new AppException(
-                    "Could not save parcel type " + parcelType + ":\n" + e.getClass()
-                            + ": " + e.getMessage());
+                    "Could not save parcel type " + parcelType + ":\n"
+                            + e.getClass() + ": " + e.getMessage());
         }
     }
 
@@ -67,6 +68,7 @@ public class DefaultParcelTypeService implements ParcelTypeService {
         try {
             return parcelTypeJpaRepository.save(updatedParcelType);
         } catch (Exception e) {
+            log.error(e.getMessage());
             throw new AppException(
                     "Could not update parcel type named '" + name
                             + "' with name " + newName + " and shape '"

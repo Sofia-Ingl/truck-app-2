@@ -1,7 +1,6 @@
-package ru.liga.truckapp2.repository.type;
+package ru.liga.truckapp2.model.type;
 
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;

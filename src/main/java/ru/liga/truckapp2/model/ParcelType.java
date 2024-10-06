@@ -19,7 +19,7 @@ public class ParcelType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    @Type(type = "ru.liga.truckapp2.repository.type.DoubleDimensionalBooleanArrayUserType")
+    @Type(type = "ru.liga.truckapp2.model.type.DoubleDimensionalBooleanArrayUserType")
     private boolean[][] shape;
     private char symbol;
 

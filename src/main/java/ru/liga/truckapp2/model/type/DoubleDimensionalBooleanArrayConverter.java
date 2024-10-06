@@ -1,4 +1,4 @@
-package ru.liga.truckapp2.repository.type;
+package ru.liga.truckapp2.model.type;
 
 import lombok.extern.slf4j.Slf4j;
 
