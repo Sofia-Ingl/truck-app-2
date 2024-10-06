@@ -91,6 +91,7 @@ public class ParcelTypeJdbcRepository implements ParcelTypeRepository {
             return findByName(newName)
                     .orElseThrow(() -> new AppException("Invalid state when updating parcel type " + parcelType
                             + " with name " + newName + " and shape " + newShape + " and symbol " + newSymbol));
+
         } catch (DataAccessException e) {
             log.error("Could not update parcel type " + parcelType + ":\n" + e.getMessage());
             throw new AppException(
@@ -104,12 +105,7 @@ public class ParcelTypeJdbcRepository implements ParcelTypeRepository {
 
     @Override
     public Optional<ParcelType> findByShapeAndSymbol(boolean[][] shape, char symbol) {
-//        return Optional.ofNullable(jdbcTemplate.queryForObject(
-//                SQL_FIND_BY_SHAPE_AND_SYMBOL,
-//                parcelTypeRowMapper,
-//                shapeArrayMapper.shapeToString(shape),
-//                symbol
-//        ));
+
         return jdbcTemplate.query(
                         SQL_FIND_BY_SHAPE_AND_SYMBOL,
                         parcelTypeRowMapper,
