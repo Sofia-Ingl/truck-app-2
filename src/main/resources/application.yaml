@@ -6,6 +6,8 @@ spring:
     password: postgres
     url: jdbc:postgresql://localhost:35432/truck-db
     driver-class-name: org.postgresql.Driver
+    hikari:
+      schema: public
   flyway:
     enabled: true
     url: jdbc:postgresql://localhost:35432/truck-db

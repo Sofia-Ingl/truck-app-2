@@ -1,4 +1,6 @@
-create table if not exists parcel_types
+create schema if not exists test;
+
+create table if not exists test.parcel_types
 (
     id     serial primary key,
     name   text unique not null,

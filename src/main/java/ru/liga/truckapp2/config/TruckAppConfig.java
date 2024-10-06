@@ -21,6 +21,8 @@ public class TruckAppConfig {
     private String login;
     @Value("${spring.datasource.password}")
     private String password;
+    @Value("${spring.datasource.hikari.schema}")
+    private String schema;
 
     @Bean
     public Gson gson() {
@@ -36,6 +38,7 @@ public class TruckAppConfig {
         dataSource.setUrl(url);
         dataSource.setUsername(login);
         dataSource.setPassword(password);
+        dataSource.setSchema(schema);
 
         return dataSource;
 

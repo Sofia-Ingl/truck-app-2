@@ -1,91 +1,48 @@
 package ru.liga.truckapp2.repository;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.test.context.ActiveProfiles;
 import ru.liga.truckapp2.dto.ParcelTypeDto;
 import ru.liga.truckapp2.exception.AppException;
-import ru.liga.truckapp2.mapper.DefaultShapeArrayMapper;
-import ru.liga.truckapp2.mapper.ParcelTypeRowMapper;
-import ru.liga.truckapp2.mapper.ShapeArrayMapper;
 import ru.liga.truckapp2.model.ParcelType;
 
-import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@SpringBootTest
+@ActiveProfiles("test")
 class ParcelTypeJdbcRepositoryTest {
 
-    private static JdbcTemplate jdbcTemplate;
-    private static ParcelTypeRepository repository;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private ParcelTypeRepository repository;
 
-    private static final String driver = "org.postgresql.Driver";
-    private static final String url = "jdbc:postgresql://localhost:35432/truck-db";
-    private static final String login = "postgres";
-    private static final String password = "postgres";
-    private static final String schema = "test";
-
-    private static void deleteAllFromParcelTypesTable() {
-        String sql = "delete from test.parcel_types";
+    private void deleteAllFromParcelTypesTable() {
+        String sql = "delete from parcel_types";
         jdbcTemplate.execute(sql);
     }
 
-    private static DataSource postgresqlDataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(driver);
-        dataSource.setUrl(url);
-        dataSource.setUsername(login);
-        dataSource.setPassword(password);
-        dataSource.setSchema(schema);
-        return dataSource;
-
-    }
-
-    @BeforeAll
-    static void setUp() {
-        DataSource datasource = postgresqlDataSource();
-        JdbcTemplate jdbcT = new JdbcTemplate(datasource);
-        ShapeArrayMapper shapeArrayMapper = new DefaultShapeArrayMapper();
-        ParcelTypeRowMapper parcelTypeRowMapper = new ParcelTypeRowMapper(shapeArrayMapper);
-        ParcelTypeRepository parcelTypeRepository =
-                new ParcelTypeJdbcRepository(
-                        parcelTypeRowMapper,
-                        shapeArrayMapper,
-                        jdbcT
-                );
-        jdbcT.execute(
-                """
-                            create schema if not exists "test";
-                            create table if not exists test.parcel_types (
-                                id serial primary key,
-                                name text unique not null,
-                                shape text not null,
-                                symbol char not null
-                            );
-                        """
-        );
-        repository = parcelTypeRepository;
-        jdbcTemplate = jdbcT;
-    }
-
     @Test
-    void findByName() {
+    void findByName() throws Exception {
 
         deleteAllFromParcelTypesTable();
 
-        String name = "1";
+        String name = "*";
         String shape = "+";
-        Character symbol = '1';
+        Character symbol = '*';
 
         Optional<ParcelType> parcelType = repository.findByName(name);
         assertThat(parcelType).isEmpty();
 
         jdbcTemplate.update("""
-                insert into test.parcel_types (name, shape, symbol)
+                insert into parcel_types (name, shape, symbol)
                 values (?, ?, ?);
                 """, name, shape, symbol);
 
@@ -117,12 +74,12 @@ class ParcelTypeJdbcRepositoryTest {
         assertThat(parcelTypes).isEmpty();
 
         jdbcTemplate.update("""
-                insert into test.parcel_types (name, shape, symbol)
+                insert into parcel_types (name, shape, symbol)
                 values (?, ?, ?);
                 """, name1, shape1, symbol1);
 
         jdbcTemplate.update("""
-                insert into test.parcel_types (name, shape, symbol)
+                insert into parcel_types (name, shape, symbol)
                 values (?, ?, ?);
                 """, name2, shape2, symbol2);
 
@@ -165,7 +122,7 @@ class ParcelTypeJdbcRepositoryTest {
         Character symbol = '1';
 
         jdbcTemplate.update("""
-                insert into test.parcel_types (name, shape, symbol)
+                insert into parcel_types (name, shape, symbol)
                 values (?, ?, ?);
                 """, name, shape, symbol);
 
@@ -188,7 +145,7 @@ class ParcelTypeJdbcRepositoryTest {
         Character symbol = '1';
 
         jdbcTemplate.update("""
-                insert into test.parcel_types (name, shape, symbol)
+                insert into parcel_types (name, shape, symbol)
                 values (?, ?, ?);
                 """, name, shape, symbol);
 
@@ -207,7 +164,7 @@ class ParcelTypeJdbcRepositoryTest {
         Character symbol = '1';
 
         jdbcTemplate.update("""
-                insert into test.parcel_types (name, shape, symbol)
+                insert into parcel_types (name, shape, symbol)
                 values (?, ?, ?);
                 """, name, shape, symbol);
 
@@ -244,12 +201,12 @@ class ParcelTypeJdbcRepositoryTest {
         assertThat(parcelTypes).isEmpty();
 
         jdbcTemplate.update("""
-                insert into test.parcel_types (name, shape, symbol)
+                insert into parcel_types (name, shape, symbol)
                 values (?, ?, ?);
                 """, name1, shape1, symbol1);
 
         jdbcTemplate.update("""
-                insert into test.parcel_types (name, shape, symbol)
+                insert into parcel_types (name, shape, symbol)
                 values (?, ?, ?);
                 """, name2, shape2, symbol2);
 
@@ -275,7 +232,7 @@ class ParcelTypeJdbcRepositoryTest {
         Character symbol = '1';
 
         jdbcTemplate.update("""
-                insert into test.parcel_types (name, shape, symbol)
+                insert into parcel_types (name, shape, symbol)
                 values (?, ?, ?);
                 """, name, shape, symbol);
 

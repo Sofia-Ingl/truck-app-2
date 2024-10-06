@@ -1,6 +1,9 @@
 package ru.liga.truckapp2.service.impl;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import ru.liga.truckapp2.dto.CountedTruckDto;
 import ru.liga.truckapp2.dto.LoadedTruckDto;
 import ru.liga.truckapp2.dto.ParcelDto;
@@ -12,12 +15,15 @@ import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+@SpringBootTest(classes = DefaultTruckScanningService.class)
+@ActiveProfiles("test")
 class DefaultTruckScanningServiceTest {
+
+    @Autowired
+    private DefaultTruckScanningService truckScanningService;
 
     @Test
     void countParcelsInTrucks() {
-
-        DefaultTruckScanningService truckScanningService = new DefaultTruckScanningService();
 
         List<LoadedTruckDto> loadedTrucks = new ArrayList<>();
 
@@ -37,7 +43,7 @@ class DefaultTruckScanningServiceTest {
 
         ParcelType parcelTypeO = new ParcelType(
                 "o",
-                new boolean[][]{{true,true,true},{true,false,true},{true,true,true}},
+                new boolean[][]{{true, true, true}, {true, false, true}, {true, true, true}},
                 'o'
         );
         ParcelDto parcelO = new ParcelDto(
@@ -47,7 +53,7 @@ class DefaultTruckScanningServiceTest {
         loadedTrucks.add(new LoadedTruckDto(back, List.of(parcelK, parcelO)));
 
         List<CountedTruckDto> countedTrucks = truckScanningService.countParcelsInTrucks(
-               loadedTrucks
+                loadedTrucks
         );
 
         assertThat(countedTrucks.size()).isEqualTo(1);
