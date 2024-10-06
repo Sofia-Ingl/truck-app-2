@@ -18,4 +18,13 @@ public class AppExceptionHandler {
         return ResponseEntity.badRequest().body(stringBuilder);
     }
 
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleAppException(final RuntimeException runtimeException) {
+        log.error(runtimeException.getMessage());
+        String stringBuilder = "Exception (" + runtimeException.getClass() + "):" + "\n" +
+                runtimeException.getMessage();
+        return ResponseEntity.badRequest().body(stringBuilder);
+    }
+
 }

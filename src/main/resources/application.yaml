@@ -15,4 +15,7 @@ spring:
     password: postgres
     create-schemas: true
 
+temp-files:
+  extension: json
+  directory: tmp
 
