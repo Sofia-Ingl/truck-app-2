@@ -1,21 +1,40 @@
-package ru.liga.truckapp2.util;
+package ru.liga.truckapp2.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import ru.liga.truckapp2.exception.AppException;
 import ru.liga.truckapp2.model.PackagingAlgorithmType;
 import ru.liga.truckapp2.model.Parcel;
 import ru.liga.truckapp2.model.Truck;
 import ru.liga.truckapp2.model.inner.Coordinates;
 import ru.liga.truckapp2.model.view.LoadedTruckView;
+import ru.liga.truckapp2.service.TruckLoaderService;
+import ru.liga.truckapp2.service.TruckLoaderFactory;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @Slf4j
-@Component("optimizedTruckLoader")
-public class OptimizedTruckLoader implements TruckLoader {
+@Service("optimizedTruckLoader")
+@RequiredArgsConstructor
+public class OptimizedTruckLoaderService implements TruckLoaderService {
+
+    private final TruckLoaderFactory truckLoaderFactory;
+
+    @PostConstruct
+    public void registerBean() {
+        truckLoaderFactory.register(getAlgorithmType(), this);
+        log.info("Truck loader of type {} registered", getAlgorithmType());
+    }
+
+    @Override
+    public PackagingAlgorithmType getAlgorithmType() {
+        return PackagingAlgorithmType.OPTIMIZED;
+    }
+
 
     @Override
     public List<LoadedTruckView> loadTrucks(List<Parcel> parcels, List<Truck> trucksAvailable) {
@@ -60,10 +79,6 @@ public class OptimizedTruckLoader implements TruckLoader {
         return loadedTrucks;
     }
 
-    @Override
-    public PackagingAlgorithmType getAlgorithmType() {
-        return PackagingAlgorithmType.OPTIMIZED;
-    }
 
     private int loadSuitableParcel(int nextParcelIdx,
                                        Truck truck,

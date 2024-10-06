@@ -23,27 +23,18 @@ public class TruckLoadingShellController {
 
     private final Stringifier stringifier;
 
-    /**
-     * @param width           ширина грузовика
-     * @param height          высота грузовика
-     * @param quantity        количество грузовиков
-     * @param algorithm       алгоритм погрузки
-     * @param parcelsFromFile посылки берутся из файла или нет
-     * @param parcelsByForm   посылки считываются по форме или нет
-     * @param parcelIn        вход посылок (имя файла или строка с именами, трактуется в зависимости от арумента parcelsFromFile)
-     * @param out             файл для записи результата
-     * @return список загруженных грузовиков
-     */
-    @ShellMethod(key = "load-trucks")
+
+    @ShellMethod(key = "load-trucks",
+    value = "Возвращает список загруженных грузовиков")
     public String loadTrucks(
-            @ShellOption(defaultValue = "6") Integer width,
-            @ShellOption(defaultValue = "6") Integer height,
-            @ShellOption(defaultValue = "10") Integer quantity,
-            @ShellOption PackagingAlgorithmType algorithm,
-            @ShellOption Boolean parcelsFromFile,
-            @ShellOption Boolean parcelsByForm,
-            @ShellOption String parcelIn,
-            @ShellOption String out
+            @ShellOption(defaultValue = "6", help = "ширина грузовика") Integer width,
+            @ShellOption(defaultValue = "6", help = "высота грузовика") Integer height,
+            @ShellOption(defaultValue = "10", help = "количество грузовиков") Integer quantity,
+            @ShellOption(help = "алгоритм погрузки") PackagingAlgorithmType algorithm,
+            @ShellOption(help = "посылки берутся из файла или нет") Boolean parcelsFromFile,
+            @ShellOption(help = "посылки считываются по форме или нет") Boolean parcelsByForm,
+            @ShellOption(help = "вход посылок (имя файла или строка с именами, трактуется в зависимости от арумента parcelsFromFile)") String parcelIn,
+            @ShellOption(help = "файл для записи результата") String out
     ) {
 
         List<LoadedTruckDto> loadedTrucks = truckService.loadParcels(
@@ -64,27 +55,16 @@ public class TruckLoadingShellController {
     }
 
 
-    /**
-     * Погрузка в грузовики кастомизированной формы
-     *
-     * @param algorithm           алгоритм погрузки
-     * @param truckShapesFromFile формы грузовиков лежат в файле или нет
-     * @param parcelsFromFile     посылки берутся из файла или нет
-     * @param parcelsByForm       посылки считываются по форме или нет
-     * @param parcelIn            вход посылок (имя файла или строка с именами, трактуется в зависимости от арумента parcelsFromFile)
-     * @param truckShapesIn       строка с формами грузовиков или имя файла, где она лежит
-     * @param out                 файл для записи результата
-     * @return список загруженных грузовиков
-     */
-    @ShellMethod(key = "load-trucks-customized")
+    @ShellMethod(key = "load-trucks-customized",
+            value = "Возвращает список загруженных грузовиков")
     public String loadTrucksCustomized(
-            @ShellOption PackagingAlgorithmType algorithm,
-            @ShellOption Boolean truckShapesFromFile,
-            @ShellOption Boolean parcelsFromFile,
-            @ShellOption Boolean parcelsByForm,
-            @ShellOption String parcelIn,
-            @ShellOption String truckShapesIn,
-            @ShellOption String out
+            @ShellOption(help = "алгоритм погрузки") PackagingAlgorithmType algorithm,
+            @ShellOption(help = "формы грузовиков лежат в файле или нет") Boolean truckShapesFromFile,
+            @ShellOption(help = "посылки берутся из файла или нет") Boolean parcelsFromFile,
+            @ShellOption(help = "посылки считываются по форме или нет") Boolean parcelsByForm,
+            @ShellOption(help = "вход посылок (имя файла или строка с именами)") String parcelIn,
+            @ShellOption(help = "строка с формами грузовиков или имя файла, где она лежит") String truckShapesIn,
+            @ShellOption(help = "файл для записи результата") String out
     ) {
 
         List<LoadedTruckDto> loadedTrucks = truckService.loadParcelsWithTruckSizesCustomized(
