@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import ru.liga.truckapp2.dto.ParcelTypeCreateDto;
 import ru.liga.truckapp2.dto.ParcelTypeDto;
 import ru.liga.truckapp2.exception.AppException;
 import ru.liga.truckapp2.mapper.ParcelTypeRowMapper;
@@ -41,7 +42,7 @@ public class ParcelTypeJdbcRepository implements ParcelTypeRepository {
     }
 
     @Override
-    public ParcelType save(ParcelTypeDto parcelType) {
+    public ParcelType save(ParcelTypeCreateDto parcelType) {
         try {
             jdbcTemplate.update(
                     SQL_INSERT,
@@ -52,7 +53,6 @@ public class ParcelTypeJdbcRepository implements ParcelTypeRepository {
             return findByName(parcelType.getName())
                     .orElseThrow(() -> new AppException("Invalid state when saving parcel type " + parcelType));
         } catch (DataAccessException e) {
-            log.error("Could not save parcel type " + parcelType + ":\n" + e.getMessage());
             throw new AppException("Could not save parcel type " + parcelType + ":\n" + e.getMessage());
         }
 
@@ -93,7 +93,6 @@ public class ParcelTypeJdbcRepository implements ParcelTypeRepository {
                             + " with name " + newName + " and shape " + newShape + " and symbol " + newSymbol));
 
         } catch (DataAccessException e) {
-            log.error("Could not update parcel type " + parcelType + ":\n" + e.getMessage());
             throw new AppException(
                     "Could not update parcel type named '" + name
                             + "' with name " + newName + " and shape '" + newShape + "' and symbol " + newSymbol

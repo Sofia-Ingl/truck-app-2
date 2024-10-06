@@ -1,5 +1,6 @@
 package ru.liga.truckapp2.service;
 
+import ru.liga.truckapp2.dto.ParcelTypeCreateDto;
 import ru.liga.truckapp2.dto.ParcelTypeDto;
 import ru.liga.truckapp2.model.ParcelType;
 
@@ -34,7 +35,7 @@ public interface ParcelTypeService {
      * @param createDto тип посылок, который надо создать
      * @return созданный тип
      */
-    ParcelType create(ParcelTypeDto createDto);
+    ParcelType create(ParcelTypeCreateDto createDto);
 
     /**
      *

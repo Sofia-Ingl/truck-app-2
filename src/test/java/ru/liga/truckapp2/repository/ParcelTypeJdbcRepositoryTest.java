@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
+import ru.liga.truckapp2.dto.ParcelTypeCreateDto;
 import ru.liga.truckapp2.dto.ParcelTypeDto;
 import ru.liga.truckapp2.exception.AppException;
 import ru.liga.truckapp2.model.ParcelType;
@@ -100,7 +101,7 @@ class ParcelTypeJdbcRepositoryTest {
     void save() {
 
         deleteAllFromParcelTypesTable();
-        ParcelTypeDto parcelTypeDto = new ParcelTypeDto(
+        ParcelTypeCreateDto parcelTypeDto = new ParcelTypeCreateDto(
                 "1",
                 new boolean[][]{{true}},
                 '1'
@@ -126,7 +127,7 @@ class ParcelTypeJdbcRepositoryTest {
                 values (?, ?, ?);
                 """, name, shape, symbol);
 
-        ParcelTypeDto parcelTypeDto = new ParcelTypeDto(
+        ParcelTypeCreateDto parcelTypeDto = new ParcelTypeCreateDto(
                 "1",
                 new boolean[][]{{true}},
                 '1'

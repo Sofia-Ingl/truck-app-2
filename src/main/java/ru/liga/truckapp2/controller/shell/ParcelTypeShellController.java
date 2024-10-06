@@ -6,6 +6,7 @@ import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
+import ru.liga.truckapp2.dto.ParcelTypeCreateDto;
 import ru.liga.truckapp2.dto.ParcelTypeDto;
 import ru.liga.truckapp2.model.ParcelType;
 import ru.liga.truckapp2.service.ParcelTypeService;
@@ -49,7 +50,7 @@ public class ParcelTypeShellController {
             @ShellOption(help = "форма, где строки отделены друг от друга запятыми, например \"kk,kk, k\"") String shape,
             @ShellOption(help = "символ") Character symbol
     ) {
-        ParcelTypeDto createDto = inputDtoCreator.makeCreateDto(name, shape, symbol);
+        ParcelTypeCreateDto createDto = inputDtoCreator.makeCreateDto(name, shape, symbol);
         ParcelType parcelType = parcelTypeService.create(createDto);
         return "Parcel type created: \n" + stringifier.stringifyParcelType(parcelType);
     }

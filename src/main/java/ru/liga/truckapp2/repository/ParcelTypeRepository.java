@@ -1,5 +1,6 @@
 package ru.liga.truckapp2.repository;
 
+import ru.liga.truckapp2.dto.ParcelTypeCreateDto;
 import ru.liga.truckapp2.dto.ParcelTypeDto;
 import ru.liga.truckapp2.model.ParcelType;
 
@@ -26,7 +27,7 @@ public interface ParcelTypeRepository {
      * @param parcelType тип посылок
      * @return сохраненный тип
      */
-    ParcelType save(ParcelTypeDto parcelType);
+    ParcelType save(ParcelTypeCreateDto parcelType);
 
     /**
      *

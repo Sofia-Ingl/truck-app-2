@@ -1,5 +1,6 @@
 package ru.liga.truckapp2.util;
 
+import ru.liga.truckapp2.dto.ParcelTypeCreateDto;
 import ru.liga.truckapp2.dto.ParcelTypeDto;
 
 
@@ -9,7 +10,7 @@ public interface InputDtoCreator {
                                 String newShape,
                                 Character newSymbol);
 
-    ParcelTypeDto makeCreateDto(String name,
-                                String shape,
-                                Character symbol);
+    ParcelTypeCreateDto makeCreateDto(String name,
+                                      String shape,
+                                      Character symbol);
 }
