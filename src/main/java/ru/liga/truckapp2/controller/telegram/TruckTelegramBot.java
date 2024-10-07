@@ -66,7 +66,7 @@ public class TruckTelegramBot extends TelegramLongPollingBot {
                 } else {
                     commandName = update.getMessage().getCaption().trim().split(" ")[0];
                     Files.createDirectories(Path.of(filesDirectory));
-                    documentPath = filesDirectory + update.getMessage().getChatId().toString();
+                    documentPath = filesDirectory + File.separator + update.getMessage().getChatId().toString();
                     String fileId = update.getMessage().getDocument().getFileId();
                     downLoadFile(documentPath, fileId);
                 }
