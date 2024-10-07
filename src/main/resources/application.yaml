@@ -21,7 +21,7 @@ temp-files:
 
 bot:
   name: "TruckLoadingBot"
-  token: ""
+  token: "${TOKEN}"
   files:
     dir: "tg"
 
