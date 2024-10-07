@@ -34,7 +34,7 @@ public class ParcelTypeShellController {
 
 
     @ShellMethod(key = "get-parcel-type",
-    value = "Возвращает тип посылки с заданным именем")
+            value = "Возвращает тип посылки с заданным именем")
     public String getParcelType(
             @ShellOption(help = "название типа посылок") String name
     ) {

@@ -1,6 +1,5 @@
 package ru.liga.truckapp2.mapper;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;

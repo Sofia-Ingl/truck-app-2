@@ -12,7 +12,7 @@ public interface TruckLoaderService {
     /**
      * Заполнение грузовиков посылками
      *
-     * @param parcels посылки
+     * @param parcels         посылки
      * @param trucksAvailable грузовики
      * @return список заполненных грузовиков
      */
@@ -20,7 +20,6 @@ public interface TruckLoaderService {
                                      List<Truck> trucksAvailable);
 
     /**
-     *
      * @return название алгоритма
      */
     PackagingAlgorithmType getAlgorithmType();

@@ -1,6 +1,5 @@
 package ru.liga.truckapp2.service.impl;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.liga.truckapp2.exception.AppException;
@@ -10,9 +9,7 @@ import ru.liga.truckapp2.model.Truck;
 import ru.liga.truckapp2.model.inner.Coordinates;
 import ru.liga.truckapp2.model.view.LoadedTruckView;
 import ru.liga.truckapp2.service.TruckLoaderService;
-import ru.liga.truckapp2.service.TruckLoaderFactory;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 
 @Slf4j
@@ -111,7 +108,7 @@ public class SteadyTruckLoaderService implements TruckLoaderService {
 
         return trucksAvailable.stream()
                 .filter(
-                        truck->!parcelsInEveryTruck.get(truck).isEmpty()
+                        truck -> !parcelsInEveryTruck.get(truck).isEmpty()
                 ).map(truck -> new LoadedTruckView(
                         truck,
                         parcelsInEveryTruck.get(truck)

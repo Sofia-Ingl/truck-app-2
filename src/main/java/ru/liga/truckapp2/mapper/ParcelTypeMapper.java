@@ -14,14 +14,12 @@ public interface ParcelTypeMapper {
     ParcelType dtoToParcelType(ParcelTypeDto dto);
 
     /**
-     *
      * @param parcelType тип посылок
      * @return dto
      */
     ParcelTypeDto parcelTypeToDto(ParcelType parcelType);
 
     /**
-     *
      * @param parcelTypes список типов посылок
      * @return список dto
      */

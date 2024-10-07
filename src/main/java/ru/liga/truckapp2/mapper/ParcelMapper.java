@@ -12,7 +12,6 @@ public interface ParcelMapper {
     Parcel dtoToParcel(ParcelDto dto);
 
     /**
-     *
      * @param parcel посылка
      * @return dto
      */

@@ -1,6 +1,5 @@
 package ru.liga.truckapp2.service.impl;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.liga.truckapp2.exception.AppException;
@@ -10,9 +9,7 @@ import ru.liga.truckapp2.model.Truck;
 import ru.liga.truckapp2.model.inner.Coordinates;
 import ru.liga.truckapp2.model.view.LoadedTruckView;
 import ru.liga.truckapp2.service.TruckLoaderService;
-import ru.liga.truckapp2.service.TruckLoaderFactory;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -42,12 +39,12 @@ public class OptimizedTruckLoaderService implements TruckLoaderService {
 
             int nextParcelIdx = 0;
             do {
-                 nextParcelIdx = loadSuitableParcel(
-                         nextParcelIdx,
-                         truck,
-                         parcelsSorted,
-                         parcelsLoadedToCurrentTruck
-                 );
+                nextParcelIdx = loadSuitableParcel(
+                        nextParcelIdx,
+                        truck,
+                        parcelsSorted,
+                        parcelsLoadedToCurrentTruck
+                );
             } while (nextParcelIdx != -1 && !parcelsSorted.isEmpty());
 
             if (!parcelsLoadedToCurrentTruck.isEmpty()) {
@@ -71,9 +68,9 @@ public class OptimizedTruckLoaderService implements TruckLoaderService {
 
 
     private int loadSuitableParcel(int nextParcelIdx,
-                                       Truck truck,
-                                       List<Parcel> parcelsSorted,
-                                       List<Parcel> parcelsLoadedToCurrentTruck) {
+                                   Truck truck,
+                                   List<Parcel> parcelsSorted,
+                                   List<Parcel> parcelsLoadedToCurrentTruck) {
 
         for (int i = nextParcelIdx; i < parcelsSorted.size(); i++) {
 

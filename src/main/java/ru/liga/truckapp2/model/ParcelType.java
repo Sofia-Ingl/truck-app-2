@@ -1,7 +1,6 @@
 package ru.liga.truckapp2.model;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.Arrays;
 

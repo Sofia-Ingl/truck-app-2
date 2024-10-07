@@ -108,9 +108,9 @@ public class DefaultTruckService implements TruckService {
 
 
     private List<LoadedTruckDto> loadParcelsToTrucks(List<Truck> trucks,
-                                                    List<Parcel> parcels,
-                                                    PackagingAlgorithmType algorithm,
-                                                    String outputFile) {
+                                                     List<Parcel> parcels,
+                                                     PackagingAlgorithmType algorithm,
+                                                     String outputFile) {
         List<LoadedTruckDto> loadedTrucks = truckLoadingService.loadTrucks(
                 parcels,
                 trucks,

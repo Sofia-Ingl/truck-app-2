@@ -11,8 +11,8 @@ import ru.liga.truckapp2.model.Parcel;
 import ru.liga.truckapp2.model.Truck;
 import ru.liga.truckapp2.model.view.LoadedTruckView;
 import ru.liga.truckapp2.service.TruckLoaderFactory;
-import ru.liga.truckapp2.service.TruckLoadingService;
 import ru.liga.truckapp2.service.TruckLoaderService;
+import ru.liga.truckapp2.service.TruckLoadingService;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DefaultTruckLoadingService implements TruckLoadingService {
 
-//    private final Map<PackagingAlgorithmType, TruckLoader> truckLoaders;
+    //    private final Map<PackagingAlgorithmType, TruckLoader> truckLoaders;
     private final TruckLoaderFactory truckLoaderFactory;
     private final LoadedTruckMapper loadedTruckMapper;
 

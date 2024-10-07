@@ -25,7 +25,7 @@ public class TruckLoadingShellController {
 
 
     @ShellMethod(key = "load-trucks",
-    value = "Возвращает список загруженных грузовиков")
+            value = "Возвращает список загруженных грузовиков")
     public String loadTrucks(
             @ShellOption(defaultValue = "6", help = "ширина грузовика") Integer width,
             @ShellOption(defaultValue = "6", help = "высота грузовика") Integer height,
