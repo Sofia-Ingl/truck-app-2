@@ -19,3 +19,9 @@ temp-files:
   extension: json
   directory: tmp
 
+bot:
+  name: "TruckLoadingBot"
+  token: ""
+  files:
+    dir: "tg"
+
