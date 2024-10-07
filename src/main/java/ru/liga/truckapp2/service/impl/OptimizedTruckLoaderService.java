@@ -19,22 +19,12 @@ import java.util.List;
 
 @Slf4j
 @Service("optimizedTruckLoader")
-@RequiredArgsConstructor
 public class OptimizedTruckLoaderService implements TruckLoaderService {
-
-    private final TruckLoaderFactory truckLoaderFactory;
-
-    @PostConstruct
-    public void registerBean() {
-        truckLoaderFactory.register(getAlgorithmType(), this);
-        log.info("Truck loader of type {} registered", getAlgorithmType());
-    }
 
     @Override
     public PackagingAlgorithmType getAlgorithmType() {
         return PackagingAlgorithmType.OPTIMIZED;
     }
-
 
     @Override
     public List<LoadedTruckView> loadTrucks(List<Parcel> parcels, List<Truck> trucksAvailable) {

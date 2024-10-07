@@ -7,7 +7,6 @@ import java.util.Optional;
 
 public interface DocumentCommandsFactory {
 
-    void register(String tgCommandString, Command<Optional<SendDocument>> command);
     Command<Optional<SendDocument>> getCommand(String tgCommandString);
 
 }

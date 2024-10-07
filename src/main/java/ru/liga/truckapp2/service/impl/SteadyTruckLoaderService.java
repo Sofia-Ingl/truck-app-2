@@ -17,16 +17,7 @@ import java.util.*;
 
 @Slf4j
 @Service("steadyTruckLoader")
-@RequiredArgsConstructor
 public class SteadyTruckLoaderService implements TruckLoaderService {
-
-    private final TruckLoaderFactory truckLoaderFactory;
-
-    @PostConstruct
-    public void registerBean() {
-        truckLoaderFactory.register(getAlgorithmType(), this);
-        log.info("Truck loader of type {} registered", getAlgorithmType());
-    }
 
     @Override
     public PackagingAlgorithmType getAlgorithmType() {

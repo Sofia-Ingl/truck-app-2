@@ -7,11 +7,9 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import ru.liga.truckapp2.controller.telegram.command.factory.DocumentCommandsFactory;
 import ru.liga.truckapp2.dto.DefaultLoadingTaskDto;
 import ru.liga.truckapp2.service.TruckService;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.util.Optional;
 
@@ -20,15 +18,8 @@ import java.util.Optional;
 @Slf4j
 public class TruckLoadingDefaultCommand implements Command<Optional<SendDocument>> {
 
-    private final DocumentCommandsFactory documentCommandsFactory;
     private final TruckService truckService;
     private final Gson gson;
-
-    @PostConstruct
-    public void registerBean() {
-        documentCommandsFactory.register(getName(), this);
-        log.info("Document command with name '{}' registered", getName());
-    }
 
     @Override
     public String getName() {
@@ -37,7 +28,7 @@ public class TruckLoadingDefaultCommand implements Command<Optional<SendDocument
 
     @Override
     public Optional<SendDocument> apply(Update update,
-                              String documentPath
+                                        String documentPath
     ) {
 
         String message;

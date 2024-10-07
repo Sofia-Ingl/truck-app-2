@@ -22,5 +22,5 @@ bot:
   name: "TruckLoadingBot"
   token: "${TOKEN}"
   files:
-    dir: "tg"
+    directory: tg
 

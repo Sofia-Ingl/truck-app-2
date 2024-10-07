@@ -5,7 +5,5 @@ import ru.liga.truckapp2.controller.telegram.command.Command;
 
 public interface TextCommandsFactory {
 
-    void register(String tgCommandString, Command<SendMessage> command);
-
     Command<SendMessage> getCommand(String tgCommandString);
 }

@@ -30,7 +30,7 @@ public class TruckTelegramBot extends TelegramLongPollingBot {
     private String botToken;
     @Value("${bot.name}")
     private String botName;
-    @Value("${bot.files.dir}")
+    @Value("${bot.files.directory}")
     private String filesDirectory;
 
     private final String INVALID_COMMAND_MESSAGE = "Invalid command";
