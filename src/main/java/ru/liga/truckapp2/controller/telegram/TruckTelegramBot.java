@@ -105,7 +105,7 @@ public class TruckTelegramBot extends TelegramLongPollingBot {
 
         } catch (Exception e) {
             log.error("Error occurred: {}", e.getMessage());
-            sendMessage(new SendMessage(chatId, e.getMessage()));
+            sendMessage(new SendMessage(chatId, "Error occurred: " + e.getMessage()));
         }
 
     }

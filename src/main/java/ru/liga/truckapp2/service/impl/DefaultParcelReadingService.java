@@ -33,6 +33,9 @@ public class DefaultParcelReadingService implements ParcelReadingService {
         String parcelsToParse = input;
         if (fromFile) {
             log.debug("Parcels are going to be read from file '{}'", input);
+            if (input == null || input.isEmpty()) {
+                throw new AppException("No input file provided");
+            }
             parcelsToParse = readFileContent(input);
         }
         List<Parcel> parcels = readFromString(byForm, parcelsToParse);
