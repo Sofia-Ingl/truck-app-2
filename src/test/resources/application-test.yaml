@@ -11,7 +11,14 @@ spring:
       schema: test
   flyway:
     enabled: true
-    url: jdbc:postgresql://localhost:35432/truck-db
-    user: postgres
-    password: postgres
-    create-schemas: true
+
+
+temp-files:
+  extension: json
+  directory: tmp
+
+bot:
+  name: "TruckLoadingBot"
+  token: "${TOKEN}"
+  files:
+    dir: "tg"

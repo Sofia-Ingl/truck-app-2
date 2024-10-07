@@ -1,5 +1,6 @@
 package ru.liga.truckapp2.repository;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,15 +11,27 @@ import ru.liga.truckapp2.dto.ParcelTypeDto;
 import ru.liga.truckapp2.exception.AppException;
 import ru.liga.truckapp2.model.ParcelType;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@Slf4j
 @SpringBootTest
 @ActiveProfiles("test")
 class ParcelTypeJdbcRepositoryTest {
+
+    static {
+        try {
+            System.setProperty("TOKEN", Files.readString(Path.of("token.txt")));
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+    }
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -31,7 +44,7 @@ class ParcelTypeJdbcRepositoryTest {
     }
 
     @Test
-    void findByName() throws Exception {
+    void findByName() {
 
         deleteAllFromParcelTypesTable();
 
