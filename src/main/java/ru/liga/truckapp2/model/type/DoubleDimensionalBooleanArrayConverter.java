@@ -1,16 +1,14 @@
-package ru.liga.truckapp2.mapper;
+package ru.liga.truckapp2.model.type;
 
-import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
 
-@Component
-public class DefaultShapeArrayMapper implements ShapeArrayMapper {
+@Slf4j
+public class DoubleDimensionalBooleanArrayConverter  {
+    private static final String SHAPE_LINES_DELIMITER = ",";
+    private static final char SHAPE_BLANK_POSITION_SYMBOL = ' ';
+    private static final char SHAPE_FILLED_POSITION_SYMBOL = '+';
 
-    private final String SHAPE_LINES_DELIMITER = ",";
-    private final char SHAPE_BLANK_POSITION_SYMBOL = ' ';
-    private final char SHAPE_FILLED_POSITION_SYMBOL = '+';
-
-    @Override
-    public String shapeToString(boolean[][] shapeArray) {
+    public static String toString(boolean[][] shapeArray) {
         String[] shapeLines = new String[shapeArray.length];
         for (int i = 0; i < shapeArray.length; i++) {
             StringBuilder sb = new StringBuilder();
@@ -26,8 +24,8 @@ public class DefaultShapeArrayMapper implements ShapeArrayMapper {
         return String.join(SHAPE_LINES_DELIMITER, shapeLines);
     }
 
-    @Override
-    public boolean[][] stringToShape(String shapeString) {
+
+    public static boolean[][] fromString(String shapeString) {
         String[] shapeStringsArr = shapeString.split(SHAPE_LINES_DELIMITER);
         boolean[][] shape = new boolean[shapeStringsArr.length][shapeStringsArr[0].length()];
         for (int i = 0; i < shapeStringsArr.length; i++) {

@@ -1,6 +1,7 @@
 package ru.liga.truckapp2.mapper;
 
 import org.springframework.stereotype.Component;
+import ru.liga.truckapp2.dto.ParcelTypeCreateDto;
 import ru.liga.truckapp2.dto.ParcelTypeDto;
 import ru.liga.truckapp2.model.ParcelType;
 
@@ -10,6 +11,11 @@ import java.util.List;
 public class DefaultParcelTypeMapper implements ParcelTypeMapper {
 
     public ParcelType dtoToParcelType(ParcelTypeDto dto) {
+        return new ParcelType(dto.getName(), dto.getShape(), dto.getSymbol());
+    }
+
+    @Override
+    public ParcelType dtoToParcelType(ParcelTypeCreateDto dto) {
         return new ParcelType(dto.getName(), dto.getShape(), dto.getSymbol());
     }
 
