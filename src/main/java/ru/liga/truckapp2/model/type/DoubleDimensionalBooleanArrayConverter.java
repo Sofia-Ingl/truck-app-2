@@ -3,7 +3,7 @@ package ru.liga.truckapp2.model.type;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class DoubleDimensionalBooleanArrayConverter  {
+public class DoubleDimensionalBooleanArrayConverter {
     private static final String SHAPE_LINES_DELIMITER = ",";
     private static final char SHAPE_BLANK_POSITION_SYMBOL = ' ';
     private static final char SHAPE_FILLED_POSITION_SYMBOL = '+';

@@ -10,7 +10,6 @@ import ru.liga.truckapp2.model.Parcel;
 import ru.liga.truckapp2.model.ParcelType;
 import ru.liga.truckapp2.model.Truck;
 import ru.liga.truckapp2.model.view.LoadedTruckView;
-import ru.liga.truckapp2.service.TruckLoaderFactory;
 
 import java.util.List;
 

@@ -38,13 +38,13 @@ class SteadyTruckLoaderTest {
 
         ParcelType type2 = new ParcelType(
                 "2",
-                new boolean[][]{{true,true}},
+                new boolean[][]{{true, true}},
                 '2'
         );
 
         ParcelType type3 = new ParcelType(
                 "3",
-                new boolean[][]{{true,true,true}},
+                new boolean[][]{{true, true, true}},
                 '3'
         );
 
@@ -59,10 +59,10 @@ class SteadyTruckLoaderTest {
 
         assertThat(res.size()).isEqualTo(2);
 
-        assertThat(res.get(1).getTruck().getBack()[0]).isEqualTo(new char[]{'3','3','3',' ',' ',' '});
-        assertThat(res.get(1).getTruck().getBack()[1]).isEqualTo(new char[]{' ',' ',' ',' ',' ',' '});
-        assertThat(res.get(0).getTruck().getBack()[0]).isEqualTo(new char[]{'2','2','1',' ',' ',' '});
-        assertThat(res.get(0).getTruck().getBack()[1]).isEqualTo(new char[]{' ',' ',' ',' ',' ',' '});
+        assertThat(res.get(1).getTruck().getBack()[0]).isEqualTo(new char[]{'3', '3', '3', ' ', ' ', ' '});
+        assertThat(res.get(1).getTruck().getBack()[1]).isEqualTo(new char[]{' ', ' ', ' ', ' ', ' ', ' '});
+        assertThat(res.get(0).getTruck().getBack()[0]).isEqualTo(new char[]{'2', '2', '1', ' ', ' ', ' '});
+        assertThat(res.get(0).getTruck().getBack()[1]).isEqualTo(new char[]{' ', ' ', ' ', ' ', ' ', ' '});
     }
 
     @Test
@@ -74,13 +74,13 @@ class SteadyTruckLoaderTest {
 
         ParcelType typeO = new ParcelType(
                 "o",
-                new boolean[][]{{true, true, true},{true, false, true},{true, true, true}},
+                new boolean[][]{{true, true, true}, {true, false, true}, {true, true, true}},
                 'o'
         );
 
         ParcelType typeSquare = new ParcelType(
                 "square",
-                new boolean[][]{{true,true,true},{true,true,true},{true,true,true}},
+                new boolean[][]{{true, true, true}, {true, true, true}, {true, true, true}},
                 's'
         );
 
@@ -94,13 +94,13 @@ class SteadyTruckLoaderTest {
 
         assertThat(res.size()).isEqualTo(2);
 
-        assertThat(res.get(0).getTruck().getBack()[0]).isEqualTo(new char[]{'s','s','s'});
-        assertThat(res.get(0).getTruck().getBack()[1]).isEqualTo(new char[]{'s','s','s'});
-        assertThat(res.get(0).getTruck().getBack()[2]).isEqualTo(new char[]{'s','s','s'});
+        assertThat(res.get(0).getTruck().getBack()[0]).isEqualTo(new char[]{'s', 's', 's'});
+        assertThat(res.get(0).getTruck().getBack()[1]).isEqualTo(new char[]{'s', 's', 's'});
+        assertThat(res.get(0).getTruck().getBack()[2]).isEqualTo(new char[]{'s', 's', 's'});
 
-        assertThat(res.get(1).getTruck().getBack()[0]).isEqualTo(new char[]{'o','o','o'});
-        assertThat(res.get(1).getTruck().getBack()[1]).isEqualTo(new char[]{'o',' ','o'});
-        assertThat(res.get(1).getTruck().getBack()[2]).isEqualTo(new char[]{'o','o','o'});
+        assertThat(res.get(1).getTruck().getBack()[0]).isEqualTo(new char[]{'o', 'o', 'o'});
+        assertThat(res.get(1).getTruck().getBack()[1]).isEqualTo(new char[]{'o', ' ', 'o'});
+        assertThat(res.get(1).getTruck().getBack()[2]).isEqualTo(new char[]{'o', 'o', 'o'});
     }
 
     @Test
@@ -110,13 +110,13 @@ class SteadyTruckLoaderTest {
 
         ParcelType typeO = new ParcelType(
                 "o",
-                new boolean[][]{{true, true, true},{true, false, true},{true, true, true}},
+                new boolean[][]{{true, true, true}, {true, false, true}, {true, true, true}},
                 'o'
         );
 
         ParcelType typeSquare = new ParcelType(
                 "square",
-                new boolean[][]{{true,true,true},{true,true,true},{true,true,true}},
+                new boolean[][]{{true, true, true}, {true, true, true}, {true, true, true}},
                 's'
         );
 
@@ -135,7 +135,7 @@ class SteadyTruckLoaderTest {
         Truck truck1 = new Truck(5, 5);
         Truck truck2 = new Truck(5, 5);
         Truck truck3 = new Truck(5, 5);
-        List<Truck> trucks = List.of(truck1,truck2,truck3);
+        List<Truck> trucks = List.of(truck1, truck2, truck3);
 
         ParcelType type3 = new ParcelType(
                 "3",
@@ -145,7 +145,7 @@ class SteadyTruckLoaderTest {
 
         ParcelType type5 = new ParcelType(
                 "5",
-                new boolean[][]{{true,true,true,true,true}},
+                new boolean[][]{{true, true, true, true, true}},
                 '5'
         );
 
@@ -165,17 +165,17 @@ class SteadyTruckLoaderTest {
 
         assertThat(res.size()).isEqualTo(3);
 
-        assertThat(res.get(1).getTruck().getBack()[0]).isEqualTo(new char[]{'5','5','5','5','5'});
-        assertThat(res.get(1).getTruck().getBack()[1]).isEqualTo(new char[]{'3','3','3',' ',' '});
-        assertThat(res.get(1).getTruck().getBack()[2]).isEqualTo(new char[]{' ',' ',' ',' ',' '});
+        assertThat(res.get(1).getTruck().getBack()[0]).isEqualTo(new char[]{'5', '5', '5', '5', '5'});
+        assertThat(res.get(1).getTruck().getBack()[1]).isEqualTo(new char[]{'3', '3', '3', ' ', ' '});
+        assertThat(res.get(1).getTruck().getBack()[2]).isEqualTo(new char[]{' ', ' ', ' ', ' ', ' '});
 
-        assertThat(res.get(2).getTruck().getBack()[0]).isEqualTo(new char[]{'3','3','3',' ',' '});
-        assertThat(res.get(2).getTruck().getBack()[1]).isEqualTo(new char[]{'3','3','3',' ',' '});
-        assertThat(res.get(2).getTruck().getBack()[2]).isEqualTo(new char[]{' ',' ',' ',' ',' '});
+        assertThat(res.get(2).getTruck().getBack()[0]).isEqualTo(new char[]{'3', '3', '3', ' ', ' '});
+        assertThat(res.get(2).getTruck().getBack()[1]).isEqualTo(new char[]{'3', '3', '3', ' ', ' '});
+        assertThat(res.get(2).getTruck().getBack()[2]).isEqualTo(new char[]{' ', ' ', ' ', ' ', ' '});
 
-        assertThat(res.get(0).getTruck().getBack()[0]).isEqualTo(new char[]{'3','3','3',' ',' '});
-        assertThat(res.get(0).getTruck().getBack()[1]).isEqualTo(new char[]{'3','3','3',' ',' '});
-        assertThat(res.get(0).getTruck().getBack()[2]).isEqualTo(new char[]{' ',' ',' ',' ',' '});
+        assertThat(res.get(0).getTruck().getBack()[0]).isEqualTo(new char[]{'3', '3', '3', ' ', ' '});
+        assertThat(res.get(0).getTruck().getBack()[1]).isEqualTo(new char[]{'3', '3', '3', ' ', ' '});
+        assertThat(res.get(0).getTruck().getBack()[2]).isEqualTo(new char[]{' ', ' ', ' ', ' ', ' '});
     }
 
     @Test
