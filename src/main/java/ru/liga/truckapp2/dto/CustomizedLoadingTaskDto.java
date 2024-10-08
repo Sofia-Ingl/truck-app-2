@@ -12,16 +12,16 @@ public class CustomizedLoadingTaskDto {
     @NotNull
     private PackagingAlgorithmType algorithm;
     @NotNull
-    Boolean truckShapesFromFile;
+    private Boolean truckShapesFromFile;
     @NotNull
     private Boolean parcelsFromFile;
     @NotNull
     private Boolean parcelsByForm;
     @NotNull
-    String truckShapesIn;
+    private String truckShapesIn;
     @NotBlank
     private String parcelIn;
     @NotBlank
-    String out;
+    private String out;
 
 }

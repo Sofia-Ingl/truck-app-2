@@ -39,6 +39,8 @@ public class TruckLoadingCustomizedCommand implements Command<Optional<SendDocum
         }
         String[] messageParts = message.split(" ", 2);
 
+        log.debug("Message for load trucks customized command: {}", message);
+
         if (messageParts.length != 2) {
             return Optional.empty();
         }

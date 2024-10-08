@@ -7,6 +7,10 @@ import java.util.Optional;
 
 public interface DocumentCommandsFactory {
 
+    /**
+     * @param tgCommandString название команды, отправленное пользователем в тг
+     * @return команда, возвращающая документ, или null, если такой документной команды нет
+     */
     Command<Optional<SendDocument>> getCommand(String tgCommandString);
 
 }

@@ -28,6 +28,6 @@ public class DefaultLoadingTaskDto {
     @NotBlank
     private String parcelIn;
     @NotBlank
-    String out;
+    private String out;
 
 }

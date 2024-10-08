@@ -25,6 +25,8 @@ public class ParcelTypeDeleteCommand implements Command<SendMessage> {
         String message = update.getMessage().getText().trim();
         String[] messageParts = message.split(" ", 2);
 
+        log.debug("Message for delete parcel type command: {}", message);
+
         if (messageParts.length != 2) {
             return new SendMessage(update.getMessage().getChatId().toString(),
                     "Invalid usage: try '/delete_parcel_type typeName'"

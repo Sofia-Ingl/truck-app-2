@@ -30,6 +30,8 @@ public class ParcelTypeGetCommand implements Command<SendMessage> {
         String message = update.getMessage().getText().trim();
         String[] messageParts = message.split(" ", 2);
 
+        log.debug("Message for get parcel type command: {}", message);
+
         if (messageParts.length != 2) {
             return new SendMessage(update.getMessage().getChatId().toString(),
                     "Invalid usage: try '/get_parcel_type typeName'"

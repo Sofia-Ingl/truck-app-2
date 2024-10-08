@@ -98,6 +98,10 @@ public class TruckTelegramBot extends TelegramLongPollingBot {
                     log.debug("No command found for query {}", update.getMessage().getText());
                 }
 
+                if (documentPath != null) {
+                    Files.delete(Path.of(documentPath));
+                }
+
             } else {
                 sendMessage(new SendMessage(chatId, INVALID_COMMAND_MESSAGE));
                 log.debug("No command found for query {}", update.getMessage().getText());

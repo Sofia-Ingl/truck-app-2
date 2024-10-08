@@ -30,6 +30,8 @@ public class ParcelTypeUpdateCommand implements Command<SendMessage> {
 
         String message = update.getMessage().getText().trim();
 
+        log.debug("Message for update parcel type command: {}", message);
+
         int jsonStartIdx = message.indexOf('{');
 
         if (jsonStartIdx == -1) {

@@ -27,6 +27,7 @@ public class TruckScanningCommand implements Command<SendMessage> {
 
     @Override
     public SendMessage apply(Update update, String documentPath) {
+
         List<CountedTruckDto> countedTruckDtoList =
                 truckService.countParcelsInTrucks(documentPath);
         return new SendMessage(update.getMessage().getChatId().toString(),
