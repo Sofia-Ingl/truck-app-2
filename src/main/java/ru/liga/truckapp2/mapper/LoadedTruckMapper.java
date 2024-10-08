@@ -6,7 +6,6 @@ import ru.liga.truckapp2.model.view.LoadedTruckView;
 public interface LoadedTruckMapper {
 
     /**
-     *
      * @param loadedTruckView загруженный грузовик
      * @return dto
      */

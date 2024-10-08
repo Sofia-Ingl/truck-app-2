@@ -1,6 +1,9 @@
-package ru.liga.truckapp2.util;
+package ru.liga.truckapp2.service.impl;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import ru.liga.truckapp2.exception.AppException;
 import ru.liga.truckapp2.model.PackagingAlgorithmType;
 import ru.liga.truckapp2.model.Parcel;
@@ -13,7 +16,12 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@SpringBootTest(classes = {DefaultTruckLoaderFactory.class, OptimizedTruckLoaderService.class})
+@ActiveProfiles("test")
 class OptimizedTruckLoaderTest {
+
+    @Autowired
+    private OptimizedTruckLoaderService optimizedTruckLoader;
 
     @Test
     void loadTrucks() {
@@ -30,13 +38,13 @@ class OptimizedTruckLoaderTest {
 
         ParcelType type2 = new ParcelType(
                 "2",
-                new boolean[][]{{true,true}},
+                new boolean[][]{{true, true}},
                 '2'
         );
 
         ParcelType type3 = new ParcelType(
                 "3",
-                new boolean[][]{{true,true,true}},
+                new boolean[][]{{true, true, true}},
                 '3'
         );
 
@@ -44,14 +52,14 @@ class OptimizedTruckLoaderTest {
                 new Parcel(type1), new Parcel(type2), new Parcel(type3)
         );
 
-        OptimizedTruckLoader optimizedTruckLoader = new OptimizedTruckLoader();
+
         List<LoadedTruckView> res = optimizedTruckLoader.loadTrucks(
                 parcels, trucks
         );
 
         assertThat(res.size()).isEqualTo(1);
-        assertThat(res.get(0).getTruck().getBack()[0]).isEqualTo(new char[]{'3','3','3','2','2','1'});
-        assertThat(res.get(0).getTruck().getBack()[1]).isEqualTo(new char[]{' ',' ',' ',' ',' ',' '});
+        assertThat(res.get(0).getTruck().getBack()[0]).isEqualTo(new char[]{'3', '3', '3', '2', '2', '1'});
+        assertThat(res.get(0).getTruck().getBack()[1]).isEqualTo(new char[]{' ', ' ', ' ', ' ', ' ', ' '});
     }
 
     @Test
@@ -63,7 +71,7 @@ class OptimizedTruckLoaderTest {
 
         ParcelType typeO = new ParcelType(
                 "o",
-                new boolean[][]{{true, true, true},{true, false, true},{true, true, true}},
+                new boolean[][]{{true, true, true}, {true, false, true}, {true, true, true}},
                 'o'
         );
 
@@ -75,7 +83,7 @@ class OptimizedTruckLoaderTest {
 
         ParcelType typeSquare = new ParcelType(
                 "square",
-                new boolean[][]{{true,true,true},{true,true,true},{true,true,true}},
+                new boolean[][]{{true, true, true}, {true, true, true}, {true, true, true}},
                 's'
         );
 
@@ -83,16 +91,15 @@ class OptimizedTruckLoaderTest {
                 new Parcel(typeO), new Parcel(typeSquare), new Parcel(typePoint)
         );
 
-        OptimizedTruckLoader optimizedTruckLoader = new OptimizedTruckLoader();
         List<LoadedTruckView> res = optimizedTruckLoader.loadTrucks(
                 parcels, trucks
         );
 
         assertThat(res.size()).isEqualTo(1);
-        assertThat(res.get(0).getTruck().getBack()[0]).isEqualTo(new char[]{'s','s','s','o','o','o'});
-        assertThat(res.get(0).getTruck().getBack()[1]).isEqualTo(new char[]{'s','s','s','o','p','o'});
-        assertThat(res.get(0).getTruck().getBack()[2]).isEqualTo(new char[]{'s','s','s','o','o','o'});
-        assertThat(res.get(0).getTruck().getBack()[3]).isEqualTo(new char[]{' ',' ',' ',' ',' ',' '});
+        assertThat(res.get(0).getTruck().getBack()[0]).isEqualTo(new char[]{'s', 's', 's', 'o', 'o', 'o'});
+        assertThat(res.get(0).getTruck().getBack()[1]).isEqualTo(new char[]{'s', 's', 's', 'o', 'p', 'o'});
+        assertThat(res.get(0).getTruck().getBack()[2]).isEqualTo(new char[]{'s', 's', 's', 'o', 'o', 'o'});
+        assertThat(res.get(0).getTruck().getBack()[3]).isEqualTo(new char[]{' ', ' ', ' ', ' ', ' ', ' '});
     }
 
     @Test
@@ -102,13 +109,13 @@ class OptimizedTruckLoaderTest {
 
         ParcelType typeO = new ParcelType(
                 "o",
-                new boolean[][]{{true, true, true},{true, false, true},{true, true, true}},
+                new boolean[][]{{true, true, true}, {true, false, true}, {true, true, true}},
                 'o'
         );
 
         ParcelType typeSquare = new ParcelType(
                 "square",
-                new boolean[][]{{true,true,true},{true,true,true},{true,true,true}},
+                new boolean[][]{{true, true, true}, {true, true, true}, {true, true, true}},
                 's'
         );
 
@@ -116,7 +123,6 @@ class OptimizedTruckLoaderTest {
                 new Parcel(typeO), new Parcel(typeSquare)
         );
 
-        OptimizedTruckLoader optimizedTruckLoader = new OptimizedTruckLoader();
         assertThatThrownBy(() ->
                 optimizedTruckLoader.loadTrucks(parcels, trucks)
         ).isInstanceOf(AppException.class);
@@ -125,7 +131,6 @@ class OptimizedTruckLoaderTest {
     @Test
     void getAlgorithmType() {
 
-        OptimizedTruckLoader optimizedTruckLoader = new OptimizedTruckLoader();
         assertThat(optimizedTruckLoader.getAlgorithmType()).isEqualTo(PackagingAlgorithmType.OPTIMIZED);
 
     }

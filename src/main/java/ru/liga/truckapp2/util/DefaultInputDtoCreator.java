@@ -1,6 +1,7 @@
 package ru.liga.truckapp2.util;
 
 import org.springframework.stereotype.Component;
+import ru.liga.truckapp2.dto.ParcelTypeCreateDto;
 import ru.liga.truckapp2.dto.ParcelTypeDto;
 import ru.liga.truckapp2.exception.AppException;
 
@@ -19,11 +20,11 @@ public class DefaultInputDtoCreator implements InputDtoCreator {
                 .build();
     }
 
-    public ParcelTypeDto makeCreateDto(String name,
-                                       String shape,
-                                       Character symbol) {
+    public ParcelTypeCreateDto makeCreateDto(String name,
+                                             String shape,
+                                             Character symbol) {
 
-        return new ParcelTypeDto(
+        return new ParcelTypeCreateDto(
                 name.trim(),
                 getShapeFromString(shape),
                 symbol

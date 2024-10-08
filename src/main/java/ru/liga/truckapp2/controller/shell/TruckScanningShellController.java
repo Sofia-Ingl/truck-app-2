@@ -1,4 +1,4 @@
-package ru.liga.truckapp2.controller;
+package ru.liga.truckapp2.controller.shell;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellCommandGroup;
@@ -19,14 +19,9 @@ public class TruckScanningShellController {
     private final TruckService truckService;
     private final Stringifier stringifier;
 
-    /**
-     *
-     * @param file путь ко входному файлу
-     * @return грузовики с подсчитанными посылками
-     */
-    @ShellMethod(key = "scan-trucks")
+    @ShellMethod(key = "scan-trucks", value = "Возвращает грузовики с подсчитанными посылками")
     public String scanTrucks(
-            @ShellOption String file
+            @ShellOption(help = "путь ко входному файлу") String file
     ) {
         List<CountedTruckDto> scannedTrucks = truckService.countParcelsInTrucks(file);
         return stringifier.stringifyCountedTrucks(scannedTrucks);

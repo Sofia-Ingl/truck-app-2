@@ -1,19 +1,25 @@
-package ru.liga.truckapp2.util;
+package ru.liga.truckapp2.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import ru.liga.truckapp2.exception.AppException;
 import ru.liga.truckapp2.model.PackagingAlgorithmType;
 import ru.liga.truckapp2.model.Parcel;
 import ru.liga.truckapp2.model.Truck;
 import ru.liga.truckapp2.model.inner.Coordinates;
 import ru.liga.truckapp2.model.view.LoadedTruckView;
+import ru.liga.truckapp2.service.TruckLoaderService;
 
 import java.util.*;
 
 @Slf4j
-@Component("steadyTruckLoader")
-public class SteadyTruckLoader implements TruckLoader {
+@Service("steadyTruckLoader")
+public class SteadyTruckLoaderService implements TruckLoaderService {
+
+    @Override
+    public PackagingAlgorithmType getAlgorithmType() {
+        return PackagingAlgorithmType.STEADY;
+    }
 
     @Override
     public List<LoadedTruckView> loadTrucks(List<Parcel> parcels, List<Truck> trucksAvailable) {
@@ -102,16 +108,11 @@ public class SteadyTruckLoader implements TruckLoader {
 
         return trucksAvailable.stream()
                 .filter(
-                        truck->!parcelsInEveryTruck.get(truck).isEmpty()
+                        truck -> !parcelsInEveryTruck.get(truck).isEmpty()
                 ).map(truck -> new LoadedTruckView(
                         truck,
                         parcelsInEveryTruck.get(truck)
                 )).toList();
-    }
-
-    @Override
-    public PackagingAlgorithmType getAlgorithmType() {
-        return PackagingAlgorithmType.STEADY;
     }
 
 

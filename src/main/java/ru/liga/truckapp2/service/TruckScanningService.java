@@ -8,7 +8,6 @@ import java.util.List;
 public interface TruckScanningService {
 
     /**
-     *
      * @param loadedTrucks загруженные грузовики
      * @return грузовики с посчитанными посылками
      */
