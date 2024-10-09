@@ -7,9 +7,11 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import ru.liga.truckapp2.dto.CustomizedLoadingTaskDto;
+import ru.liga.truckapp2.dto.LoadedTruckDto;
 import ru.liga.truckapp2.service.TruckService;
 
 import java.io.File;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -37,15 +39,13 @@ public class TruckLoadingCustomizedCommand implements Command<Optional<SendDocum
         if (task.getTruckShapesFromFile()) {
             return Optional.empty();
         }
-        truckService.loadParcelsWithTruckSizesCustomized(
-                false,
-                task.getTruckShapesIn(),
-                task.getParcelsFromFile(),
-                task.getParcelsByForm(),
-                (task.getParcelsFromFile()) ? documentPath : task.getParcelIn(),
-                task.getAlgorithm(),
-                task.getOut()
-        );
+
+        task.setTruckShapesFromFile(false);
+        if (task.getParcelsFromFile()) {
+            task.setParcelIn(documentPath);
+        }
+
+        truckService.loadParcels(task);
 
         File file = new File(task.getOut());
         return Optional.of(SendDocument.builder()

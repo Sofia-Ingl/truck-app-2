@@ -33,17 +33,13 @@ public class TruckLoadingDefaultCommand implements Command<Optional<SendDocument
         }
         String jsonLoadingTask = textArguments.trim();
         DefaultLoadingTaskDto task = gson.fromJson(jsonLoadingTask, DefaultLoadingTaskDto.class);
-        truckService.loadParcels(
-                task.getWidth(),
-                task.getHeight(),
-                task.getQuantity(),
-                task.getParcelsFromFile(),
-                task.getParcelsByForm(),
-                (task.getParcelsFromFile()) ? documentPath : task.getParcelIn(),
-                task.getAlgorithm(),
-                task.getOut()
-        );
+
+        if (task.getParcelsFromFile()) {
+            task.setParcelIn(documentPath);
+        }
+        truckService.loadParcels(task);
         File file = new File(task.getOut());
+
         return Optional.of(SendDocument.builder()
                 .chatId(chatId)
                 .caption("File with loaded trucks")

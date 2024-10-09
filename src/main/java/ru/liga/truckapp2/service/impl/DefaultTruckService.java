@@ -3,9 +3,7 @@ package ru.liga.truckapp2.service.impl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.liga.truckapp2.dto.CountedTruckDto;
-import ru.liga.truckapp2.dto.LoadedTruckDto;
-import ru.liga.truckapp2.dto.SizeDto;
+import ru.liga.truckapp2.dto.*;
 import ru.liga.truckapp2.exception.AppException;
 import ru.liga.truckapp2.model.PackagingAlgorithmType;
 import ru.liga.truckapp2.model.Parcel;
@@ -40,51 +38,39 @@ public class DefaultTruckService implements TruckService {
         return truckScanningService.countParcelsInTrucks(loadedTrucks);
     }
 
-    @Override
-    public List<LoadedTruckDto> loadParcels(Integer width,
-                                            Integer height,
-                                            Integer quantity,
-                                            Boolean parcelsFromFile,
-                                            Boolean parcelsByForm,
-                                            String parcelIn,
-                                            PackagingAlgorithmType algorithm,
-                                            String out) {
 
-        List<Truck> availableTrucks = createTrucks(width, height, quantity);
+    @Override
+    public List<LoadedTruckDto> loadParcels(DefaultLoadingTaskDto loadingTask) {
+        List<Truck> availableTrucks = createTrucks(loadingTask.getWidth(), loadingTask.getHeight(), loadingTask.getQuantity());
         log.debug("Available trucks: {}", availableTrucks);
-        List<Parcel> parcelsToLoad = parcelReadingService.readParcels(parcelsFromFile, parcelsByForm, parcelIn);
+        List<Parcel> parcelsToLoad = parcelReadingService.readParcels(loadingTask.getParcelsFromFile(), loadingTask.getParcelsByForm(), loadingTask.getParcelIn());
         log.debug("Parcels to load: {}", parcelsToLoad);
         return loadParcelsToTrucks(
                 availableTrucks,
                 parcelsToLoad,
-                algorithm,
-                out
+                loadingTask.getAlgorithm(),
+                loadingTask.getOut()
         );
     }
 
     @Override
-    public List<LoadedTruckDto> loadParcelsWithTruckSizesCustomized(Boolean truckShapesFromFile,
-                                                                    String truckShapesIn,
-                                                                    Boolean parcelsFromFile,
-                                                                    Boolean parcelsByForm,
-                                                                    String parcelIn,
-                                                                    PackagingAlgorithmType algorithm,
-                                                                    String out) {
-
+    public List<LoadedTruckDto> loadParcels(CustomizedLoadingTaskDto loadingTask) {
         List<Truck> availableTrucks = createTrucksCustomized(
-                truckShapesFromFile,
-                truckShapesIn
+                loadingTask.getTruckShapesFromFile(),
+                loadingTask.getTruckShapesIn()
         );
         log.debug("Available trucks: {}", availableTrucks);
-        List<Parcel> parcelsToLoad = parcelReadingService.readParcels(parcelsFromFile, parcelsByForm, parcelIn);
+        List<Parcel> parcelsToLoad = parcelReadingService.readParcels(loadingTask.getParcelsFromFile(), loadingTask.getParcelsByForm(), loadingTask.getParcelIn());
         log.debug("Parcels to load: {}", parcelsToLoad);
         return loadParcelsToTrucks(
                 availableTrucks,
                 parcelsToLoad,
-                algorithm,
-                out
+                loadingTask.getAlgorithm(),
+                loadingTask.getOut()
         );
     }
+
+
 
     private List<Truck> createTrucks(Integer width, Integer height, Integer quantity) {
         List<Truck> trucks = new ArrayList<>();
