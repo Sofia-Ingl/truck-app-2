@@ -1,6 +1,26 @@
 spring:
   application:
     name: truck-app-2
+  datasource:
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:35432/truck-db
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      schema: truck
+  flyway:
+    enabled: true
+    create-schemas: true
+    default-schema: truck
+    schemas: truck, test
 
-parcel:
-  storage: src/main/resources/storage/parcels.json
+temp-files:
+  extension: json
+  directory: tmp
+
+bot:
+  name: "TruckLoadingBot"
+  token: "${TOKEN}"
+  files:
+    directory: tg
+

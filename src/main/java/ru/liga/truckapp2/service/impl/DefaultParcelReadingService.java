@@ -11,8 +11,8 @@ import ru.liga.truckapp2.service.ParcelReadingService;
 import ru.liga.truckapp2.service.ParcelTypeService;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -30,21 +30,35 @@ public class DefaultParcelReadingService implements ParcelReadingService {
 
     @Override
     public List<Parcel> readParcels(boolean fromFile, boolean byForm, String input) {
-        List<Parcel> parcels;
+        String parcelsToParse = input;
         if (fromFile) {
-            parcels = readFromFile(byForm, input);
-        } else {
-            parcels = readFromStringByName(input);
+            log.debug("Parcels are going to be read from file '{}'", input);
+            if (input == null || input.isEmpty()) {
+                throw new AppException("No input file provided");
+            }
+            parcelsToParse = readFileContent(input);
         }
+        List<Parcel> parcels = readFromString(byForm, parcelsToParse);
         log.debug("Parcels read: {}", parcels);
         return parcels;
     }
 
-    private List<Parcel> readFromFile(Boolean byForm, String input) {
-        if (!byForm) {
-            return readFromFileByName(input);
+
+    private String readFileContent(String fileName) {
+        try {
+            return Files.readString(Path.of(fileName));
+        } catch (IOException e) {
+            throw new AppException("IOException occurred while reading file '" + fileName + "': " + e.getMessage());
         }
-        return readFromFileByForm(input);
+
+    }
+
+    private List<Parcel> readFromString(boolean byForm, String input) {
+        if (byForm) {
+            return readFromStringByForm(input);
+        } else {
+            return readFromStringByName(input.replace("\n", PARCEL_NAME_DELIMITER));
+        }
     }
 
     private List<Parcel> readFromStringByName(String input) {
@@ -63,25 +77,9 @@ public class DefaultParcelReadingService implements ParcelReadingService {
                 .toList();
     }
 
-    private List<Parcel> readFromFileByName(String fileName) {
-        try {
-            String namesString = String.join(
-                    PARCEL_NAME_DELIMITER,
-                    Files.readAllLines(Path.of(fileName)).stream()
-                            .filter(l -> !l.isEmpty())
-                            .toList()
-            );
-            log.debug("Names string read from file '{}': {}", fileName, namesString);
-            return readFromStringByName(namesString);
-        } catch (IOException e) {
-            throw new AppException("IOException occurred while reading parcel names file '" +
-                    fileName + "': " + e.getMessage());
-        }
-    }
+    private List<Parcel> readFromStringByForm(String parcelsToParse) {
 
-    private List<Parcel> readFromFileByForm(String fileName) {
-
-        try (BufferedReader bufferedParcelReader = new BufferedReader(new FileReader(fileName))) {
+        try (BufferedReader bufferedParcelReader = new BufferedReader(new StringReader(parcelsToParse))) {
 
             List<Parcel> parcels = new ArrayList<>();
             List<String> currentParcel = new ArrayList<>();
@@ -108,17 +106,16 @@ public class DefaultParcelReadingService implements ParcelReadingService {
                 log.debug("Parcel extracted: {}", parcel);
                 parcels.add(parcel);
             }
-            log.debug("Parcels read from file '{}' by form: {}", fileName, parcels);
             return parcels;
 
 
         } catch (IOException e) {
-            throw new RuntimeException("IOException occurred while reading parcel file '"
-                    + fileName + "': " + e.getMessage());
+            throw new RuntimeException("IOException occurred while reading parcels by shape: " + e.getMessage());
         }
 
 
     }
+
 
     private Parcel extractParcel(List<String> parcelLines) {
         ParcelDto parcelExtractedWithoutName = extractParcelWithoutName(parcelLines);

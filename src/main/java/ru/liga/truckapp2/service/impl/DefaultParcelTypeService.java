@@ -2,6 +2,7 @@ package ru.liga.truckapp2.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.liga.truckapp2.dto.ParcelTypeCreateDto;
 import ru.liga.truckapp2.dto.ParcelTypeDto;
 import ru.liga.truckapp2.model.ParcelType;
 import ru.liga.truckapp2.repository.ParcelTypeRepository;
@@ -29,7 +30,7 @@ public class DefaultParcelTypeService implements ParcelTypeService {
         return parcelTypeRepository.findByShapeAndSymbol(shape, symbol);
     }
 
-    public ParcelType create(ParcelTypeDto createDto) {
+    public ParcelType create(ParcelTypeCreateDto createDto) {
         return parcelTypeRepository.save(createDto);
     }
 

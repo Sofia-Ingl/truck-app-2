@@ -1,7 +1,10 @@
 package ru.liga.truckapp2.service.impl;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import ru.liga.truckapp2.ArrayMatcher;
 import ru.liga.truckapp2.model.Parcel;
 import ru.liga.truckapp2.model.ParcelType;
@@ -16,41 +19,29 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
+@SpringBootTest(classes = {DefaultParcelReadingService.class})
+@ActiveProfiles("test")
 class DefaultParcelReadingServiceTest {
+
+    @MockBean
+    private ParcelTypeService parcelTypeServiceMock;
+
+    @Autowired
+    private DefaultParcelReadingService parcelReadingService;
 
     @Test
     void readParcelsFromString() {
 
-        ParcelTypeService parcelTypeServiceMock = Mockito.mock(ParcelTypeService.class);
+        ParcelType type1 = new ParcelType("1", new boolean[][]{{true}}, '1');
 
-        ParcelType type1 = new ParcelType(
-                "1",
-                new boolean[][]{{true}},
-                '1'
-        );
+        ParcelType type2 = new ParcelType("2", new boolean[][]{{true, true}}, '2');
 
-        ParcelType type2 = new ParcelType(
-                "2",
-                new boolean[][]{{true,true}},
-                '2'
-        );
+        when(parcelTypeServiceMock.getByName(type1.getName())).thenReturn(Optional.of(type1));
+        when(parcelTypeServiceMock.getByName(type2.getName())).thenReturn(Optional.of(type2));
 
-        Mockito.when(parcelTypeServiceMock.getByName(type1.getName())).thenReturn(Optional.of(type1));
-        Mockito.when(parcelTypeServiceMock.getByName(type2.getName())).thenReturn(Optional.of(type2));
-
-        Mockito.when(parcelTypeServiceMock.getByShapeAndSymbol(type1.getShape(), type1.getSymbol())).thenReturn(Optional.of(type1));
-        Mockito.when(parcelTypeServiceMock.getByShapeAndSymbol(type2.getShape(), type2.getSymbol())).thenReturn(Optional.of(type2));
-
-        DefaultParcelReadingService parcelReadingService = new DefaultParcelReadingService(
-                parcelTypeServiceMock
-        );
-
-        List<Parcel> parcels = parcelReadingService.readParcels(
-                false,
-                false,
-                "1,2,2,2"
-        );
+        List<Parcel> parcels = parcelReadingService.readParcels(false, false, "1,2,2,2");
 
         assertThat(parcels.size()).isEqualTo(4);
         assertThat(parcels.get(0).getType()).isEqualTo(type1);
@@ -64,30 +55,12 @@ class DefaultParcelReadingServiceTest {
     @Test
     void readParcelsFromFileByNames() throws IOException {
 
-        ParcelTypeService parcelTypeServiceMock = Mockito.mock(ParcelTypeService.class);
+        ParcelType type1 = new ParcelType("1", new boolean[][]{{true}}, '1');
 
-        ParcelType type1 = new ParcelType(
-                "1",
-                new boolean[][]{{true}},
-                '1'
-        );
+        ParcelType type2 = new ParcelType("2", new boolean[][]{{true, true}}, '2');
 
-        ParcelType type2 = new ParcelType(
-                "2",
-                new boolean[][]{{true,true}},
-                '2'
-        );
-
-        Mockito.when(parcelTypeServiceMock.getByName(type1.getName())).thenReturn(Optional.of(type1));
-        Mockito.when(parcelTypeServiceMock.getByName(type2.getName())).thenReturn(Optional.of(type2));
-
-        Mockito.when(parcelTypeServiceMock.getByShapeAndSymbol(type1.getShape(), type1.getSymbol())).thenReturn(Optional.of(type1));
-        Mockito.when(parcelTypeServiceMock.getByShapeAndSymbol(type2.getShape(), type2.getSymbol())).thenReturn(Optional.of(type2));
-
-        DefaultParcelReadingService parcelReadingService = new DefaultParcelReadingService(
-                parcelTypeServiceMock
-        );
-
+        when(parcelTypeServiceMock.getByName(type1.getName())).thenReturn(Optional.of(type1));
+        when(parcelTypeServiceMock.getByName(type2.getName())).thenReturn(Optional.of(type2));
 
         String fileName = "src\\test\\resources\\parcel-reading-service-test.txt";
         Path path = Path.of(fileName);
@@ -97,11 +70,7 @@ class DefaultParcelReadingServiceTest {
                 """;
         Files.writeString(path, preparedParcelTypes);
 
-        List<Parcel> parcels = parcelReadingService.readParcels(
-                true,
-                false,
-                fileName
-        );
+        List<Parcel> parcels = parcelReadingService.readParcels(true, false, fileName);
 
         assertThat(parcels.size()).isEqualTo(4);
         assertThat(parcels.get(0).getType()).isEqualTo(type1);
@@ -115,37 +84,18 @@ class DefaultParcelReadingServiceTest {
     @Test
     void readParcelsFromFileByShapes() throws IOException {
 
-        ParcelTypeService parcelTypeServiceMock = Mockito.mock(ParcelTypeService.class);
+        ParcelType type1 = new ParcelType("1", new boolean[][]{{true}}, '1');
 
-        ParcelType type1 = new ParcelType(
-                "1",
-                new boolean[][]{{true}},
-                '1'
-        );
+        ParcelType type2 = new ParcelType("2", new boolean[][]{{true, true}}, '2');
 
-        ParcelType type2 = new ParcelType(
-                "2",
-                new boolean[][]{{true,true}},
-                '2'
-        );
+        when(parcelTypeServiceMock.getByName(type1.getName())).thenReturn(Optional.of(type1));
+        when(parcelTypeServiceMock.getByName(type2.getName())).thenReturn(Optional.of(type2));
 
-        Mockito.when(parcelTypeServiceMock.getByName(type1.getName())).thenReturn(Optional.of(type1));
-        Mockito.when(parcelTypeServiceMock.getByName(type2.getName())).thenReturn(Optional.of(type2));
+        when(parcelTypeServiceMock.getByShapeAndSymbol(argThat(new ArrayMatcher(type1.getShape())),
+                eq(type1.getSymbol()))).thenReturn(Optional.of(type1));
 
-        Mockito.when(parcelTypeServiceMock.getByShapeAndSymbol(
-                argThat(new ArrayMatcher(type1.getShape())),
-                eq(type1.getSymbol()))
-        ).thenReturn(Optional.of(type1));
-
-        Mockito.when(parcelTypeServiceMock.getByShapeAndSymbol(
-                argThat(new ArrayMatcher(type2.getShape())),
-                eq(type2.getSymbol()))
-        ).thenReturn(Optional.of(type2));
-
-        DefaultParcelReadingService parcelReadingService = new DefaultParcelReadingService(
-                parcelTypeServiceMock
-        );
-
+        when(parcelTypeServiceMock.getByShapeAndSymbol(argThat(new ArrayMatcher(type2.getShape())),
+                eq(type2.getSymbol()))).thenReturn(Optional.of(type2));
 
         String fileName = "src\\test\\resources\\parcel-reading-service-test.txt";
         Path path = Path.of(fileName);
@@ -160,11 +110,7 @@ class DefaultParcelReadingServiceTest {
                 """;
         Files.writeString(path, preparedParcelTypes);
 
-        List<Parcel> parcels = parcelReadingService.readParcels(
-                true,
-                true,
-                fileName
-        );
+        List<Parcel> parcels = parcelReadingService.readParcels(true, true, fileName);
 
         assertThat(parcels.size()).isEqualTo(4);
         assertThat(parcels.get(0).getType()).isEqualTo(type1);
@@ -173,7 +119,6 @@ class DefaultParcelReadingServiceTest {
         assertThat(parcels.get(3).getType()).isEqualTo(type1);
 
     }
-
 
 
 }

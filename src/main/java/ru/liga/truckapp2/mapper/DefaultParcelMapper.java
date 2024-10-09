@@ -22,7 +22,7 @@ public class DefaultParcelMapper implements ParcelMapper {
         for (int i = 0; i < parcelHeight; i++) {
             System.arraycopy(parcel.getType().getShape()[i], 0, shape[i], 0, parcelWidth);
         }
-       return new ParcelDto(
+        return new ParcelDto(
                 parcel.getType().getName(),
                 shape,
                 parcel.getType().getSymbol()

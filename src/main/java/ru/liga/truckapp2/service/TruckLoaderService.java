@@ -1,4 +1,4 @@
-package ru.liga.truckapp2.util;
+package ru.liga.truckapp2.service;
 
 import ru.liga.truckapp2.model.PackagingAlgorithmType;
 import ru.liga.truckapp2.model.Parcel;
@@ -7,12 +7,12 @@ import ru.liga.truckapp2.model.view.LoadedTruckView;
 
 import java.util.List;
 
-public interface TruckLoader {
+public interface TruckLoaderService {
 
     /**
      * Заполнение грузовиков посылками
      *
-     * @param parcels посылки
+     * @param parcels         посылки
      * @param trucksAvailable грузовики
      * @return список заполненных грузовиков
      */
@@ -20,9 +20,9 @@ public interface TruckLoader {
                                      List<Truck> trucksAvailable);
 
     /**
-     *
      * @return название алгоритма
      */
     PackagingAlgorithmType getAlgorithmType();
+
 
 }

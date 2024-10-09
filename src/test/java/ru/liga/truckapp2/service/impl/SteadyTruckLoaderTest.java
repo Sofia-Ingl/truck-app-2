@@ -1,6 +1,9 @@
-package ru.liga.truckapp2.util;
+package ru.liga.truckapp2.service.impl;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import ru.liga.truckapp2.exception.AppException;
 import ru.liga.truckapp2.model.PackagingAlgorithmType;
 import ru.liga.truckapp2.model.Parcel;
@@ -13,7 +16,12 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@SpringBootTest(classes = {DefaultTruckLoaderFactory.class, SteadyTruckLoaderService.class})
+@ActiveProfiles("test")
 class SteadyTruckLoaderTest {
+
+    @Autowired
+    private SteadyTruckLoaderService steadyTruckLoader;
 
     @Test
     void loadTrucks() {
@@ -44,7 +52,7 @@ class SteadyTruckLoaderTest {
                 new Parcel(type1), new Parcel(type2), new Parcel(type3)
         );
 
-        SteadyTruckLoader steadyTruckLoader = new SteadyTruckLoader();
+
         List<LoadedTruckView> res = steadyTruckLoader.loadTrucks(
                 parcels, trucks
         );
@@ -80,7 +88,6 @@ class SteadyTruckLoaderTest {
                 new Parcel(typeO), new Parcel(typeSquare)
         );
 
-        SteadyTruckLoader steadyTruckLoader = new SteadyTruckLoader();
         List<LoadedTruckView> res = steadyTruckLoader.loadTrucks(
                 parcels, trucks
         );
@@ -117,7 +124,6 @@ class SteadyTruckLoaderTest {
                 new Parcel(typeO), new Parcel(typeSquare)
         );
 
-        SteadyTruckLoader steadyTruckLoader = new SteadyTruckLoader();
         assertThatThrownBy(() ->
                 steadyTruckLoader.loadTrucks(parcels, trucks)
         ).isInstanceOf(AppException.class);
@@ -152,7 +158,6 @@ class SteadyTruckLoaderTest {
                 new Parcel(type3)
         );
 
-        SteadyTruckLoader steadyTruckLoader = new SteadyTruckLoader();
 
         List<LoadedTruckView> res = steadyTruckLoader.loadTrucks(
                 parcels, trucks
@@ -176,7 +181,6 @@ class SteadyTruckLoaderTest {
     @Test
     void getAlgorithmType() {
 
-        SteadyTruckLoader steadyTruckLoader = new SteadyTruckLoader();
         assertThat(steadyTruckLoader.getAlgorithmType()).isEqualTo(PackagingAlgorithmType.STEADY);
 
     }

@@ -15,19 +15,19 @@
                 <Pattern>%d %p [%t] %c{2}: %m%n</Pattern>
             </PatternLayout>
             <Policies>
-                <TimeBasedTriggeringPolicy interval = "1" />
+                <TimeBasedTriggeringPolicy interval="1"/>
                 <SizeBasedTriggeringPolicy
-                        size="1 MB" />
+                        size="1 MB"/>
             </Policies>
         </RollingFile>
     </Appenders>
 
     <Loggers>
         <Logger name="ru.liga.truckapp2" level="DEBUG">
-            <AppenderRef ref="ROLLING-FILE" />
+            <AppenderRef ref="ROLLING-FILE"/>
         </Logger>
         <Root level="INFO">
-            <AppenderRef ref="STDOUT" />
+            <AppenderRef ref="STDOUT"/>
         </Root>
     </Loggers>
 
