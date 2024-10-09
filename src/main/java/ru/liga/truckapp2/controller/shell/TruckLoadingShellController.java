@@ -20,9 +20,7 @@ import java.util.List;
 public class TruckLoadingShellController {
 
     private final TruckService truckService;
-
     private final Stringifier stringifier;
-
 
     @ShellMethod(key = "load-trucks",
             value = "Возвращает список загруженных грузовиков")
@@ -34,8 +32,7 @@ public class TruckLoadingShellController {
             @ShellOption(help = "посылки берутся из файла или нет") Boolean parcelsFromFile,
             @ShellOption(help = "посылки считываются по форме или нет") Boolean parcelsByForm,
             @ShellOption(help = "вход посылок (имя файла или строка с именами, трактуется в зависимости от арумента parcelsFromFile)") String parcelIn,
-            @ShellOption(help = "файл для записи результата") String out
-    ) {
+            @ShellOption(help = "файл для записи результата") String out) {
 
         List<LoadedTruckDto> loadedTrucks = truckService.loadParcels(
                 width,
@@ -46,14 +43,10 @@ public class TruckLoadingShellController {
                 parcelIn,
                 algorithm,
                 out
-
         );
 
-
         return stringifier.stringifyLoadedTrucks(loadedTrucks);
-
     }
-
 
     @ShellMethod(key = "load-trucks-customized",
             value = "Возвращает список загруженных грузовиков")
@@ -64,8 +57,7 @@ public class TruckLoadingShellController {
             @ShellOption(help = "посылки считываются по форме или нет") Boolean parcelsByForm,
             @ShellOption(help = "вход посылок (имя файла или строка с именами)") String parcelIn,
             @ShellOption(help = "строка с формами грузовиков или имя файла, где она лежит") String truckShapesIn,
-            @ShellOption(help = "файл для записи результата") String out
-    ) {
+            @ShellOption(help = "файл для записи результата") String out) {
 
         List<LoadedTruckDto> loadedTrucks = truckService.loadParcelsWithTruckSizesCustomized(
                 truckShapesFromFile,
@@ -75,10 +67,9 @@ public class TruckLoadingShellController {
                 parcelIn,
                 algorithm,
                 out
-
         );
+
         return stringifier.stringifyLoadedTrucks(loadedTrucks);
     }
-
 
 }

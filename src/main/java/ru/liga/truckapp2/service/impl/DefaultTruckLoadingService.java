@@ -21,21 +21,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DefaultTruckLoadingService implements TruckLoadingService {
 
-    //    private final Map<PackagingAlgorithmType, TruckLoader> truckLoaders;
     private final TruckLoaderFactory truckLoaderFactory;
     private final LoadedTruckMapper loadedTruckMapper;
-
-//    public DefaultTruckLoadingService(List<TruckLoader> truckLoaders,
-//                                      LoadedTruckMapper loadedTruckMapper) {
-//
-//        this.truckLoaders = truckLoaders.stream().collect(
-//                Collectors.toMap(
-//                        TruckLoader::getAlgorithmType,
-//                        loader -> loader
-//                ));
-//        log.info("Truck loaders of types {} present in system", this.truckLoaders.keySet());
-//        this.loadedTruckMapper = loadedTruckMapper;
-//    }
 
     @Override
     public List<LoadedTruckDto> loadTrucks(List<Parcel> parcels,

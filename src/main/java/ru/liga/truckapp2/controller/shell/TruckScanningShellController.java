@@ -21,8 +21,7 @@ public class TruckScanningShellController {
 
     @ShellMethod(key = "scan-trucks", value = "Возвращает грузовики с подсчитанными посылками")
     public String scanTrucks(
-            @ShellOption(help = "путь ко входному файлу") String file
-    ) {
+            @ShellOption(help = "путь ко входному файлу") String file) {
         List<CountedTruckDto> scannedTrucks = truckService.countParcelsInTrucks(file);
         return stringifier.stringifyCountedTrucks(scannedTrucks);
     }

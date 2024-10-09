@@ -14,6 +14,10 @@ public class ParcelTypeDeleteCommand implements Command<SendMessage> {
 
     private final ParcelTypeService parcelTypeService;
 
+    private static final String TG_MESSAGE_PARTS_DELIMITER = " ";
+    private static final Integer TG_MESSAGE_PARTS_NUMBER = 2;
+    private static final Integer COMMAND_ARG_INDEX = 1;
+
     @Override
     public String getName() {
         return "/delete_parcel_type";
@@ -23,17 +27,17 @@ public class ParcelTypeDeleteCommand implements Command<SendMessage> {
     public SendMessage apply(Update update, String documentPath) {
 
         String message = update.getMessage().getText().trim();
-        String[] messageParts = message.split(" ", 2);
+        String[] messageParts = message.split(TG_MESSAGE_PARTS_DELIMITER, TG_MESSAGE_PARTS_NUMBER);
 
         log.debug("Message for delete parcel type command: {}", message);
 
-        if (messageParts.length != 2) {
+        if (messageParts.length != TG_MESSAGE_PARTS_NUMBER) {
             return new SendMessage(update.getMessage().getChatId().toString(),
                     "Invalid usage: try '/delete_parcel_type typeName'"
             );
         }
 
-        String name = messageParts[1].trim();
+        String name = messageParts[COMMAND_ARG_INDEX].trim();
         boolean deleted = parcelTypeService.delete(name);
 
         if (deleted) {

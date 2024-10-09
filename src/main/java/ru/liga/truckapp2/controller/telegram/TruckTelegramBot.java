@@ -26,14 +26,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TruckTelegramBot extends TelegramLongPollingBot {
 
+    private static final String TG_MESSAGE_PARTS_DELIMITER = " ";
+    private static final String INVALID_COMMAND_MESSAGE = "Invalid command";
+    private static final Integer COMMAND_NAME_IDX = 0;
+
     @Value("${bot.token}")
     private String botToken;
     @Value("${bot.name}")
     private String botName;
     @Value("${bot.files.directory}")
     private String filesDirectory;
-
-    private final String INVALID_COMMAND_MESSAGE = "Invalid command";
 
     private final TelegramBotsApi telegramBotsApi;
     private final TextCommandsFactory textCommandsFactory;
@@ -56,19 +58,27 @@ public class TruckTelegramBot extends TelegramLongPollingBot {
 
         try {
 
-            if (update.hasMessage() && (update.getMessage().hasText() || update.getMessage().getCaption() != null)) {
+            if (messageHasTextContent(update)) {
 
                 String commandName;
                 String documentPath;
                 if (update.getMessage().hasText()) {
-                    commandName = update.getMessage().getText().trim().split(" ")[0];
+                    commandName = update
+                            .getMessage()
+                            .getText()
+                            .trim()
+                            .split(TG_MESSAGE_PARTS_DELIMITER)[COMMAND_NAME_IDX];
                     documentPath = null;
                 } else {
-                    commandName = update.getMessage().getCaption().trim().split(" ")[0];
+                    commandName = update
+                            .getMessage()
+                            .getCaption()
+                            .trim()
+                            .split(TG_MESSAGE_PARTS_DELIMITER)[COMMAND_NAME_IDX];
                     Files.createDirectories(Path.of(filesDirectory));
                     documentPath = filesDirectory + File.separator + update.getMessage().getChatId().toString();
                     String fileId = update.getMessage().getDocument().getFileId();
-                    downLoadFile(documentPath, fileId);
+                    downloadFile(documentPath, fileId);
                 }
 
                 Command<SendMessage> textCommand = textCommandsFactory.getCommand(commandName);
@@ -142,7 +152,7 @@ public class TruckTelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    private void downLoadFile(String pathToLoad, String fileId) {
+    private void downloadFile(String pathToLoad, String fileId) {
 
         GetFile getFile = new GetFile();
         getFile.setFileId(fileId);
@@ -153,5 +163,9 @@ public class TruckTelegramBot extends TelegramLongPollingBot {
             log.error(e.getMessage());
         }
 
+    }
+
+    private boolean messageHasTextContent(Update update) {
+        return update.hasMessage() && (update.getMessage().hasText() || update.getMessage().getCaption() != null);
     }
 }

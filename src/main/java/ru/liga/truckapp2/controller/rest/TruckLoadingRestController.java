@@ -25,8 +25,8 @@ public class TruckLoadingRestController {
 
     @PostMapping("/default")
     public ResponseEntity<List<LoadedTruckDto>> loadTrucks(
-            @RequestBody @Valid DefaultLoadingTaskDto loadingTaskDto
-    ) {
+            @RequestBody @Valid DefaultLoadingTaskDto loadingTaskDto) {
+
         String actualInput = loadingTaskDto.getParcelIn();
         if (loadingTaskDto.getParcelsFromFile()) {
             actualInput = base64Decoder.decodeString(actualInput);
@@ -47,8 +47,8 @@ public class TruckLoadingRestController {
 
     @PostMapping("/customized")
     public ResponseEntity<List<LoadedTruckDto>> loadTrucksCustomized(
-            @RequestBody @Valid CustomizedLoadingTaskDto loadingTaskDto
-    ) {
+            @RequestBody @Valid CustomizedLoadingTaskDto loadingTaskDto) {
+
         String actualParcelInput = loadingTaskDto.getParcelIn();
         if (loadingTaskDto.getParcelsFromFile()) {
             actualParcelInput = base64Decoder.decodeString(actualParcelInput);

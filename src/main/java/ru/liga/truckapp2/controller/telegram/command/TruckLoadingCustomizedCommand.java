@@ -21,6 +21,10 @@ public class TruckLoadingCustomizedCommand implements Command<Optional<SendDocum
     private final TruckService truckService;
     private final Gson gson;
 
+    private static final String TG_MESSAGE_PARTS_DELIMITER = " ";
+    private static final Integer TG_MESSAGE_PARTS_NUMBER = 2;
+    private static final Integer COMMAND_ARG_INDEX = 1;
+
     @Override
     public String getName() {
         return "/load_trucks_customized";
@@ -28,8 +32,7 @@ public class TruckLoadingCustomizedCommand implements Command<Optional<SendDocum
 
     @Override
     public Optional<SendDocument> apply(Update update,
-                                        String documentPath
-    ) {
+                                        String documentPath) {
 
         String message;
         if (update.getMessage().hasText()) {
@@ -37,19 +40,17 @@ public class TruckLoadingCustomizedCommand implements Command<Optional<SendDocum
         } else {
             message = update.getMessage().getCaption().trim();
         }
-        String[] messageParts = message.split(" ", 2);
+        String[] messageParts = message.split(TG_MESSAGE_PARTS_DELIMITER, TG_MESSAGE_PARTS_NUMBER);
 
         log.debug("Message for load trucks customized command: {}", message);
 
-        if (messageParts.length != 2) {
+        if (messageParts.length != TG_MESSAGE_PARTS_NUMBER) {
             return Optional.empty();
         }
 
-        String jsonLoadingTask = messageParts[1].trim();
+        String jsonLoadingTask = messageParts[COMMAND_ARG_INDEX].trim();
 
-        CustomizedLoadingTaskDto task = gson.fromJson(jsonLoadingTask,
-                CustomizedLoadingTaskDto.class
-        );
+        CustomizedLoadingTaskDto task = gson.fromJson(jsonLoadingTask, CustomizedLoadingTaskDto.class);
 
         if (task.getTruckShapesFromFile()) {
             return Optional.empty();
@@ -64,6 +65,7 @@ public class TruckLoadingCustomizedCommand implements Command<Optional<SendDocum
                 task.getAlgorithm(),
                 task.getOut()
         );
+
         File file = new File(task.getOut());
         return Optional.of(SendDocument.builder()
                 .chatId(update.getMessage().getChatId())

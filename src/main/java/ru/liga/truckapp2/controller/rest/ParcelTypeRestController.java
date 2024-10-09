@@ -30,39 +30,29 @@ public class ParcelTypeRestController {
     @GetMapping("/{name}")
     public ResponseEntity<?> getParcelType(@PathVariable("name") String name) {
         ParcelType parcelType = parcelTypeService.getByName(name).orElse(null);
-        return (parcelType != null) ?
-                ResponseEntity.ok().body(
-                        parcelTypeMapper.parcelTypeToDto(parcelType)
-                ) :
-                ResponseEntity.notFound().build();
+        return (parcelType != null)
+                ? ResponseEntity.ok().body(parcelTypeMapper.parcelTypeToDto(parcelType))
+                : ResponseEntity.notFound().build();
 
     }
 
     @PostMapping
     public ResponseEntity<ParcelTypeDto> createParcelType(
-            @RequestBody @Valid ParcelTypeCreateDto createDto
-    ) {
+            @RequestBody @Valid ParcelTypeCreateDto createDto) {
         ParcelType parcelType = parcelTypeService.create(createDto);
-        return ResponseEntity.ok().body(
-                parcelTypeMapper.parcelTypeToDto(parcelType)
-        );
+        return ResponseEntity.ok().body(parcelTypeMapper.parcelTypeToDto(parcelType));
     }
 
     @PatchMapping("/{name}")
     public ResponseEntity<ParcelTypeDto> updateParcelType(
             @PathVariable("name") String name,
-            @RequestBody @Valid ParcelTypeDto updateDto
-    ) {
+            @RequestBody @Valid ParcelTypeDto updateDto) {
         ParcelType parcelType = parcelTypeService.update(name, updateDto);
-        return ResponseEntity.ok().body(
-                parcelTypeMapper.parcelTypeToDto(parcelType)
-        );
+        return ResponseEntity.ok().body(parcelTypeMapper.parcelTypeToDto(parcelType));
     }
 
     @DeleteMapping("/{name}")
-    public ResponseEntity<Boolean> deleteParcelType(
-            @PathVariable("name") String name
-    ) {
+    public ResponseEntity<Boolean> deleteParcelType(@PathVariable("name") String name) {
         boolean deleted = parcelTypeService.delete(name);
         return ResponseEntity.ok().body(deleted);
     }

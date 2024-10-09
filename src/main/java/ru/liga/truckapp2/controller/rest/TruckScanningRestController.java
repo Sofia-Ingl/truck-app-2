@@ -24,8 +24,7 @@ public class TruckScanningRestController {
 
     @PostMapping
     public ResponseEntity<List<CountedTruckDto>> scanTrucks(
-            @RequestBody String fileContentInBase64
-    ) {
+            @RequestBody String fileContentInBase64) {
         String file = tempFilesService.createTempFileFromContent(
                 base64Decoder.decodeString(fileContentInBase64)
         );

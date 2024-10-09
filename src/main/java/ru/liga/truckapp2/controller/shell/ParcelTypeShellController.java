@@ -36,8 +36,7 @@ public class ParcelTypeShellController {
     @ShellMethod(key = "get-parcel-type",
             value = "Возвращает тип посылки с заданным именем")
     public String getParcelType(
-            @ShellOption(help = "название типа посылок") String name
-    ) {
+            @ShellOption(help = "название типа посылок") String name) {
         ParcelType parcelType = parcelTypeService.getByName(name).orElse(null);
         return (parcelType != null) ? stringifier.stringifyParcelType(parcelType) : "Parcel type not found";
 
@@ -48,8 +47,7 @@ public class ParcelTypeShellController {
     public String createParcelType(
             @ShellOption(help = "имя нового типа") String name,
             @ShellOption(help = "форма, где строки отделены друг от друга запятыми, например \"kk,kk, k\"") String shape,
-            @ShellOption(help = "символ") Character symbol
-    ) {
+            @ShellOption(help = "символ") Character symbol) {
         ParcelTypeCreateDto createDto = inputDtoCreator.makeCreateDto(name, shape, symbol);
         ParcelType parcelType = parcelTypeService.create(createDto);
         return "Parcel type created: \n" + stringifier.stringifyParcelType(parcelType);
@@ -61,8 +59,7 @@ public class ParcelTypeShellController {
             @ShellOption(help = "имя типа") String name,
             @ShellOption(defaultValue = "", help = "новое имя") String newName,
             @ShellOption(defaultValue = "", help = "новая форма") String newShape,
-            @ShellOption(defaultValue = " ", help = "новый символ") Character newSymbol
-    ) {
+            @ShellOption(defaultValue = " ", help = "новый символ") Character newSymbol) {
 
         ParcelTypeDto updateDto = inputDtoCreator.makeUpdateDto(newName, newShape, newSymbol);
         ParcelType parcelType = parcelTypeService.update(name, updateDto);
@@ -72,8 +69,7 @@ public class ParcelTypeShellController {
     @ShellMethod(key = "delete-parcel-type",
             value = "Возвращает сообщение об успехе или неудаче операции (неудача происходит, если тип не найден)")
     public String deleteParcelType(
-            @ShellOption(help = "имя типа") String name
-    ) {
+            @ShellOption(help = "имя типа") String name) {
         boolean deleted = parcelTypeService.delete(name);
         return deleted ? "Parcel type deleted" : "Parcel type not found";
     }

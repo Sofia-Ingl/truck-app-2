@@ -31,7 +31,6 @@ public class JsonTruckFileService implements TruckFileService {
     public List<LoadedTruckDto> readTrucks(String fileName) {
 
         try {
-
             log.debug("Reading trucks from file {}", fileName);
             String jsonLoadedTrucks = Files.readString(Paths.get(fileName));
             Type type = new TypeToken<List<LoadedTruckDto>>() {

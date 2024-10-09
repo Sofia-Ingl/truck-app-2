@@ -20,6 +20,10 @@ public class ParcelTypeUpdateCommand implements Command<SendMessage> {
     private final Stringifier stringifier;
     private final Gson gson;
 
+    private static final String TG_MESSAGE_PARTS_DELIMITER = " ";
+    private static final Integer TG_MESSAGE_PARTS_NUMBER = 2;
+    private static final Integer COMMAND_ARG_INDEX = 1;
+
     @Override
     public String getName() {
         return "/update_parcel_type";
@@ -40,13 +44,15 @@ public class ParcelTypeUpdateCommand implements Command<SendMessage> {
             );
         }
 
-        String[] commandWithName = message.substring(0, jsonStartIdx).split(" ", 2);
-        if (commandWithName.length != 2) {
+        String[] commandWithName = message
+                .substring(0, jsonStartIdx)
+                .split(TG_MESSAGE_PARTS_DELIMITER, TG_MESSAGE_PARTS_NUMBER);
+        if (commandWithName.length != TG_MESSAGE_PARTS_NUMBER) {
             return new SendMessage(update.getMessage().getChatId().toString(),
                     "Invalid usage: try '/update_parcel_type typeName updatesDescriptionInJson'"
             );
         }
-        String name = commandWithName[1].trim();
+        String name = commandWithName[COMMAND_ARG_INDEX].trim();
         String updateJson = message.substring(jsonStartIdx);
 
         ParcelTypeDto parcelTypeCreateDto = gson.fromJson(updateJson, ParcelTypeDto.class);

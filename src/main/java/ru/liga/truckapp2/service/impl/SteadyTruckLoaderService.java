@@ -55,7 +55,6 @@ public class SteadyTruckLoaderService implements TruckLoaderService {
             Parcel iterationMaxParcel = parcelsSortedDesc.get(0);
             Arrays.fill(differencesWithMaxParcelSize, iterationMaxParcel.calculateVolume());
 
-
             if (isDirectPhase) {
                 log.debug("Processing direct initial packaging phase on iteration");
                 trucksLoadedSteadilyInIteration += directPhase(
@@ -78,7 +77,6 @@ public class SteadyTruckLoaderService implements TruckLoaderService {
 
             while (trucksLoadedSteadilyInIteration < trucksSorted.size()
                     && !parcelsSortedDesc.isEmpty()) {
-
                 if (!isDirectPhase) {
                     log.debug("Processing reversed additional packaging phase on iteration");
                     trucksLoadedSteadilyInIteration += directPhase(
@@ -98,13 +96,10 @@ public class SteadyTruckLoaderService implements TruckLoaderService {
                             false
                     );
                 }
-
             }
-
             isDirectPhase = !isDirectPhase;
             log.debug("Phase direction changed. Now phase is {}", isDirectPhase ? "direct" : "reversed");
         }
-
 
         return trucksAvailable.stream()
                 .filter(

@@ -22,7 +22,6 @@ public class DefaultDocumentCommandsFactory implements DocumentCommandsFactory {
             commands.put(command.getName(), command);
             log.info("Added document command: {}", command.getName());
         }
-
     }
 
     @Override

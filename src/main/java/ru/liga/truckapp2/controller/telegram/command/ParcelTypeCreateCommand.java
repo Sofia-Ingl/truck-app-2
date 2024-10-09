@@ -20,6 +20,10 @@ public class ParcelTypeCreateCommand implements Command<SendMessage> {
     private final Stringifier stringifier;
     private final Gson gson;
 
+    private static final String TG_MESSAGE_PARTS_DELIMITER = " ";
+    private static final Integer TG_MESSAGE_PARTS_NUMBER = 2;
+    private static final Integer COMMAND_ARG_INDEX = 1;
+
     @Override
     public String getName() {
         return "/create_parcel_type";
@@ -29,17 +33,17 @@ public class ParcelTypeCreateCommand implements Command<SendMessage> {
     public SendMessage apply(Update update, String documentPath) {
 
         String message = update.getMessage().getText().trim();
-        String[] messageParts = message.split(" ", 2);
+        String[] messageParts = message.split(TG_MESSAGE_PARTS_DELIMITER, TG_MESSAGE_PARTS_NUMBER);
 
         log.debug("Message for create parcel type command: {}", message);
 
-        if (messageParts.length != 2) {
+        if (messageParts.length != TG_MESSAGE_PARTS_NUMBER) {
             return new SendMessage(update.getMessage().getChatId().toString(),
                     "Invalid usage: try '/create_parcel_type typeDescriptionInJson'"
             );
         }
 
-        String typeDescriptionInJson = messageParts[1];
+        String typeDescriptionInJson = messageParts[COMMAND_ARG_INDEX];
         ParcelTypeCreateDto parcelTypeCreateDto = gson.fromJson(typeDescriptionInJson, ParcelTypeCreateDto.class);
 
         ParcelType createdParcelType = parcelTypeService.create(parcelTypeCreateDto);

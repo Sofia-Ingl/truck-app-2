@@ -5,9 +5,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class DefaultShapeArrayMapper implements ShapeArrayMapper {
 
-    private final String SHAPE_LINES_DELIMITER = ",";
-    private final char SHAPE_BLANK_POSITION_SYMBOL = ' ';
-    private final char SHAPE_FILLED_POSITION_SYMBOL = '+';
+    private static final String SHAPE_LINES_DELIMITER = ",";
+    private static final char SHAPE_BLANK_POSITION_SYMBOL = ' ';
+    private static final char SHAPE_FILLED_POSITION_SYMBOL = '+';
 
     @Override
     public String shapeToString(boolean[][] shapeArray) {

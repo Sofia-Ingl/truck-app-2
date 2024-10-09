@@ -24,8 +24,8 @@ import java.util.List;
 @Service
 public class DefaultTruckService implements TruckService {
 
-    private final String SIZE_INNER_DELIMITER = "x";
-    private final String SIZE_OUTER_DELIMITER = ",";
+    private static final String SIZE_INNER_DELIMITER = "x";
+    private static final String SIZE_OUTER_DELIMITER = ",";
 
     private final TruckLoadingService truckLoadingService;
     private final TruckFileService truckFileService;
@@ -41,7 +41,14 @@ public class DefaultTruckService implements TruckService {
     }
 
     @Override
-    public List<LoadedTruckDto> loadParcels(Integer width, Integer height, Integer quantity, Boolean parcelsFromFile, Boolean parcelsByForm, String parcelIn, PackagingAlgorithmType algorithm, String out) {
+    public List<LoadedTruckDto> loadParcels(Integer width,
+                                            Integer height,
+                                            Integer quantity,
+                                            Boolean parcelsFromFile,
+                                            Boolean parcelsByForm,
+                                            String parcelIn,
+                                            PackagingAlgorithmType algorithm,
+                                            String out) {
 
         List<Truck> availableTrucks = createTrucks(width, height, quantity);
         log.debug("Available trucks: {}", availableTrucks);
@@ -56,7 +63,13 @@ public class DefaultTruckService implements TruckService {
     }
 
     @Override
-    public List<LoadedTruckDto> loadParcelsWithTruckSizesCustomized(Boolean truckShapesFromFile, String truckShapesIn, Boolean parcelsFromFile, Boolean parcelsByForm, String parcelIn, PackagingAlgorithmType algorithm, String out) {
+    public List<LoadedTruckDto> loadParcelsWithTruckSizesCustomized(Boolean truckShapesFromFile,
+                                                                    String truckShapesIn,
+                                                                    Boolean parcelsFromFile,
+                                                                    Boolean parcelsByForm,
+                                                                    String parcelIn,
+                                                                    PackagingAlgorithmType algorithm,
+                                                                    String out) {
 
         List<Truck> availableTrucks = createTrucksCustomized(
                 truckShapesFromFile,

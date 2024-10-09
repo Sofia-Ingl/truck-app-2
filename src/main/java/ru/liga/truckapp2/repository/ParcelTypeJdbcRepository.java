@@ -20,12 +20,12 @@ import java.util.Optional;
 @Component
 public class ParcelTypeJdbcRepository implements ParcelTypeRepository {
 
-    private final String SQL_FIND_BY_NAME = "select * from parcel_types where name = ?";
-    private final String SQL_DELETE_BY_NAME = "delete from parcel_types where name = ?";
-    private final String SQL_UPDATE_BY_NAME = "update parcel_types set name = ?, shape = ?, symbol  = ? where name = ?";
-    private final String SQL_GET_ALL = "select * from parcel_types";
-    private final String SQL_INSERT = "insert into parcel_types(name, shape, symbol) values(?,?,?)";
-    private final String SQL_FIND_BY_SHAPE_AND_SYMBOL = "select * from parcel_types where shape = ? and symbol = ?";
+    private static final String SQL_FIND_BY_NAME = "select * from parcel_types where name = ?";
+    private static final String SQL_DELETE_BY_NAME = "delete from parcel_types where name = ?";
+    private static final String SQL_UPDATE_BY_NAME = "update parcel_types set name = ?, shape = ?, symbol  = ? where name = ?";
+    private static final String SQL_GET_ALL = "select * from parcel_types";
+    private static final String SQL_INSERT = "insert into parcel_types(name, shape, symbol) values(?,?,?)";
+    private static final String SQL_FIND_BY_SHAPE_AND_SYMBOL = "select * from parcel_types where shape = ? and symbol = ?";
 
     private final ParcelTypeRowMapper parcelTypeRowMapper;
     private final ShapeArrayMapper shapeArrayMapper;
@@ -71,10 +71,9 @@ public class ParcelTypeJdbcRepository implements ParcelTypeRepository {
                 () -> new AppException("Could not find parcel type with name " + name)
         );
         String newName = (newData.getName() != null) ? newData.getName() : parcelType.getName();
-        String newShape = (newData.getShape() != null) ?
-                shapeArrayMapper.shapeToString(newData.getShape())
-                :
-                shapeArrayMapper.shapeToString(parcelType.getShape());
+        String newShape = (newData.getShape() != null)
+                ? shapeArrayMapper.shapeToString(newData.getShape())
+                : shapeArrayMapper.shapeToString(parcelType.getShape());
         char newSymbol = (newData.getSymbol() != null) ? newData.getSymbol() : parcelType.getSymbol();
 
         log.debug("Trying to update parcel type " + parcelType + " with name " + newName + " and shape " + newShape + " and symbol " + newSymbol);

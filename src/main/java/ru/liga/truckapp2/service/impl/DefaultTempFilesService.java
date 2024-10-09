@@ -8,6 +8,7 @@ import ru.liga.truckapp2.service.TempFilesService;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Random;
@@ -33,8 +34,7 @@ public class DefaultTempFilesService implements TempFilesService {
             log.debug("Created temp file: {}", filePath);
             return filePath;
         } catch (IOException e) {
-            throw new RuntimeException("Error occurred when creating tmp file '"
-                    + fileName + ": " + e.getMessage());
+            throw new UncheckedIOException(e);
         }
     }
 
@@ -45,8 +45,7 @@ public class DefaultTempFilesService implements TempFilesService {
             Files.delete(path);
             log.debug("Deleted temp file: {}", fileName);
         } catch (IOException e) {
-            throw new RuntimeException("Error occurred when deleting tmp file '"
-                    + path.getFileName() + ": " + e.getMessage());
+            throw new UncheckedIOException(e);
         }
 
     }
