@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
-import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.liga.truckapp2.dto.CustomizedLoadingTaskDto;
 import ru.liga.truckapp2.service.TruckService;
 
@@ -21,41 +20,23 @@ public class TruckLoadingCustomizedCommand implements Command<Optional<SendDocum
     private final TruckService truckService;
     private final Gson gson;
 
-    private static final String TG_MESSAGE_PARTS_DELIMITER = " ";
-    private static final Integer TG_MESSAGE_PARTS_NUMBER = 2;
-    private static final Integer COMMAND_ARG_INDEX = 1;
-
     @Override
     public String getName() {
         return "/load_trucks_customized";
     }
 
     @Override
-    public Optional<SendDocument> apply(Update update,
-                                        String documentPath) {
+    public Optional<SendDocument> apply(String textArguments, String documentPath, Long chatId) {
 
-        String message;
-        if (update.getMessage().hasText()) {
-            message = update.getMessage().getText().trim();
-        } else {
-            message = update.getMessage().getCaption().trim();
-        }
-        String[] messageParts = message.split(TG_MESSAGE_PARTS_DELIMITER, TG_MESSAGE_PARTS_NUMBER);
-
-        log.debug("Message for load trucks customized command: {}", message);
-
-        if (messageParts.length != TG_MESSAGE_PARTS_NUMBER) {
+        if (textArguments == null || textArguments.trim().isEmpty()) {
             return Optional.empty();
         }
 
-        String jsonLoadingTask = messageParts[COMMAND_ARG_INDEX].trim();
-
+        String jsonLoadingTask = textArguments.trim();
         CustomizedLoadingTaskDto task = gson.fromJson(jsonLoadingTask, CustomizedLoadingTaskDto.class);
-
         if (task.getTruckShapesFromFile()) {
             return Optional.empty();
         }
-
         truckService.loadParcelsWithTruckSizesCustomized(
                 false,
                 task.getTruckShapesIn(),
@@ -68,7 +49,7 @@ public class TruckLoadingCustomizedCommand implements Command<Optional<SendDocum
 
         File file = new File(task.getOut());
         return Optional.of(SendDocument.builder()
-                .chatId(update.getMessage().getChatId())
+                .chatId(chatId)
                 .caption("File with loaded trucks")
                 .document(new InputFile(file))
                 .build());

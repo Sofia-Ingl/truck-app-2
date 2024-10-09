@@ -1,7 +1,6 @@
 package ru.liga.truckapp2.controller.telegram.command;
 
 import org.springframework.lang.Nullable;
-import org.telegram.telegrambots.meta.api.objects.Update;
 
 public interface Command<T> {
 
@@ -11,10 +10,11 @@ public interface Command<T> {
     String getName();
 
     /**
-     * @param update       обновление в чате
-     * @param documentPath путь к скачанному файлу (может быть null)
+     * @param textArguments текстовые аргументы
+     * @param documentPath  путь к скачанному файлу (может быть null)
+     * @param chatId        id чата
      * @return сущность для отправки пользователю
      */
-    T apply(Update update, @Nullable String documentPath);
+    T apply(String textArguments, @Nullable String documentPath, Long chatId);
 
 }

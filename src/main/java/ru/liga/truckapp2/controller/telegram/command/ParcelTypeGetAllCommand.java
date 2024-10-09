@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.liga.truckapp2.model.ParcelType;
 import ru.liga.truckapp2.service.ParcelTypeService;
 import ru.liga.truckapp2.util.Stringifier;
@@ -25,14 +24,10 @@ public class ParcelTypeGetAllCommand implements Command<SendMessage> {
     }
 
     @Override
-    public SendMessage apply(Update update, String documentPath) {
-
+    public SendMessage apply(String textArguments, String documentPath, Long chatId) {
         List<ParcelType> parcelTypes = parcelTypeService.getAll();
-
-        return new SendMessage(
-                update.getMessage().getChatId().toString(),
-                stringifier.stringifyParcelTypesList(parcelTypes)
-        );
+        return new SendMessage(chatId.toString(),
+                stringifier.stringifyParcelTypesList(parcelTypes));
     }
 
 }

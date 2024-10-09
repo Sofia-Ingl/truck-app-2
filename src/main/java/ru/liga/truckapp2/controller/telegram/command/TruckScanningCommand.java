@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.liga.truckapp2.dto.CountedTruckDto;
 import ru.liga.truckapp2.service.TruckService;
 import ru.liga.truckapp2.util.Stringifier;
@@ -17,7 +16,6 @@ import java.util.List;
 public class TruckScanningCommand implements Command<SendMessage> {
 
     private final TruckService truckService;
-
     private final Stringifier stringifier;
 
     @Override
@@ -26,11 +24,10 @@ public class TruckScanningCommand implements Command<SendMessage> {
     }
 
     @Override
-    public SendMessage apply(Update update, String documentPath) {
-
+    public SendMessage apply(String textArguments, String documentPath, Long chatId) {
         List<CountedTruckDto> countedTruckDtoList =
                 truckService.countParcelsInTrucks(documentPath);
-        return new SendMessage(update.getMessage().getChatId().toString(),
+        return new SendMessage(chatId.toString(),
                 stringifier.stringifyCountedTrucks(countedTruckDtoList));
     }
 }
